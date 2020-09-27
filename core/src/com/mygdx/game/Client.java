@@ -16,6 +16,9 @@ public class Client extends Game implements NetworkController {
 	//todo sa nu lesi asta aici
 	public String nickName = "Hudy";
 
+	public String roomId;
+
+
 	public float screenWidth;
 	public float screenHeight;
 
@@ -180,7 +183,7 @@ public class Client extends Game implements NetworkController {
 	@Override
 	public void updateRooms(NetworkDTO.RoomsResponse roomsResponse) {
 		this.joinRoomScreen.setRooms(roomsResponse.getRooms());
-		//System.out.println("Rooms Received!");
+		System.out.println("Rooms Received!");
 	}
 
 	/**
@@ -191,7 +194,8 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void setLobbyData(NetworkDTO.Lobby lobby, boolean isOwner) {
-
+		//todo booleanul pentru butonu de start
+		lobbyScreen.players = lobby.getPlayers();
 	}
 
 	/**
@@ -199,7 +203,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void goToLobbyScreen() {
-
+		screenState = ScreenState.LOBBY;
 	}
 
 	/**
@@ -207,7 +211,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void goToMainMenu() {
-
+		screenState = ScreenState.MAIN_MENU;
 	}
 
 	/**
@@ -215,7 +219,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void goToGame() {
-
+		screenState = ScreenState.GAME;
 	}
 
 	/**
@@ -326,7 +330,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void joinGame(String roomID, String nickname) {
-
+		this.networkService.joinRoomRequest(roomID,nickname);
 	}
 
 	/**

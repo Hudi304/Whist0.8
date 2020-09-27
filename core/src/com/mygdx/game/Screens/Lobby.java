@@ -37,7 +37,7 @@ public class Lobby implements Screen {
 
 
 
-    public List<Player> players = new ArrayList<>();
+    public List<String> players = new ArrayList<>();
     public Table table = new Table();
 
     public Lobby(Client mainController){
@@ -61,17 +61,12 @@ public class Lobby implements Screen {
 
         table.defaults().expandX().fill().space(5f);
 
-        Player pl1 = new Player("hudy",2);
-        Player pl2 = new Player("hudy1",2);
-        Player pl3 = new Player("hudy2",2);
-        Player pl4 = new Player("hudy3",2);
-        Player pl5 = new Player("hudy4",2);
 
-        players.add(pl1);
-        players.add(pl2);
-        players.add(pl3);
-        players.add(pl4);
-        players.add(pl5);
+//        players.add("Hudy1");
+//        players.add("Hudy1");
+//        players.add("Hudy1");
+//        players.add("Hudy1");
+//        players.add("Hudy1");
 
         refreshTable(table,players);
 
@@ -111,13 +106,13 @@ public class Lobby implements Screen {
 
     }
 
-    public void refreshTable(Table table, List<Player> players){
+    public void refreshTable(Table table, List<String> players){
         table.clear();
         table.defaults().width(110);
 
-        for (Player pl:players) {
+        for (String name:players) {
             table.row().setActorHeight(20);
-            Label label = new Label(pl.getNickName() + " ",skin);
+            Label label = new Label(name + " ",skin);
             label.setAlignment(Align.center);
             table.add(label);
             table.row();

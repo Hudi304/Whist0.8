@@ -164,6 +164,7 @@ public class JoinRoom implements Screen {
             joinBtn.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
+                    mainController.roomId = rm.getRoomID();
                     mainController.goToScreen(ScreenState.CREDENTIALS);
                     // mainController.goToCredentialsScreen(rm.getRoomID());
                 }

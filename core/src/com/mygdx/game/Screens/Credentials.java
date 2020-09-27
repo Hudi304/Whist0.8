@@ -64,6 +64,7 @@ public class Credentials implements Screen {
                 mainController.nickName = userNameTF.getText();
                 System.out.println("player nickname =" + mainController.nickName);
                 //mainController.goToScreen(ScreenState.LOBBY);
+                mainController.joinGame(mainController.roomId,mainController.nickName);
             }
         });
 
