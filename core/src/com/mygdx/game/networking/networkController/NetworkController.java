@@ -144,6 +144,13 @@ public interface NetworkController {
     void joinGame(String roomID, String nickname);
 
     /**
+     * Call this function when you want to join a game from the
+     * @param roomID
+     * @param nickname
+     */
+    void createGame(String roomID,String nickname);
+
+    /**
      * Call this function when you want to start the game in which you are owner;
      */
     void startGame();
