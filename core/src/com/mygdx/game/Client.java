@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.mygdx.game.Screens.*;
+import com.mygdx.game.generics.Card;
 import com.mygdx.game.generics.Player;
 import com.mygdx.game.networking.dto.NetworkDTO;
 import com.mygdx.game.networking.networkController.NetworkController;
@@ -15,7 +16,7 @@ import java.util.List;
 public class Client extends Game implements NetworkController {
 
 	//todo sa nu lesi asta aici
-	public String nickName = "Hudy";
+	public String nickName ;
 
 	public String roomId;
 
@@ -166,6 +167,8 @@ public class Client extends Game implements NetworkController {
 	@Override
 	public void setToken(NetworkDTO.Token token) {
 		System.out.println(token);
+		nickName = token.getNickname();
+		roomId = token.getRoomID();
 	}
 
 	/**
@@ -246,7 +249,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void updateCards(NetworkDTO.Cards cards) {
-
+			gameScreen.cardsStrList = cards.getCards();
 	}
 
 	/**

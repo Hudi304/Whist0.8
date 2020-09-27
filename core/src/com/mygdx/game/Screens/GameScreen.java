@@ -117,9 +117,9 @@ public class GameScreen implements Screen {
 
         //putDownCards.add(new Card("h-12",regions,screenWidth/2 ,screenHeight/2,this));
 
-        cardsStrList.add("h-2");
-        cardsStrList.add("d-2");
-        cardsStrList.add("c-2");
+//        cardsStrList.add("h-2");
+//        cardsStrList.add("d-2");
+//        cardsStrList.add("c-2");
 
 
 
