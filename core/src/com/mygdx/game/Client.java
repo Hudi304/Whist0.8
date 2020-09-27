@@ -334,6 +334,17 @@ public class Client extends Game implements NetworkController {
 	}
 
 	/**
+	 * Call this function when you want to join a game from the
+	 *
+	 * @param roomID
+	 * @param nickname
+	 */
+	@Override
+	public void createGame(String roomID, String nickname) {
+		this.networkService.createGameRequest(roomID,nickname);
+	}
+
+	/**
 	 * Call this function when you want to start the game in which you are owner;
 	 */
 	@Override

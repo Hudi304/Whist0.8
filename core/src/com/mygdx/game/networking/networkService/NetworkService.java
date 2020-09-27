@@ -346,4 +346,15 @@ public class NetworkService {
             e.printStackTrace();
         }
     }
+
+    public void createGameRequest(String roomID,String nickname){
+        JSONObject data = new JSONObject();
+        try{
+            data.put("roomID",roomID);
+            data.put("nickname",nickname);
+            socket.emit(ClientActions.CREATE_ROOM,data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }
