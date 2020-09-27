@@ -96,22 +96,23 @@ public class Lobby implements Screen {
         startBtn.setPosition(Gdx.graphics.getWidth() - startBtn.getWidth() - 20,20);
 
         TextButton backBtn = new TextButton("Back",skin);
+        backBtn.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                mainController.leaveRoom();
+                mainController.goToScreen(ScreenState.MAIN_MENU);
+
+            }
+        });
         backBtn.setPosition(15,15);
         backBtn.setHeight(30);
         backBtn.setWidth(100);
 
-        backBtn.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                screenController.goToMainMenu();
-            }
-        });
+
          //stage.addActor(table);
         stage.addActor(backBtn);
         stage.addActor(scrollPane);
         stage.addActor(startBtn);
-
-
 
         startBtn.setVisible(isOwner);
 

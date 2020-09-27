@@ -349,7 +349,13 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void leaveRoom() {
-
+		System.out.println("Client left Room");
+		try{
+			this.networkService.leaveRoomRequest();
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
 	}
 
 	/**
