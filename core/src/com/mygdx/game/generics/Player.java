@@ -15,7 +15,7 @@ public class Player extends Actor {
 
     private String nickName;
     private int nrOfCards;
-    private Vector2 pos;
+
 
 
     public List<Card> cards = new ArrayList<>();
@@ -128,13 +128,8 @@ public class Player extends Actor {
         this.nickName = nickName;
     }
 
-    public Vector2 getPos() {
-        return pos;
-    }
 
-    public void setPos(Vector2 pos) {
-        this.pos = pos;
-    }
+
 
     @Override
     public String toString() {

@@ -88,7 +88,7 @@ public class Lobby implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println( "Start Button Pressed");
-                screenController.goToGameScreen();
+                mainController.startGame();
             }
         });
         startBtn.setHeight(30);
@@ -175,6 +175,7 @@ public class Lobby implements Screen {
 
     @Override
     public void dispose() {
+        players.clear();
 
     }
 }

@@ -120,23 +120,8 @@ public class GameScreen implements Screen {
         cardsStrList.add("h-2");
         cardsStrList.add("d-2");
         cardsStrList.add("c-2");
-        cardsStrList.add("s-2");
-        cardsStrList.add("h-3");
-        cardsStrList.add("d-3");
-        cardsStrList.add("c-3");
-        cardsStrList.add("s-3");
-        Player hudi =  new Player("Hudy",8);
-        Player odr  =  new Player("Odrin",8);
-        Player hudi2  =  new Player("Hudy1",8);
-        Player hudi3  =  new Player("Hudy2",8);
-        Player hudi4  =  new Player("Hudy3",8);
-        Player hudi5  =  new Player("Hudy4",8);
-        players.add(hudi);
-        players.add(odr);
-        players.add(hudi2);
-        players.add(hudi3);
-        players.add(hudi4);
-        players.add(hudi5);
+
+
 
         for (Player pl : players) {
             if(!pl.getNickName().equals(mainController.nickName)){
@@ -273,7 +258,7 @@ public class GameScreen implements Screen {
         //todo nu se regleaza in functie de cat de lung e nicknameul
         batch.begin();
             renderNicknamesBatch();
-            font12.draw(batch,"dasdas",200,200);
+            //font12.draw(batch,"dasdas",200,200);
         batch.end();
 
         updateBidText();

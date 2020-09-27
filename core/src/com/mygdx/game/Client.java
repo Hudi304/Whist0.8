@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.mygdx.game.Screens.*;
+import com.mygdx.game.generics.Player;
 import com.mygdx.game.networking.dto.NetworkDTO;
 import com.mygdx.game.networking.networkController.NetworkController;
 import com.mygdx.game.networking.networkService.NetworkService;
@@ -232,7 +233,10 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void updatePlayerList(List<NetworkDTO.Player> players) {
-
+		for (NetworkDTO.Player pl : players) {
+			gameScreen.players.add(new Player(pl.getName(),0));
+		}
+		goToScreen(ScreenState.GAME);
 	}
 
 	/**
@@ -353,6 +357,7 @@ public class Client extends Game implements NetworkController {
 	@Override
 	public void startGame() {
 
+		networkService.startGameRequest();
 	}
 
 	/**

@@ -61,7 +61,7 @@ public class CreateRoom implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println( "Register Room Button Pressed");
-                mainClient.goToScreen(ScreenState.LOBBY);
+                mainClient.createGame(roomNameTF.getText(),userNameTF.getText());
             }
         });
 
