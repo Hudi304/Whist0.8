@@ -23,6 +23,7 @@ public class ScreenController {
     }
 
     public void goToCreateRoomScreen(){
+
         mainClient.setScreen(mainClient.createRoomScreen);
     }
 
