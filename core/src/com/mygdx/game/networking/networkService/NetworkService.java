@@ -118,6 +118,7 @@ public class NetworkService {
                     NetworkDTO.RoomsResponse roomsResponse = new NetworkDTO.RoomsResponse(roomsJSON);
                     NetworkService.this.rootController.updateRooms(roomsResponse);
                     NetworkService.this.rootController.goToRoomsScreen();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

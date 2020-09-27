@@ -18,7 +18,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Client;
 import com.mygdx.game.Constants;
 import com.mygdx.game.ScreenController;
-import com.mygdx.game.generics.Room;
+import com.mygdx.game.networking.dto.NetworkDTO;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +42,7 @@ public class JoinRoom implements Screen {
     TextButton createRoomBtn;
 
 
-    public List<Room> rooms = new ArrayList<>();
+    public List<NetworkDTO.Room> rooms = new ArrayList<>();
     public Table table = new Table();
 
     public JoinRoom(Client mainController){
@@ -53,16 +54,19 @@ public class JoinRoom implements Screen {
 
     @Override
     public void show() {
+
         stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
         skin = new Skin(Gdx.files.internal(Constants.skinJsonString));
-        Gdx.input.setInputProcessor(stage);
+
 
         table.debug();
 
         table.center();
 
         table.defaults().expandX().fill().space(5f);
-        Room rm1 = new Room("rm1", 8 , 0);
+
+        /*
+        NetworkDTO.Room rm1 = new NetworkDTO.Room("rm1", 8 , 0);
         Room rm2 = new Room("rm2", 6 , 1);
         Room rm3 = new Room("rm3", 3 , 1);
         Room rm4 = new Room("rm4", 2 , 1);
@@ -71,7 +75,7 @@ public class JoinRoom implements Screen {
         rooms.add(rm2);
         rooms.add(rm3);
         rooms.add(rm4);
-
+*/
 
         refreshTable(table,this.rooms);
 
@@ -89,14 +93,14 @@ public class JoinRoom implements Screen {
         backBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-               screenController.goToMainMenu();
+               mainController.goToMainMenu();
             }
         });
         // stage.addActor(table);
         stage.addActor(backBtn);
         stage.addActor(scrollPane);
 
-
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -143,23 +147,24 @@ public class JoinRoom implements Screen {
         skin.dispose();
     }
 
-    public void refreshTable(Table table, List<Room> rooms){
+    public void refreshTable(Table table, List<NetworkDTO.Room> rooms){
         table.clear();
         table.defaults().width(110);
 
-        for (final Room rm:rooms) {
+        for (final NetworkDTO.Room rm:rooms) {
+            System.out.println(rm);
             table.row().setActorHeight(20);
             System.out.println("rm.getROOMID() = " + rm.getRoomID());
 
             table.add(new Label(rm.getRoomID() + " ",skin)).width(rm.getRoomID().length()*20);//!! NETESTAT
-            table.add(new Label("[" + rm.getNrOfPlayers()+ "/" + rm.getMaxCapacity() +"]",skin)).width(50).expandX();
+            table.add(new Label("[" + rm.getPlayers()+ "/" + rm.getCapacity() +"]",skin)).width(50).expandX();
             TextButton joinBtn = new TextButton("Join",skin);
             joinBtn.setHeight(30);
             table.add(joinBtn).width(100).pad(3);
             joinBtn.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    screenController.goToCredentialsScreen();
+                    mainController.goToScreen(ScreenState.CREDENTIALS);
                     // mainController.goToCredentialsScreen(rm.getRoomID());
                 }
             });
@@ -167,11 +172,12 @@ public class JoinRoom implements Screen {
         }
     }
 
-    public List<Room> getRooms() {
+    public List<NetworkDTO.Room> getRooms() {
         return rooms;
     }
 
-    public void setRooms(List<Room> rooms) {
+    public void setRooms(List<NetworkDTO.Room> rooms) {
         this.rooms = rooms;
+
     }
 }

@@ -2,17 +2,13 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
-import com.mygdx.game.Screens.CreateRoom;
-import com.mygdx.game.Screens.Credentials;
-import com.mygdx.game.Screens.GameScreen;
-import com.mygdx.game.Screens.JoinRoom;
-import com.mygdx.game.Screens.Lobby;
-import com.mygdx.game.Screens.MainMenu;
+import com.mygdx.game.Screens.*;
 import com.mygdx.game.networking.dto.NetworkDTO;
 import com.mygdx.game.networking.networkController.NetworkController;
 import com.mygdx.game.networking.networkService.NetworkService;
 
 import java.net.URISyntaxException;
+import java.security.cert.CertificateRevokedException;
 import java.util.List;
 
 public class Client extends Game implements NetworkController {
@@ -33,7 +29,9 @@ public class Client extends Game implements NetworkController {
 	CreateRoom createRoomScreen;
 	Lobby lobbyScreen;
 	GameScreen gameScreen;
-
+	//FLAGS
+	private ScreenState screenState = ScreenState.MAIN_MENU;
+	private ScreenState previousScreenState = ScreenState.MAIN_MENU;
 
 
 	@Override
@@ -46,7 +44,7 @@ public class Client extends Game implements NetworkController {
 	public void create() {
 		// System.out.println("Version: " + version);
 
-		initializeNetworkService(Constants.serverHTTP);
+		this.initializeNetworkService(Constants.serverHTTP);
 		screenController = new ScreenController(this);
 
 
@@ -58,22 +56,49 @@ public class Client extends Game implements NetworkController {
 		gameScreen =  new GameScreen(this);
 
 
-		setScreen(gameScreen);
+		setSCreen(screenState);
 
 		try {
-			connect();
+			this.connect();
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
 
 	}
 
-	public void setSCreen(Screen screen){
-		setScreen(screen);
+	public void setSCreen(ScreenState state){
+		switch (state){
+			case MAIN_MENU:
+				setScreen(mainMenuScreen);
+				break;
+			case JOIN_ROOM:
+				setScreen(joinRoomScreen);
+				break;
+			case LOBBY:
+				setScreen(lobbyScreen);
+				break;
+			case CREATE_ROOM:
+				setScreen(createRoomScreen);
+				break;
+			case GAME:
+				setScreen(gameScreen);
+				break;
+			case CREDENTIALS:
+				setScreen(credentialsScreen);
+				break;
+			default:
+				System.out.println("Error on setSCreen!!!!");
+				break;
+		}
+
 	}
 
 	@Override
 	public void render() {
+		if(screenState != previousScreenState){
+			setSCreen(screenState);
+			previousScreenState = screenState;
+		}
 		super.render();
 	}
 
@@ -126,6 +151,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void setConnectedStatus(boolean isConnected) {
+		System.out.println("You are connected!");
 	}
 
 	/**
@@ -135,7 +161,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void setToken(NetworkDTO.Token token) {
-
+		System.out.println(token);
 	}
 
 	/**
@@ -143,7 +169,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void goToRoomsScreen() {
-
+		this.screenState = ScreenState.JOIN_ROOM;
 	}
 
 	/**
@@ -153,7 +179,8 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void updateRooms(NetworkDTO.RoomsResponse roomsResponse) {
-
+		this.joinRoomScreen.setRooms(roomsResponse.getRooms());
+		//System.out.println("Rooms Received!");
 	}
 
 	/**
@@ -323,7 +350,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void getRooms() {
-
+		this.networkService.makeRoomsRequest();
 	}
 
 	/**
@@ -333,6 +360,12 @@ public class Client extends Game implements NetworkController {
 	@Override
 	public void disconnect() {
 
+	}
+
+
+
+	public void goToScreen(ScreenState state){
+		this.screenState = state;
 	}
 }
 

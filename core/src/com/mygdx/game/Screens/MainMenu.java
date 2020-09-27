@@ -49,7 +49,7 @@ public class MainMenu implements Screen {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     System.out.println( "Create Room Button Pressed");
-                    screenController.goToCreateRoomScreen();
+                    mainController.goToScreen(ScreenState.CREDENTIALS);
                 }
             });
             joinBtn = new TextButton("JoinRoom",skin);
@@ -57,7 +57,8 @@ public class MainMenu implements Screen {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     System.out.println( "Join Button Pressed");
-                    screenController.goToJoinRoomScreen();
+                    mainController.getRooms();
+                    //screenController.goToJoinRoomScreen();
                 }
             });
             optionsBtn = new TextButton("Options",skin);
@@ -72,6 +73,8 @@ public class MainMenu implements Screen {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     System.out.println( "Exit Button Pressed");
+                    mainController.disconnect();
+                    //mainController.goToScreen(ScreenState.MAIN_MENU);
                 }
             });
 
