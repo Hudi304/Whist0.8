@@ -24,6 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Lobby implements Screen {
+
+    private int nrOfPlayers = 0;
+    public boolean isOwner = false;
     Stage stage;
     Skin skin;
     Viewport viewport;
@@ -33,9 +36,11 @@ public class Lobby implements Screen {
     Client mainController;
     ScreenController screenController;
 
+    TextButton startBtn;
+
     //Buttons
 
-
+//todo pune un buton de start pentru owner
 
     public List<String> players = new ArrayList<>();
     public Table table = new Table();
@@ -46,6 +51,8 @@ public class Lobby implements Screen {
         this.mainController = mainController;
         screenController =  mainController.screenController;
         System.out.println( " Created Lobby Screeem ");
+        nrOfPlayers = players.size();
+
     }
 
 
@@ -68,7 +75,7 @@ public class Lobby implements Screen {
 //        players.add("Hudy1");
 //        players.add("Hudy1");
 
-        refreshTable(table,players);
+        refreshTable(players);
 
         ScrollPane scrollPane = new ScrollPane(table,skin);
         scrollPane.setWidth(Gdx.graphics.getWidth()-200);
@@ -76,7 +83,7 @@ public class Lobby implements Screen {
         scrollPane.setPosition(50,50);
         scrollPane.debug();
 
-        TextButton startBtn = new TextButton("Start",skin);
+        startBtn = new TextButton("Start",skin);
         startBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -104,15 +111,21 @@ public class Lobby implements Screen {
         stage.addActor(scrollPane);
         stage.addActor(startBtn);
 
+
+
+        startBtn.setVisible(isOwner);
+
     }
 
-    public void refreshTable(Table table, List<String> players){
+    public void refreshTable(List<String> players){
         table.clear();
         table.defaults().width(110);
 
         for (String name:players) {
             table.row().setActorHeight(20);
             Label label = new Label(name + " ",skin);
+
+
             label.setAlignment(Align.center);
             table.add(label);
             table.row();
@@ -123,6 +136,13 @@ public class Lobby implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0.8f,0.8f, 0.8f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        if(players.size() !=  nrOfPlayers){
+            refreshTable(players);
+            nrOfPlayers = players.size();
+            System.out.println(isOwner);
+            startBtn.setVisible(isOwner);
+        }
         stage.act(delta);
         stage.draw();
     }
@@ -133,7 +153,7 @@ public class Lobby implements Screen {
         this.height = height;
 
 
-        refreshTable(table,players);
+        refreshTable(players);
 
     }
 

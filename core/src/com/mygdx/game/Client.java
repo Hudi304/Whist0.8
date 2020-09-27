@@ -195,7 +195,10 @@ public class Client extends Game implements NetworkController {
 	@Override
 	public void setLobbyData(NetworkDTO.Lobby lobby, boolean isOwner) {
 		//todo booleanul pentru butonu de start
+		lobbyScreen.isOwner =  isOwner;
 		lobbyScreen.players = lobby.getPlayers();
+		System.out.println("new data:");
+		///lobbyScreen.refreshTable(lobby.getPlayers());
 	}
 
 	/**
