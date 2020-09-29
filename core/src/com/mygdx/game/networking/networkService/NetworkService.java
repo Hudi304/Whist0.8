@@ -278,7 +278,13 @@ public class NetworkService {
         socket.on(ServerActions.WINNER,(new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                System.out.println(args[0]);
+                String winner = null;
+                try {
+                    winner = ((JSONObject)args[0]).getString("winner");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                rootController.sendWinner(winner);
                 socket.emit(ClientActions.GOT_WINNER, token.getToken());
             }
         }));
@@ -305,6 +311,9 @@ public class NetworkService {
                 JSONObject tableStatus = (JSONObject) args[0];
                 try {
                     table = new NetworkDTO.Table(tableStatus);
+                    for(NetworkDTO.Table.PlayerStatus ps: table.getPlayersStatus()){
+                        System.out.println(ps);
+                    }
                     NetworkService.this.rootController.updateTable(table);
                     socket.emit(ClientActions.GOT_TABLE_STATUS, token.getToken());
                 } catch (JSONException e) {

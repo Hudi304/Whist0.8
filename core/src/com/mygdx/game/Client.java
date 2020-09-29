@@ -414,6 +414,10 @@ public class Client extends Game implements NetworkController {
 
 	}
 
+	@Override
+	public void sendWinner(String winner) {
+
+	}
 
 
 	public void goToScreen(ScreenState state){

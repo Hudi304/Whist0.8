@@ -172,4 +172,10 @@ public interface NetworkController {
     public void disconnect();
 
 
+    /**
+     * This function gets called when the hand is over and a winner has been choosed.
+     * Create animation for the winner!
+     * @param winner -> the nickname of the winner
+     */
+    void sendWinner(String winner);
 }
