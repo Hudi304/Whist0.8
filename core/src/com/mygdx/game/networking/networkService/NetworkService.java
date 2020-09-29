@@ -247,6 +247,7 @@ public class NetworkService {
                 NetworkDTO.Table.PlayerStatus ps = table.getFirstToPutCard();
                 if (ps != null && ps.getNickname().equals(token.getNickname())) {
                     NetworkService.this.rootController.showHudForCards(ps);
+                    System.out.println("gave card);");
                 } else
                     NetworkService.this.rootController.hideCardHud();
             }

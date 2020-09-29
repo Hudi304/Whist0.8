@@ -285,7 +285,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void showHudForCards(NetworkDTO.Table.PlayerStatus ps) {
-
+		gameScreen.canChooseCard =  true;
 	}
 
 	/**
@@ -293,6 +293,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void hideCardHud() {
+		gameScreen.canChooseCard =  false;
 
 	}
 
@@ -313,7 +314,15 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void updateTable(NetworkDTO.Table table) {
-
+		// todo afiseaza cartile celorlalti pe ecran
+		gameScreen.putDownCards.clear();
+		for (NetworkDTO.Table.PlayerStatus plst:table.getPlayersStatus()) {
+			if (plst.getCard().equals(null)){
+				System.out.println("Client updat teble " + plst.getCard());
+				Card crd = new Card(plst.getCard(), gameScreen.regions,0,0,gameScreen);
+				gameScreen.putDownCards.add(crd);
+			}
+		}
 	}
 
 	/**
@@ -324,7 +333,8 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void sendCard(String card) {
-
+		//todo valideaza asta
+		this.networkService.sendCardResponse(card);
 	}
 
 	/**

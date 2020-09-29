@@ -55,11 +55,14 @@ public class Card extends Actor implements Comparable<Card>{
     }
 
     public Card(String val, TextureRegion[][] regions, float x, float y, final GameScreen gameScreen){
+
         String[] cardVal = val.split("-");
 
         position = new Vector2(x,y);
         originalPosition = new Vector2(x,y);
         velocity = new Vector2(0,0);
+
+        System.out.println("Card constr val = " + val);
 
         int cardSimb = 0;
         int cardNr = 0;
@@ -79,7 +82,7 @@ public class Card extends Actor implements Comparable<Card>{
         if(cardVal[0].equals("b")){
             cardSimb = 4;
         }
-        //System.out.println("AICI" + cardVal[1]);
+        System.out.println("AICI" + cardVal[1]);
         cardNr = Integer.parseInt( cardVal[1]) - 2;
 
         final Card thisCard = this;

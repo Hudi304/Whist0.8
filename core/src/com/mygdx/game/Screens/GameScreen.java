@@ -42,9 +42,9 @@ public class GameScreen implements Screen {
     Stage stage;
     Skin skin;
     Client mainController;
-    private TextureRegion[][] regions;
+    public TextureRegion[][] regions;
     Texture cardSprite = new Texture("cardSprite.gif");
-    public boolean canChooseCard = true;
+    public boolean canChooseCard = false;
     public boolean enableBidHud = false;
     Card aux;
     public List<String> cardsStrList =  new ArrayList<>();
@@ -124,8 +124,6 @@ public class GameScreen implements Screen {
 //        cardsStrList.add("h-2");
 //        cardsStrList.add("d-2");
 //        cardsStrList.add("c-2");
-
-
 
         for (Player pl : players) {
             if(!pl.getNickName().equals(mainController.nickName)){
@@ -229,8 +227,9 @@ public class GameScreen implements Screen {
                 if(!crd.choosed){
                     crd.choosed = true;
                     //todo de pus asta false
-                    canChooseCard = true;
+                    //canChooseCard = false;
                     aux = crd;
+                    System.out.println("Pute down CARD");
                     putDownCard(aux);
                     System.out.println("[GameScreen] : Card choosed = " + crd.toString() + " " + crd.originalPosition.y );
                 }
@@ -246,10 +245,16 @@ public class GameScreen implements Screen {
     }
 
     void putDownCard(Card card){
-        card.getCardActor().setOriginX(card.getCardActor().getWidth()/2);
-        card.rePosition(screenWidth /2, screenHeight /2);
-        card.setRot((putDownCards.size() - 1)*50);
-        putDownCards.add(card);
+        if(canChooseCard){
+            card.getCardActor().setOriginX(card.getCardActor().getWidth()/2);
+            card.rePosition(screenWidth /2, screenHeight /2);
+            card.setRot((putDownCards.size() - 1)*50);
+            putDownCards.add(card);
+            mainController.sendCard(card.getSymbol()  + "-" + card.getValue());
+            System.out.println("put down card main contrl");
+        }
+
+
     }
 
     @Override
@@ -269,7 +274,6 @@ public class GameScreen implements Screen {
             bidButton.setVisible(true);
             bidSlider.setVisible(true);
             bidVal.setVisible(true);
-            System.out.println(true);
         }
         else {
             bidButton.setVisible(false);
