@@ -45,6 +45,7 @@ public class GameScreen implements Screen {
     private TextureRegion[][] regions;
     Texture cardSprite = new Texture("cardSprite.gif");
     public boolean canChooseCard = true;
+    public boolean enableBidHud = false;
     Card aux;
     public List<String> cardsStrList =  new ArrayList<>();
     public List<Card> hand = new ArrayList<>();
@@ -55,11 +56,11 @@ public class GameScreen implements Screen {
     Slider bidSlider;
     Label bidVal;
     TextButton bidButton;
-
     SpriteBatch batch;
     BitmapFont font;
+    BitmapFont font12;
 
-    BitmapFont font12 ;
+    public int forbidenBet;
 
 
     public void init() {
@@ -80,14 +81,17 @@ public class GameScreen implements Screen {
         bidButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-//                System.out.println("[Game] Bid btn pressed");
-//                try {
-//                    mainController.sendBidRP((int)bidSlider.getValue());
-//                    System.out.println((int)bidSlider.getValue());
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-                //mainController.bidRP((int)bidSlider.getValue());
+                System.out.println("[Game] Bid btn pressed");
+
+                //todo vezi ce faci cu Sliderul
+                if(forbidenBet == (int)bidSlider.getValue()){
+                    System.out.println("Esti prost");
+                }
+                else {
+                    mainController.sendBid((int)bidSlider.getValue());
+                }
+
+
             }
         });
     }
@@ -154,7 +158,6 @@ public class GameScreen implements Screen {
     }
 
     public void addCardsToScene(){
-
         hand = initCards(cardsStrList);
         //System.out.println("Add cards to scene |hand| = " + hand);
         addCardsToScene(hand,stage);
@@ -260,6 +263,19 @@ public class GameScreen implements Screen {
             renderNicknamesBatch();
             //font12.draw(batch,"dasdas",200,200);
         batch.end();
+
+        //todo e ineficient
+        if(enableBidHud){
+            bidButton.setVisible(true);
+            bidSlider.setVisible(true);
+            bidVal.setVisible(true);
+            System.out.println(true);
+        }
+        else {
+            bidButton.setVisible(false);
+            bidSlider.setVisible(false);
+            bidVal.setVisible(false);
+        }
 
         updateBidText();
 

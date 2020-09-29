@@ -260,6 +260,9 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void showHudForBids(NetworkDTO.Bids.Bid bid) {
+		gameScreen.enableBidHud = true;
+		gameScreen.enableBidHUD();
+		gameScreen.forbidenBet = bid.getForbidden();
 
 	}
 
@@ -268,6 +271,9 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void hideBidHUD() {
+		gameScreen.enableBidHud =  false;
+
+		gameScreen.disableBidHUD();
 
 	}
 
@@ -329,7 +335,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void sendBid(int bid) {
-
+		this.networkService.sendBidResponse(bid);
 	}
 
 	/**

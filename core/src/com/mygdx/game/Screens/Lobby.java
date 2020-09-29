@@ -2,7 +2,10 @@ package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -38,6 +41,8 @@ public class Lobby implements Screen {
 
     TextButton startBtn;
 
+    BitmapFont font12 ;
+
     //Buttons
 
 //todo pune un buton de start pentru owner
@@ -58,30 +63,35 @@ public class Lobby implements Screen {
 
     @Override
     public void show() {
+
+        width = Gdx.graphics.getWidth();
+        height =  Gdx.graphics.getHeight();
+
         stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
         skin = new Skin(Gdx.files.internal(Constants.skinJsonString));
         Gdx.input.setInputProcessor(stage);
 
-        table.debug();
+        //table.debug();
 
         table.center();
 
-        table.defaults().expandX().fill().space(5f);
+        //table.defaults().expandX().fill().space(5f);
 
 
-//        players.add("Hudy1");
-//        players.add("Hudy1");
-//        players.add("Hudy1");
-//        players.add("Hudy1");
-//        players.add("Hudy1");
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("JosefinSans-SemiBold.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+        parameter.size = Constants.fontSize;
+        font12 = generator.generateFont(parameter);
+        font12.setColor(Color.BLACK);
+
+
+        table.setHeight( width * 0.1f);
+        table.setWidth(height * 0.1f);
+
+        table.debug();
 
         refreshTable(players);
-
-        ScrollPane scrollPane = new ScrollPane(table,skin);
-        scrollPane.setWidth(Gdx.graphics.getWidth()-200);
-        scrollPane.setHeight(Gdx.graphics.getHeight()-100);
-        scrollPane.setPosition(50,50);
-        scrollPane.debug();
 
         startBtn = new TextButton("Start",skin);
         startBtn.addListener(new ChangeListener() {
@@ -101,17 +111,19 @@ public class Lobby implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 mainController.leaveRoom();
                 mainController.goToScreen(ScreenState.MAIN_MENU);
-
             }
         });
         backBtn.setPosition(15,15);
-        backBtn.setHeight(30);
-        backBtn.setWidth(100);
+
+        System.out.println(Gdx.graphics.getWidth() +  height);
+
+        backBtn.setHeight(height/18);
+        backBtn.setWidth(width/4);
 
 
-         //stage.addActor(table);
+         stage.addActor(table);
         stage.addActor(backBtn);
-        stage.addActor(scrollPane);
+        //stage.addActor(scrollPane);
         stage.addActor(startBtn);
 
         startBtn.setVisible(isOwner);
@@ -121,6 +133,8 @@ public class Lobby implements Screen {
     public void refreshTable(List<String> players){
         table.clear();
         table.defaults().width(110);
+        //System.out.println(width + " " + height);
+        table.setPosition(width * 0.5f,height * 0.5f);
 
         for (String name:players) {
             table.row().setActorHeight(20);
@@ -152,7 +166,6 @@ public class Lobby implements Screen {
     public void resize(int width, int height) {
         this.width = width;
         this.height = height;
-
 
         refreshTable(players);
 

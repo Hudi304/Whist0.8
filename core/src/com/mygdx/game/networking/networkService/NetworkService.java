@@ -226,8 +226,10 @@ public class NetworkService {
                 }
 
                 NetworkDTO.Bids.Bid bid = bids.getFirstToBid();
-                if (bid != null && bid.getNickname().equals(token.getNickname()))
+                if (bid != null && bid.getNickname().equals(token.getNickname())){
                     NetworkService.this.rootController.showHudForBids(bid);
+                    System.out.println("recieved bid request ");
+                }
                 else
                     NetworkService.this.rootController.hideBidHUD();
 
