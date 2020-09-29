@@ -14,12 +14,13 @@ public class Constants {
     public final static String skinJsonString  = "clean-crispy-ui.json";
 
 
-   //public final static String serverHTTP = "https://myapp1.serverless.social";
-   //public static final String serverHTTP = "http://localhost:8080";
-     public final static String serverHTTP = "http://192.168.0.94:8080";
+    //public final static String serverHTTP = "https://myapp1.serverless.social";
+    //public static final String serverHTTP = "http://localhost:8080";
+    public final static String serverHTTP = "http://192.168.0.94:8080";
+    //public final static String serverHTTP = "http://192.168.56.1:8080";
     //public final static String serverHTTP = "https://terrible-swan-90.loca.lt";
 
-   //public final static String serverHTTP = "https://myapp.serverless.social";
+    //public final static String serverHTTP = "https://myapp.serverless.social";
 
 
 

@@ -115,7 +115,7 @@ public class Card extends Actor implements Comparable<Card>{
                         //System.out.println("[Card] : Gdx.height = " + Gdx.graphics.getHeight());
                         originalPosition.y = Gdx.graphics.getHeight()/2;
                         //ToDo ceva .emmit() pentru o singura carte
-                        //mainController.sendCard();
+                        //System.out.println("Am ales cartea!!!!!!!!!!!!!!!!11");
                     }
 
                 }

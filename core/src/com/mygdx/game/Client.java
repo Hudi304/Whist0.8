@@ -11,6 +11,7 @@ import com.mygdx.game.networking.networkService.NetworkService;
 
 import java.net.URISyntaxException;
 import java.security.cert.CertificateRevokedException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Client extends Game implements NetworkController {
@@ -272,9 +273,7 @@ public class Client extends Game implements NetworkController {
 	@Override
 	public void hideBidHUD() {
 		gameScreen.enableBidHud =  false;
-
 		gameScreen.disableBidHUD();
-
 	}
 
 	/**
@@ -314,13 +313,19 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void updateTable(NetworkDTO.Table table) {
+		System.out.println("[Client] updateTable() ");
 		// todo afiseaza cartile celorlalti pe ecran
-		gameScreen.putDownCards.clear();
+
+		List<Card> cards =  new ArrayList<>();
+
+		System.out.println(table.getPlayersStatus().toString());
+
 		for (NetworkDTO.Table.PlayerStatus plst:table.getPlayersStatus()) {
 			if (plst.getCard().equals(null)){
-				System.out.println("Client updat teble " + plst.getCard());
+				System.out.println("[Client updateTable() card]" + plst.getCard());
 				Card crd = new Card(plst.getCard(), gameScreen.regions,0,0,gameScreen);
-				gameScreen.putDownCards.add(crd);
+				gameScreen.putDownCard(crd);
+				gameScreen.stage.addActor(crd.getCardActor());
 			}
 		}
 	}
@@ -375,7 +380,6 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void startGame() {
-
 		networkService.startGameRequest();
 	}
 
