@@ -1,6 +1,7 @@
 package com.mygdx.game.networking.networkService;
 
 
+import com.mygdx.game.Client;
 import com.mygdx.game.networking.actions.ClientActions;
 import com.mygdx.game.networking.actions.ServerActions;
 import com.mygdx.game.networking.dto.NetworkDTO;
@@ -52,6 +53,8 @@ public class NetworkService {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
+
+                /**
                 System.out.println("Service -> try to connect ...");
                 while (!socket.connected()){
                     try {
@@ -64,7 +67,25 @@ public class NetworkService {
                 rootController.setConnectedStatus(true);
                 System.out.println("Service -> isConnected = true");
                 socket.emit(ClientActions.LOGIN);
+*/
+                System.out.println("Networking started!!");
+                boolean connected = false;
+                boolean prevStateConnected = false;
+                while (true){
+                    prevStateConnected = connected;
+                    connected = socket.connected();
 
+                    if(prevStateConnected != connected){
+                        if(!connected){
+                            System.out.println("You can't reach the server!");
+                        }
+                        else{
+                            socket.emit(ClientActions.LOGIN);
+                        }
+
+                    }
+
+                }
             }
         };
         Thread th = new Thread(runnable);
