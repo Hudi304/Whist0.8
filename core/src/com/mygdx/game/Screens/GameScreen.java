@@ -30,6 +30,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 
+import javax.swing.UIManager;
+
 import static java.lang.Math.abs;
 import static java.lang.Math.min;
 import static java.lang.Math.sqrt;
@@ -39,7 +41,7 @@ public class GameScreen implements Screen {
     float screenWidth = 0;
     float screenHeight = 0;
     ScreenViewport viewport;
-    Stage stage;
+    public Stage stage;
     Skin skin;
     Client mainController;
     public TextureRegion[][] regions;
@@ -62,15 +64,27 @@ public class GameScreen implements Screen {
 
     public int forbidenBet;
 
+    Card crd;
 
     public void init() {
 
     }
 
+    public List<Card> initCards(List<String> cards){
+        int i = cards.size()*40/2;
+        List<Card> ret = new ArrayList<>();
+        Card card;
+        Collections.sort(cards);
+        for (String str:cards) {
+            card =  new Card(str,regions,screenWidth - i, Constants.CARD_HAND_Y,this);
+            ret.add(card);
+            i -= 40;
+        }
+        return ret;
+    }
+
     void initBidHuUD(){
-
         //todo fa asta sa se vada calumea
-
         bidSlider = new Slider(0f,8f,1, false, skin);
         bidVal = new Label( "[" + (int)bidSlider.getValue() + "/" + nrOfCards + "]",skin);
         bidButton =  new TextButton("Bid",skin);
@@ -81,7 +95,7 @@ public class GameScreen implements Screen {
         bidButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("[Game] Bid btn pressed");
+                //System.out.println("[Game] Bid btn pressed");
 
                 //todo vezi ce faci cu Sliderul
                 if(forbidenBet == (int)bidSlider.getValue()){
@@ -90,8 +104,6 @@ public class GameScreen implements Screen {
                 else {
                     mainController.sendBid((int)bidSlider.getValue());
                 }
-
-
             }
         });
     }
@@ -115,12 +127,12 @@ public class GameScreen implements Screen {
         //todo de adaugat un label cu numarul de playeri sus in dreapta
         hand.clear();
         System.out.println("[GameScreen] : Show");
+        crd =  new Card("h-8",regions,screenWidth/2 , screenWidth/2 ,this);
+        putDownCard(crd);
 
         skin = new Skin(Gdx.files.internal(Constants.skinJsonString));
         Gdx.input.setInputProcessor(stage);
-
         //putDownCards.add(new Card("h-12",regions,screenWidth/2 ,screenHeight/2,this));
-
 //        cardsStrList.add("h-2");
 //        cardsStrList.add("d-2");
 //        cardsStrList.add("c-2");
@@ -147,6 +159,7 @@ public class GameScreen implements Screen {
         stage.addActor(bidSlider);
         stage.addActor(bidVal);
         stage.addActor(bidButton);
+        stage.addActor(crd.getCardActor());
 
         //todo vezi care e faza cu shaderele ca pare tare smecher
         font = new BitmapFont();
@@ -166,21 +179,7 @@ public class GameScreen implements Screen {
     public void addCardsToScene(List<Card> cards, Stage stage){
         for (Card crd:cards) {
             stage.addActor(crd.getCardActor());
-            //System.out.println(crd);
         }
-    }
-
-     public List<Card> initCards(List<String> cards){
-        int i = cards.size()*40/2;
-        List<Card> ret = new ArrayList<>();
-        Card card;
-        Collections.sort(cards);
-        for (String str:cards) {
-            card =  new Card(str,regions,screenWidth - i, Constants.CARD_HAND_Y,this);
-            ret.add(card);
-            i -= 40;
-        }
-        return ret;
     }
 
     void initOpponetCards(Queue<Player> players){
@@ -229,13 +228,23 @@ public class GameScreen implements Screen {
                     //todo de pus asta false
                     //canChooseCard = false;
                     aux = crd;
-                    System.out.println("Pute down CARD");
                     putDownCard(aux);
-                    System.out.println("[GameScreen] : Card choosed = " + crd.toString() + " " + crd.originalPosition.y );
+                    mainController.sendCard(aux.getSymbol()  + "-" + aux.getValue());
+                    System.out.println("[GameScreen] : Card choosed = " + crd.toString());
                 }
             }
         }
         hand.remove(aux);
+    }
+
+    public void putDownCard(Card card){
+        System.out.println("[putDownCard]");
+        if(canChooseCard){
+            card.getCardActor().setOriginX(card.getCardActor().getWidth()/2);
+            card.rePosition(screenWidth /2, screenHeight /2);
+            card.setRot(0);
+            putDownCards.add(card);
+        }
     }
 
     public void renderPutDownCards(float delta, List<Card> putDownCards){
@@ -244,17 +253,18 @@ public class GameScreen implements Screen {
             }
     }
 
-    void putDownCard(Card card){
-        if(canChooseCard){
-            card.getCardActor().setOriginX(card.getCardActor().getWidth()/2);
-            card.rePosition(screenWidth /2, screenHeight /2);
-            card.setRot((putDownCards.size() - 1)*50);
-            putDownCards.add(card);
-            mainController.sendCard(card.getSymbol()  + "-" + card.getValue());
-            System.out.println("put down card main contrl");
+
+
+    public void putDownCards(List<Card> cards){
+
+        int inc = (int)(cards.size()*screenWidth/10);
+        int offset = -(int)inc*(cards.size()/2) ;
+        for (Card crd:cards) {
+            crd.getCardActor().setOriginX(crd.getCardActor().getWidth()/2);
+            crd.rePosition(screenWidth /2 + offset, screenHeight /2);
+            offset += inc;
+            putDownCards.add(crd);
         }
-
-
     }
 
     @Override
@@ -266,8 +276,14 @@ public class GameScreen implements Screen {
         //todo nu se regleaza in functie de cat de lung e nicknameul
         batch.begin();
             renderNicknamesBatch();
-            //font12.draw(batch,"dasdas",200,200);
         batch.end();
+
+        crd.update(delta,viewport);
+        updateBidText();
+
+        renderPutDownCards(delta,putDownCards);
+        renderHUD(delta,hand);
+        updateOpponents(delta);
 
         //todo e ineficient
         if(enableBidHud){
@@ -280,12 +296,6 @@ public class GameScreen implements Screen {
             bidSlider.setVisible(false);
             bidVal.setVisible(false);
         }
-
-        updateBidText();
-
-        renderPutDownCards(delta,putDownCards);
-        renderHUD(delta,hand);
-        updateOpponents(delta);
 
         stage.act(delta);
         stage.draw();
