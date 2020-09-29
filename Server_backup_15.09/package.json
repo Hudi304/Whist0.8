@@ -1,0 +1,17 @@
+{
+  "name": "server_whistGame",
+  "version": "1.0.0",
+  "description": "a server for LIBGDX- whistGame",
+  "main": "index.js",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "firebase-tools": "^8.9.1",
+    "nodemon": "^2.0.4",
+    "socket.io": "^2.3.0"
+  },
+  "scripts": {
+    "dev": "nodemon index.js",
+    "build": "index.js"
+  }
+}

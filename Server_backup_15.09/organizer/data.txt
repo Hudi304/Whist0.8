@@ -1,0 +1,31 @@
+Here are all clients requests for the server
+
+login(id,timestamp); -> trying to connect to the server
+getRoomRQ(); -> get all available rooms;
+createRoom(nickname,roomID); -> trying to create a room
+disconnect(); -> disconnect to server
+joinRoom(nickname,roomID); -> trying to join room
+leaveRoom(); -> trying to leave room
+startGame();
+sendBidRP(bid);
+
+
+Here are all server requests for the client
+
+error(err); -> send an error
+connected(id,timestamp); -> send the id and the time user connected
+lobbyData(roomID,nickname,players: list); -> send all the data for specific room
+getRoomRP(rooms: list); -> send all rooms
+getPlayers(players: list);
+getCards(cards: list);
+getBidRQ(unavailable);
+
+
+
+TODO:
+    1. rewrite functions to add and join taking into account gamestate;
+    
+
+
+action.type: GET_CARDS
+action.payload: [{id: id, data: data},...];
