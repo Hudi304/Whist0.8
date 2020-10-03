@@ -24,7 +24,6 @@ public class Client extends Game implements NetworkController {
 	public float screenWidth;
 	public float screenHeight;
 
-	public ScreenController screenController;
 
 	public NetworkService networkService;
 
@@ -50,7 +49,7 @@ public class Client extends Game implements NetworkController {
 		// System.out.println("Version: " + version);
 
 		this.initializeNetworkService(Constants.serverHTTP);
-		screenController = new ScreenController(this);
+
 
 
 		mainMenuScreen =  new MainMenu(this);

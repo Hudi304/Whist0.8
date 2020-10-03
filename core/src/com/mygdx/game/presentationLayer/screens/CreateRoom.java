@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Client;
 import com.mygdx.game.businessLayer.others.Constants;
-import com.mygdx.game.ScreenController;
+
 
 public class CreateRoom implements Screen {
 
@@ -25,7 +25,7 @@ public class CreateRoom implements Screen {
     float height;
 
     Client mainClient;
-    ScreenController screenController;
+
 
     TextField userNameTF;
     TextField roomNameTF;
@@ -37,7 +37,7 @@ public class CreateRoom implements Screen {
         viewport = new ScreenViewport();
         stage = new Stage(viewport);
         this.mainClient = mainController;
-        screenController =  mainController.screenController;
+
     }
 
     @Override
