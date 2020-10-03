@@ -1,16 +1,15 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Screen;
-import com.mygdx.game.Screens.*;
-import com.mygdx.game.generics.Card;
-import com.mygdx.game.generics.Player;
-import com.mygdx.game.networking.dto.NetworkDTO;
-import com.mygdx.game.networking.networkController.NetworkController;
-import com.mygdx.game.networking.networkService.NetworkService;
+import com.mygdx.game.businessLayer.others.Constants;
+import com.mygdx.game.dataLayer.generics.Card;
+import com.mygdx.game.dataLayer.generics.Player;
+import com.mygdx.game.businessLayer.networking.dto.NetworkDTO;
+import com.mygdx.game.businessLayer.networking.networkController.NetworkController;
+import com.mygdx.game.businessLayer.networking.networkService.NetworkService;
+import com.mygdx.game.presentationLayer.screens.MainMenu;
 
 import java.net.URISyntaxException;
-import java.security.cert.CertificateRevokedException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,15 +28,15 @@ public class Client extends Game implements NetworkController {
 
 	public NetworkService networkService;
 
-	MainMenu mainMenuScreen;
-	Credentials credentialsScreen;
-	JoinRoom joinRoomScreen;
-	CreateRoom createRoomScreen;
-	Lobby lobbyScreen;
-	GameScreen gameScreen;
+	com.mygdx.game.presentationLayer.screens.MainMenu mainMenuScreen;
+	com.mygdx.game.presentationLayer.screens.Credentials credentialsScreen;
+	com.mygdx.game.presentationLayer.screens.JoinRoom joinRoomScreen;
+	com.mygdx.game.presentationLayer.screens.CreateRoom createRoomScreen;
+	com.mygdx.game.presentationLayer.screens.Lobby lobbyScreen;
+	com.mygdx.game.presentationLayer.screens.GameScreen gameScreen;
 	//FLAGS
-	private ScreenState screenState = ScreenState.MAIN_MENU;
-	private ScreenState previousScreenState = ScreenState.MAIN_MENU;
+	private com.mygdx.game.presentationLayer.screens.ScreenState screenState = com.mygdx.game.presentationLayer.screens.ScreenState.MAIN_MENU;
+	private com.mygdx.game.presentationLayer.screens.ScreenState previousScreenState = com.mygdx.game.presentationLayer.screens.ScreenState.MAIN_MENU;
 
 
 	@Override
@@ -55,11 +54,11 @@ public class Client extends Game implements NetworkController {
 
 
 		mainMenuScreen =  new MainMenu(this);
-		credentialsScreen =  new Credentials(this);
-		joinRoomScreen =  new JoinRoom(this);
-		createRoomScreen = new CreateRoom(this);
-		lobbyScreen = new Lobby(this);
-		gameScreen =  new GameScreen(this);
+		credentialsScreen =  new com.mygdx.game.presentationLayer.screens.Credentials(this);
+		joinRoomScreen =  new com.mygdx.game.presentationLayer.screens.JoinRoom(this);
+		createRoomScreen = new com.mygdx.game.presentationLayer.screens.CreateRoom(this);
+		lobbyScreen = new com.mygdx.game.presentationLayer.screens.Lobby(this);
+		gameScreen =  new com.mygdx.game.presentationLayer.screens.GameScreen(this);
 
 
 		setSCreen(screenState);
@@ -72,7 +71,7 @@ public class Client extends Game implements NetworkController {
 
 	}
 
-	public void setSCreen(ScreenState state){
+	public void setSCreen(com.mygdx.game.presentationLayer.screens.ScreenState state){
 		switch (state){
 			case MAIN_MENU:
 				setScreen(mainMenuScreen);
@@ -177,7 +176,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void goToRoomsScreen() {
-		this.screenState = ScreenState.JOIN_ROOM;
+		this.screenState = com.mygdx.game.presentationLayer.screens.ScreenState.JOIN_ROOM;
 	}
 
 	/**
@@ -211,7 +210,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void goToLobbyScreen() {
-		screenState = ScreenState.LOBBY;
+		screenState = com.mygdx.game.presentationLayer.screens.ScreenState.LOBBY;
 	}
 
 	/**
@@ -219,7 +218,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void goToMainMenu() {
-		screenState = ScreenState.MAIN_MENU;
+		screenState = com.mygdx.game.presentationLayer.screens.ScreenState.MAIN_MENU;
 	}
 
 	/**
@@ -227,7 +226,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void goToGame() {
-		screenState = ScreenState.GAME;
+		screenState = com.mygdx.game.presentationLayer.screens.ScreenState.GAME;
 	}
 
 	/**
@@ -240,7 +239,7 @@ public class Client extends Game implements NetworkController {
 		for (NetworkDTO.Player pl : players) {
 			gameScreen.players.add(new Player(pl.getName(),0));
 		}
-		goToScreen(ScreenState.GAME);
+		goToScreen(com.mygdx.game.presentationLayer.screens.ScreenState.GAME);
 	}
 
 	/**
@@ -420,7 +419,7 @@ public class Client extends Game implements NetworkController {
 	}
 
 
-	public void goToScreen(ScreenState state){
+	public void goToScreen(com.mygdx.game.presentationLayer.screens.ScreenState state){
 		this.screenState = state;
 	}
 }

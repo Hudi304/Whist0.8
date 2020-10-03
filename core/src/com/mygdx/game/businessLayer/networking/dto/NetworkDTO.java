@@ -1,4 +1,4 @@
-package com.mygdx.game.networking.dto;
+package com.mygdx.game.businessLayer.networking.dto;
 
 import org.json.JSONArray;
 import org.json.JSONException;

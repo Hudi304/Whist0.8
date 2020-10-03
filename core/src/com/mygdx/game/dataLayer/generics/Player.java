@@ -1,4 +1,4 @@
-package com.mygdx.game.generics;
+package com.mygdx.game.dataLayer.generics;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -18,7 +18,7 @@ public class Player extends Actor {
 
 
 
-    public List<Card> cards = new ArrayList<>();
+    public List<com.mygdx.game.dataLayer.generics.Card> cards = new ArrayList<>();
 
 
     public Player(String nickName, int nrOfCards) {
@@ -49,7 +49,7 @@ public class Player extends Actor {
         float x = plPos.x - cards.size()*xOffset/2;
         float y ;
         rot =  cards.size()/2 * rotOffset;
-        for (Card crd : cards) {
+        for (com.mygdx.game.dataLayer.generics.Card crd : cards) {
 
             if(inverse){
                 y = (float) (-sqrt(abs(R*R - (x-centerPos.x)*(x-centerPos.x))) + centerPos.y);

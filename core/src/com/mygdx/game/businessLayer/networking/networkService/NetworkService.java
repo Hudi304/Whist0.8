@@ -1,11 +1,10 @@
-package com.mygdx.game.networking.networkService;
+package com.mygdx.game.businessLayer.networking.networkService;
 
 
-import com.mygdx.game.Client;
-import com.mygdx.game.networking.actions.ClientActions;
-import com.mygdx.game.networking.actions.ServerActions;
-import com.mygdx.game.networking.dto.NetworkDTO;
-import com.mygdx.game.networking.networkController.NetworkController;
+import com.mygdx.game.businessLayer.networking.networkController.NetworkController;
+import com.mygdx.game.businessLayer.networking.actions.ClientActions;
+import com.mygdx.game.businessLayer.networking.actions.ServerActions;
+import com.mygdx.game.businessLayer.networking.dto.NetworkDTO;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,7 +23,7 @@ public class NetworkService {
     Socket socket;
     private String http = "http://localhost:8080";
     private NetworkDTO.Token token = null;
-    private NetworkController rootController = null;
+    private com.mygdx.game.businessLayer.networking.networkController.NetworkController rootController = null;
 
     private NetworkDTO.Table table = null;
     private NetworkDTO.Bids bids = null;
