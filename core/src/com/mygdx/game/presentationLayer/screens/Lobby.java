@@ -19,7 +19,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Client;
 import com.mygdx.game.businessLayer.others.Constants;
-import com.mygdx.game.ScreenController;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class Lobby implements Screen {
     float height;
 
     Client mainController;
-    ScreenController screenController;
+
 
     TextButton startBtn;
 
@@ -52,7 +52,7 @@ public class Lobby implements Screen {
         viewport = new ScreenViewport();
         stage = new Stage(viewport);
         this.mainController = mainController;
-        screenController =  mainController.screenController;
+
         System.out.println( " Created Lobby Screeem ");
         nrOfPlayers = players.size();
 

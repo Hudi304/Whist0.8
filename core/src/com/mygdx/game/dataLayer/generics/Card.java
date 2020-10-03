@@ -1,15 +1,20 @@
 package com.mygdx.game.dataLayer.generics;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.presentationLayer.screens.GameScreen;
+import com.mygdx.game.presentationLayer.screens.NewGameScreen;
 
 
 public class Card extends Actor implements Comparable<Card>{
@@ -17,11 +22,17 @@ public class Card extends Actor implements Comparable<Card>{
     private static final float DRAG = 2.0f;
     private static final float MAX_SPEED = 2000.0f;
     private static final float FOLLOW_MULTIPLIER = 5.0f;
-    public Vector2 position ;// pozitia cartii
+
+    public Vector2 currentPosition ;// pozitia cartii
     public Vector2 originalPosition;
+    public Vector2 spownPosition;
     public float originalRot;
 
-    boolean following = false;
+
+
+    boolean isFlipped = false; //false pe spate, true pe fata
+    boolean flipping = false;
+    boolean following = true;
     boolean goingBack = false;
     public boolean choosed = false;
 
@@ -33,36 +44,22 @@ public class Card extends Actor implements Comparable<Card>{
     private int value;
     private Actor cardActor;
 
-    GameScreen gameScreen;
+    private Image backTexture;
+    private Image faceTexture;
+
+    Stage stage;
+    Screen gameScreen;
+    Group group;
 
     //-----------------------------------------------------------------
 
-    public String getSymbol() {
-        return Symbol;
-    }
 
-    public int getValue() {
-        return value;
-    }
 
-    public Actor getCardActor() {
-        return cardActor;
-    }
-
-    public void init() {
-        position = new Vector2(0,0);
-        velocity = new Vector2(0,0);
-    }
-
-    public Card(String val, TextureRegion[][] regions, float x, float y, final GameScreen gameScreen){
-
+    public Card(String val, TextureRegion[][] regions, float x, float y, GameScreen gameScreen){
         String[] cardVal = val.split("-");
-
-        position = new Vector2(x,y);
+        currentPosition = new Vector2(x,y);
         originalPosition = new Vector2(x,y);
         velocity = new Vector2(0,0);
-
-        System.out.println("Card constr val = " + val);
 
         int cardSimb = 0;
         int cardNr = 0;
@@ -82,7 +79,7 @@ public class Card extends Actor implements Comparable<Card>{
         if(cardVal[0].equals("b")){
             cardSimb = 4;
         }
-        System.out.println("AICI" + cardVal[1]);
+        //System.out.println("AICI" + cardVal[1]);
         cardNr = Integer.parseInt( cardVal[1]) - 2;
 
         final Card thisCard = this;
@@ -90,8 +87,6 @@ public class Card extends Actor implements Comparable<Card>{
         intSymbol = cardSimb;
         this.cardActor =  new Image(regions[cardSimb][cardNr]);
         cardActor.setPosition(originalPosition.x,originalPosition.y);
-//        cardActor.setX(60);
-//        cardActor.setY(200);
         cardActor.setTouchable(Touchable.enabled);
         cardActor.addListener(new DragListener() {
             //todo de resetat rotatia la touchUp/touchDown
@@ -103,7 +98,6 @@ public class Card extends Actor implements Comparable<Card>{
                 goingBack = false;
                 return true;
             }
-
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
                 if (following ==  true){
@@ -111,17 +105,15 @@ public class Card extends Actor implements Comparable<Card>{
                    // System.out.println("touchDragged" + targetPosition.x + " " + targetPosition.y);
                 }
                 if(following == true && targetPosition.y > Gdx.graphics.getHeight()/2){
-                    if(gameScreen.canChooseCard && !thisCard.getSymbol().equals("b")){
-                        //System.out.println("[Card] : Gdx.height = " + Gdx.graphics.getHeight());
-                        originalPosition.y = Gdx.graphics.getHeight()/2;
-                        //ToDo ceva .emmit() pentru o singura carte
-                        //System.out.println("Am ales cartea!!!!!!!!!!!!!!!!11");
-                    }
-
+//                    if(gameScreen.canChooseCard && !thisCard.getSymbol().equals("b")){
+//                        //System.out.println("[Card] : Gdx.height = " + Gdx.graphics.getHeight());
+//                        originalPosition.y = Gdx.graphics.getHeight()/2;
+//                        //ToDo ceva .emmit() pentru o singura carte
+//                        //System.out.println("Am ales cartea!!!!!!!!!!!!!!!!11");
+//                    }
                 }
                 goingBack = false;
             }
-
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 //super.touchUp(event, x, y, pointer, button);
@@ -132,26 +124,88 @@ public class Card extends Actor implements Comparable<Card>{
                 goingBack = true;
             }
         });
-        //cardActor.debug();
-
+        cardActor.debug();
         this.Symbol = cardVal[0];
         this.value = cardNr;
         this.gameScreen = gameScreen;
     }
 
+    public Card(String val, TextureRegion faceTexture, Vector2 spPos, Vector2 tgPos, NewGameScreen gameScreen, Group group){
+        this.group = group;
+        this.faceTexture = new Image(faceTexture);
+        this.backTexture = new Image(gameScreen.regions[4][0]);
+        velocity = new Vector2(0,0);
+
+        currentPosition = spPos;
+        originalPosition = tgPos;
+        targetPosition = tgPos;
+
+
+        final Card thisCard = this;
+        cardActor = backTexture;
+        cardActor.setPosition(originalPosition.x,originalPosition.y);
+        cardActor.setTouchable(Touchable.enabled);
+        cardActor.addListener(new DragListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
+                targetPosition = new Vector2(cardActor.getX() + x, cardActor.getY() + y);
+                following = true;
+                goingBack = false;
+                return true;
+            }
+            @Override
+            public void touchDragged(InputEvent event, float x, float y, int pointer) {
+                if (following ==  true){
+                    targetPosition = new Vector2(cardActor.getX() + x,cardActor.getY() + y);
+                    // System.out.println("touchDragged" + targetPosition.x + " " + targetPosition.y);
+                }
+                if(following == true && targetPosition.y > Gdx.graphics.getHeight()/2){
+//                    if(gameScreen.canChooseCard && !thisCard.getSymbol().equals("b")){
+//                        //System.out.println("[Card] : Gdx.height = " + Gdx.graphics.getHeight());
+//                        originalPosition.y = Gdx.graphics.getHeight()/2;
+//                        //ToDo ceva .emmit() pentru o singura carte
+//                        //System.out.println("Am ales cartea!!!!!!!!!!!!!!!!11");
+//                    }
+                }
+                goingBack = false;
+            }
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                targetPosition =  originalPosition;
+                following = false;
+                goingBack = true;
+            }
+        });
+        cardActor.debug();
+        this.gameScreen = gameScreen;
+    }
+
     public void render(){
-        cardActor.setPosition(position.x,position.y);
+        cardActor.setPosition(currentPosition.x,currentPosition.y);
     }
 
     public void update(float delta, Viewport viewport){
+        if(flipping){
+            if(isFlipped){
+                group.removeActor(cardActor);
+                group.addActor(faceTexture);
+            }else{
+                group.removeActor(cardActor);
+                group.addActor(backTexture);
+            }
+            flipping = false;
+        }
+
+
         if (following) {
-            Vector2 followVector = new Vector2(targetPosition.x - position.x, targetPosition.y - position.y);
+            Vector2 followVector = new Vector2(targetPosition.x - currentPosition.x, targetPosition.y - currentPosition.y);
             velocity.x = FOLLOW_MULTIPLIER * followVector.x;
             velocity.y = FOLLOW_MULTIPLIER * followVector.y;
         }
         //TODO vezi ce faci cu asta
         if (goingBack) {
-            Vector2 followVector = new Vector2(targetPosition.x - position.x, targetPosition.y - position.y);
+            Vector2 followVector = new Vector2(targetPosition.x - currentPosition.x, targetPosition.y - currentPosition.y);
             velocity.x = FOLLOW_MULTIPLIER * followVector.x;
             velocity.y = FOLLOW_MULTIPLIER * followVector.y;
         }
@@ -159,28 +213,28 @@ public class Card extends Actor implements Comparable<Card>{
         velocity.x = velocity.x - delta *DRAG *velocity.x;
         velocity.y = velocity.y - delta *DRAG *velocity.y;
 
-        position.x = position.x + delta * velocity.x;
-        position.y = position.y + delta * velocity.y;
+        currentPosition.x = currentPosition.x + delta * velocity.x;
+        currentPosition.y = currentPosition.y + delta * velocity.y;
         //collideWithWalls(viewport.getWorldWidth(),viewport.getWorldHeight());
 
-        cardActor.setPosition(position.x,position.y);
+        cardActor.setPosition(currentPosition.x,currentPosition.y);
     }
 
     private void collideWithWalls( float viewportWidth, float viewportHeight) {
-        if (position.x < 0) {
-            position.x = 0;
+        if (currentPosition.x < 0) {
+            currentPosition.x = 0;
             velocity.x = -velocity.x;
         }
-        if (position.x + cardActor.getWidth() > viewportWidth ) {
-            position.x = viewportWidth - cardActor.getWidth();
+        if (currentPosition.x + cardActor.getWidth() > viewportWidth ) {
+            currentPosition.x = viewportWidth - cardActor.getWidth();
             velocity.x = -velocity.x;
         }
-        if (position.y  < 0) {
-            position.y = 0;
+        if (currentPosition.y  < 0) {
+            currentPosition.y = 0;
             velocity.y = -velocity.y;
         }
-        if (position.y + cardActor.getHeight() > viewportHeight ) {
-            position.y = viewportHeight - cardActor.getHeight();
+        if (currentPosition.y + cardActor.getHeight() > viewportHeight ) {
+            currentPosition.y = viewportHeight - cardActor.getHeight();
             velocity.y = -velocity.y;
         }
     }
@@ -204,8 +258,8 @@ public class Card extends Actor implements Comparable<Card>{
     public void rePosition(float x, float y){
         this.originalPosition.x = x;
         this.originalPosition.y = y;
-        this.position.x = x;
-        this.position.y = y;
+        this.currentPosition.x = x;
+        this.currentPosition.y = y;
     }
 
     @Override
@@ -230,5 +284,32 @@ public class Card extends Actor implements Comparable<Card>{
                 "Symbol='" + Symbol + '\'' +
                 ", value=" + value +
                 '}';
+    }
+
+    public String getSymbol() {
+        return Symbol;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public Actor getCardActor() {
+        return cardActor;
+    }
+
+    public void init() {
+        currentPosition = new Vector2(0,0);
+        velocity = new Vector2(0,0);
+    }
+
+    public boolean isFlipped() {
+        return isFlipped;
+    }
+
+    public void setFlipped(boolean flipped) {
+        System.out.println("isFlipped ==" + isFlipped);
+        isFlipped = flipped;
+        flipping = true;
     }
 }
