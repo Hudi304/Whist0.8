@@ -1,4 +1,4 @@
-package com.mygdx.game.Screens;
+package com.mygdx.game.presentationLayer.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -20,9 +20,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.Client;
-import com.mygdx.game.Constants;
-import com.mygdx.game.generics.Card;
-import com.mygdx.game.generics.Player;
+import com.mygdx.game.businessLayer.others.Constants;
+import com.mygdx.game.dataLayer.generics.Card;
+import com.mygdx.game.dataLayer.generics.Player;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -30,41 +30,39 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 
-import javax.swing.UIManager;
-
 import static java.lang.Math.abs;
 import static java.lang.Math.min;
 import static java.lang.Math.sqrt;
 
 public class GameScreen implements Screen {
 
-    float screenWidth = 0;
-    float screenHeight = 0;
-    ScreenViewport viewport;
-    public Stage stage;
-    Skin skin;
-    Client mainController;
-    public TextureRegion[][] regions;
-    Texture cardSprite = new Texture("cardSprite.gif");
-    public boolean canChooseCard = false;
-    public boolean enableBidHud = false;
-    Card aux;
-    public List<String> cardsStrList =  new ArrayList<>();
-    public List<Card> hand = new ArrayList<>();
-    public List<Card> putDownCards = new ArrayList<>();
-    public Queue<Player> players = new ArrayDeque<>();
-    public List<Player> opponents = new ArrayList<>();
-    int nrOfCards = 8;
-    Slider bidSlider;
-    Label bidVal;
-    TextButton bidButton;
-    SpriteBatch batch;
-    BitmapFont font;
-    BitmapFont font12;
+    float screenWidth = 0; // p
+    float screenHeight = 0; // p
+    ScreenViewport viewport; // p
+    public Stage stage; // p
+    Skin skin; //p
+    Client mainController; // b
+    public TextureRegion[][] regions; // p
+    Texture cardSprite = new Texture("cardSprite.gif"); //d
+    public boolean canChooseCard = false; // b
+    public boolean enableBidHud = false; //b
+    Card aux; // b
+    public List<String> cardsStrList =  new ArrayList<>(); // b
+    public List<Card> hand = new ArrayList<>(); //b
+    public List<Card> putDownCards = new ArrayList<>();//b
+    public Queue<Player> players = new ArrayDeque<>();//b
+    public List<Player> opponents = new ArrayList<>();//b
+    int nrOfCards = 8;//b
+    Slider bidSlider;//p
+    Label bidVal;//p
+    TextButton bidButton;//p
+    SpriteBatch batch;//p
+    BitmapFont font;//p
+    BitmapFont font12;//p
 
-    public int forbidenBet;
+    public int forbidenBet; //b~p
 
-    Card crd;
+    Card crd; // b~p
 
     public void init() {
 

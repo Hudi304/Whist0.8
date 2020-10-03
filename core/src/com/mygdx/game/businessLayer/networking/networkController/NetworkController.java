@@ -1,7 +1,7 @@
-package com.mygdx.game.networking.networkController;
+package com.mygdx.game.businessLayer.networking.networkController;
 
 
-import com.mygdx.game.networking.dto.NetworkDTO;
+import com.mygdx.game.businessLayer.networking.dto.NetworkDTO;
 
 import java.net.URISyntaxException;
 import java.util.List;
@@ -172,4 +172,10 @@ public interface NetworkController {
     public void disconnect();
 
 
+    /**
+     * This function gets called when the hand is over and a winner has been choosed.
+     * Create animation for the winner!
+     * @param winner -> the nickname of the winner
+     */
+    void sendWinner(String winner);
 }

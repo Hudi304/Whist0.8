@@ -1,4 +1,4 @@
-package com.mygdx.game.generics;
+package com.mygdx.game.dataLayer.generics;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

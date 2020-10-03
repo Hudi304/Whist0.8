@@ -1,4 +1,4 @@
-package com.mygdx.game.networking.actions;
+package com.mygdx.game.businessLayer.networking.actions;
 
 public enum ClientActions {
 

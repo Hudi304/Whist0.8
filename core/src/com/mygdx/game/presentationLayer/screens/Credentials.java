@@ -1,4 +1,4 @@
-package com.mygdx.game.Screens;
+package com.mygdx.game.presentationLayer.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -13,10 +13,10 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Client;
-import com.mygdx.game.Constants;
+import com.mygdx.game.businessLayer.others.Constants;
 import com.mygdx.game.ScreenController;
 
-public class CreateRoom implements Screen {
+public class Credentials implements Screen {
 
     Stage stage;
     Skin skin;
@@ -24,20 +24,20 @@ public class CreateRoom implements Screen {
     float width;
     float height;
 
-    Client mainClient;
+    Client mainController;
     ScreenController screenController;
 
     TextField userNameTF;
     TextField roomNameTF;
 
     //Buttons
-    TextButton createRoomBtn;
+    TextButton registerRoomBtn;
 
-    public CreateRoom(Client mainController){
+    public Credentials(Client mainController){
         viewport = new ScreenViewport();
         stage = new Stage(viewport);
-        this.mainClient = mainController;
-        screenController =  mainController.screenController;
+        this.mainController = mainController;
+        this.screenController = mainController.screenController;
     }
 
     @Override
@@ -56,18 +56,21 @@ public class CreateRoom implements Screen {
             }
         });
 
-        createRoomBtn = new TextButton("Register",skin);
-        createRoomBtn.addListener(new ChangeListener() {
+        registerRoomBtn = new TextButton("Register",skin);
+        registerRoomBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                System.out.println( "Register Room Button Pressed");
-                mainClient.createGame(roomNameTF.getText(),userNameTF.getText());
+                System.out.println( "Register Pressed");
+                mainController.nickName = userNameTF.getText();
+                System.out.println("player nickname =" + mainController.nickName);
+                //mainController.goToScreen(ScreenState.LOBBY);
+                mainController.joinGame(mainController.roomId,mainController.nickName);
             }
         });
 
-        stage.addActor(createRoomBtn);
+        stage.addActor(registerRoomBtn);
         stage.addActor(userNameTF);
-        stage.addActor(roomNameTF);
+        //stage.addActor(roomNameTF);
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -77,18 +80,18 @@ public class CreateRoom implements Screen {
 
         userNameTF.setHeight(height/10);
         userNameTF.setWidth(width/3);
-        userNameTF.setPosition((int)(width/2),(int)(height/2 + createRoomBtn.getHeight()*1.1f) , Align.center);
+        userNameTF.setPosition((int)(width/2),(int)(height/2) , Align.center);
         userNameTF.debug();
 
-        roomNameTF.setHeight(height/10);
-        roomNameTF.setWidth(width/3);
-        roomNameTF.setPosition((int)(width/2),(int)(height/2 ), Align.center);
-        roomNameTF.debug();
+//        roomNameTF.setHeight(height/10);
+//        roomNameTF.setWidth(width/3);
+//        roomNameTF.setPosition((int)(width/2),(int)(height/2), Align.center);
+//        roomNameTF.debug();
 
-        createRoomBtn.setHeight(height/10);
-        createRoomBtn.setWidth(width/5 - 20);
-        createRoomBtn.setPosition((int)(width/2),(int)(height/2 - createRoomBtn.getHeight()*1.1f), Align.center);
-        createRoomBtn.debug();
+        registerRoomBtn.setHeight(height/10);
+        registerRoomBtn.setWidth(width/5 - 20);
+        registerRoomBtn.setPosition((int)(width/2),(int)(height/2 - registerRoomBtn.getHeight()*1.1f), Align.center);
+        registerRoomBtn.debug();
     }
 
     @Override
