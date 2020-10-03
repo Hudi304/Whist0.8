@@ -80,6 +80,7 @@ public class NetworkService {
                         }
                         else{
                             socket.emit(ClientActions.LOGIN);
+                            rootController.joinGame("test1","test1");
                         }
 
                     }
@@ -106,6 +107,7 @@ public class NetworkService {
                     token = new NetworkDTO.Token(tokenJSON);
                     System.out.println("TOKEN RECEIVED");
                     rootController.setToken(token);
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();

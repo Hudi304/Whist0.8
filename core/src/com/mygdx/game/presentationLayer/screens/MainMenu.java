@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Client;
 import com.mygdx.game.businessLayer.others.Constants;
-import com.mygdx.game.ScreenController;
+
 
 public class MainMenu implements Screen {
 
@@ -23,7 +23,7 @@ public class MainMenu implements Screen {
         float height;
 
         Client mainController;
-        ScreenController screenController;
+
 
         //Buttons
         TextButton createRoomBtn;
@@ -35,7 +35,7 @@ public class MainMenu implements Screen {
            viewport = new ScreenViewport();
            stage = new Stage(viewport);
            this.mainController = mainController;
-           this.screenController = mainController.screenController;
+
        }
 
 
