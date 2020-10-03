@@ -8,6 +8,8 @@ import com.mygdx.game.businessLayer.networking.dto.NetworkDTO;
 import com.mygdx.game.businessLayer.networking.networkController.NetworkController;
 import com.mygdx.game.businessLayer.networking.networkService.NetworkService;
 import com.mygdx.game.presentationLayer.screens.MainMenu;
+import com.mygdx.game.presentationLayer.screens.NewGameScreen;
+import com.mygdx.game.presentationLayer.screens.ScreenState;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class Client extends Game implements NetworkController {
 	public float screenHeight;
 
 
+
 	public NetworkService networkService;
 
 	com.mygdx.game.presentationLayer.screens.MainMenu mainMenuScreen;
@@ -33,6 +36,7 @@ public class Client extends Game implements NetworkController {
 	com.mygdx.game.presentationLayer.screens.CreateRoom createRoomScreen;
 	com.mygdx.game.presentationLayer.screens.Lobby lobbyScreen;
 	com.mygdx.game.presentationLayer.screens.GameScreen gameScreen;
+	com.mygdx.game.presentationLayer.screens.NewGameScreen newGameScreen;
 	//FLAGS
 	private com.mygdx.game.presentationLayer.screens.ScreenState screenState = com.mygdx.game.presentationLayer.screens.ScreenState.MAIN_MENU;
 	private com.mygdx.game.presentationLayer.screens.ScreenState previousScreenState = com.mygdx.game.presentationLayer.screens.ScreenState.MAIN_MENU;
@@ -58,6 +62,7 @@ public class Client extends Game implements NetworkController {
 		createRoomScreen = new com.mygdx.game.presentationLayer.screens.CreateRoom(this);
 		lobbyScreen = new com.mygdx.game.presentationLayer.screens.Lobby(this);
 		gameScreen =  new com.mygdx.game.presentationLayer.screens.GameScreen(this);
+		newGameScreen = new com.mygdx.game.presentationLayer.screens.NewGameScreen(this);
 
 
 		setSCreen(screenState);
@@ -85,10 +90,13 @@ public class Client extends Game implements NetworkController {
 				setScreen(createRoomScreen);
 				break;
 			case GAME:
-				setScreen(gameScreen);
+				setScreen(newGameScreen);
 				break;
 			case CREDENTIALS:
 				setScreen(credentialsScreen);
+				break;
+			case NEWGAME:
+				setScreen(newGameScreen);
 				break;
 			default:
 				System.out.println("Error on setSCreen!!!!");
@@ -225,7 +233,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void goToGame() {
-		screenState = com.mygdx.game.presentationLayer.screens.ScreenState.GAME;
+		screenState = ScreenState.NEWGAME;
 	}
 
 	/**

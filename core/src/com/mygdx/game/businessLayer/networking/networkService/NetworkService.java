@@ -80,7 +80,9 @@ public class NetworkService {
                         }
                         else{
                             socket.emit(ClientActions.LOGIN);
+
                             rootController.joinGame("test1","odrin");
+
                         }
 
                     }
