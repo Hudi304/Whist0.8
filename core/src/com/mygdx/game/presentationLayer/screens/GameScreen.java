@@ -210,7 +210,7 @@ public class GameScreen implements Screen {
     void updateOpponents(float delta){
         for (Player pl : players) {
             for (Card crd : pl.cards) {
-                crd.update(delta,viewport);
+                crd.update(delta);
             }
         }
     }
@@ -219,7 +219,7 @@ public class GameScreen implements Screen {
     //itereaza prin hand
     public void renderHUD(float delta, List<Card> cards){
         for (Card crd:cards) {
-            crd.update(delta,viewport);
+            crd.update(delta);
             if(crd.originalPosition.y >= screenHeight/2){
                 if(!crd.choosed){
                     crd.choosed = true;
@@ -247,7 +247,7 @@ public class GameScreen implements Screen {
 
     public void renderPutDownCards(float delta, List<Card> putDownCards){
             for (Card crd:putDownCards) {
-                crd.update(delta,viewport);
+                crd.update(delta);
             }
     }
 
@@ -276,7 +276,7 @@ public class GameScreen implements Screen {
             renderNicknamesBatch();
         batch.end();
 
-        crd.update(delta,viewport);
+        crd.update(delta);
         updateBidText();
 
         renderPutDownCards(delta,putDownCards);

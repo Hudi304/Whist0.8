@@ -62,7 +62,7 @@ public class Player extends Actor {
             crd.getCardActor().setOriginX(cardWidth*3/4/2);
             crd.rePosition(x,y);
             crd.setRot( - rot + rotation );
-            crd.setTouchable(Touchable.disabled);
+            //crd.setTouchable(Touchable.disabled);
             rot -= rotOffset;
             x += xOffset;
         }
@@ -105,7 +105,7 @@ public class Player extends Actor {
             crd.getCardActor().setHeight(cardHeight*3/4);
             crd.getCardActor().setOriginX(cardWidth*3/4/2);
             crd.rePosition(x,y);
-            crd.setTouchable(Touchable.disabled);
+            //crd.setTouchable(Touchable.disabled);
             rot -= rotOffset;
             y += xOffset;
         }

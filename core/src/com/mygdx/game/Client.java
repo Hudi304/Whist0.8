@@ -1,12 +1,14 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.businessLayer.others.Constants;
 import com.mygdx.game.dataLayer.generics.Card;
 import com.mygdx.game.dataLayer.generics.Player;
 import com.mygdx.game.businessLayer.networking.dto.NetworkDTO;
 import com.mygdx.game.businessLayer.networking.networkController.NetworkController;
 import com.mygdx.game.businessLayer.networking.networkService.NetworkService;
+import com.mygdx.game.dataLayer.repositories.CardsTextureRepository;
 import com.mygdx.game.presentationLayer.screens.MainMenu;
 import com.mygdx.game.presentationLayer.screens.NewGameScreen;
 import com.mygdx.game.presentationLayer.screens.ScreenState;
@@ -17,16 +19,11 @@ import java.util.List;
 
 public class Client extends Game implements NetworkController {
 
-	//todo sa nu lesi asta aici
 	public String nickName ;
-
 	public String roomId;
-
 
 	public float screenWidth;
 	public float screenHeight;
-
-
 
 	public NetworkService networkService;
 
@@ -41,6 +38,7 @@ public class Client extends Game implements NetworkController {
 	private com.mygdx.game.presentationLayer.screens.ScreenState screenState = com.mygdx.game.presentationLayer.screens.ScreenState.MAIN_MENU;
 	private com.mygdx.game.presentationLayer.screens.ScreenState previousScreenState = com.mygdx.game.presentationLayer.screens.ScreenState.MAIN_MENU;
 
+	CardsTextureRepository cardsTextureRepository;
 
 	@Override
 	public void dispose() {
@@ -54,7 +52,7 @@ public class Client extends Game implements NetworkController {
 
 		this.initializeNetworkService(Constants.serverHTTP);
 
-
+		cardsTextureRepository = new CardsTextureRepository(new Texture("cardSprite.gif"));
 
 		mainMenuScreen =  new MainMenu(this);
 		credentialsScreen =  new com.mygdx.game.presentationLayer.screens.Credentials(this);
@@ -62,10 +60,11 @@ public class Client extends Game implements NetworkController {
 		createRoomScreen = new com.mygdx.game.presentationLayer.screens.CreateRoom(this);
 		lobbyScreen = new com.mygdx.game.presentationLayer.screens.Lobby(this);
 		gameScreen =  new com.mygdx.game.presentationLayer.screens.GameScreen(this);
-		newGameScreen = new com.mygdx.game.presentationLayer.screens.NewGameScreen(this);
+		newGameScreen = new com.mygdx.game.presentationLayer.screens.NewGameScreen(this,cardsTextureRepository);
 
 
-		setSCreen(screenState);
+
+		setSCreen(ScreenState.NEWGAME);
 
 		try {
 			this.connect();
