@@ -67,12 +67,9 @@ public class NewGameScreen implements Screen {
 
     public boolean canChooseCard;
 
-
     ScreenViewport viewport;
     public Stage stage;
     Skin skin;
-
-
 
 
 
@@ -160,7 +157,7 @@ public class NewGameScreen implements Screen {
     }
 
     //asta pune cartile pe cerc la fiecare resize
-    public void resizeHUD(List<Card> hand){
+    public void resizeHUD(List<Card2> hand){
         boolean portrait = false;
         boolean landscape = false;
         float width = min(screenHeight,screenWidth) /4 * 0.6f;
@@ -183,12 +180,12 @@ public class NewGameScreen implements Screen {
         float R =  screenHeight;
 
 
-        for (Card crd :hand) {
+        for (Card2 crd :hand) {
             y = (float) (sqrt(abs(R*R - (x-Cx)*(x-Cx))) + Cy);
-            crd.getCardActor().setWidth(width);
-            crd.getCardActor().setHeight(height);
-            crd.getCardActor().setOriginX(width/2);
-            crd.rePosition(x -crd.getCardActor().getWidth()/4,y);
+            crd.setWidth(width);
+            crd.setHeight(height);
+            crd.setOriginX(width/2);
+            crd.rePosition(x -crd.getWidth()/4,y);
             crd.setRot(rot);
             x += xOffset;
             rot -= rotOffset;

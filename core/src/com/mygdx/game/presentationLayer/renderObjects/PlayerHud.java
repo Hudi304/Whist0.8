@@ -28,6 +28,9 @@ public class PlayerHud extends Group{
     private List<String> strPlayerCard;
 
     public  void initCards (List<String> strLst,float screenWidth){
+
+      
+
 //        Card crd = new Card("h-12",cardsTexture.getCardTexture("h-12"),cardsTexture.getCardTexture("back"),new Vector2(0,0),new Vector2(0,0));
 //        playerCard.add(crd);
 //        int i = strLst.size()*40/2;
