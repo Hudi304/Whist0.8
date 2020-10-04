@@ -133,7 +133,7 @@ public class CardTest extends Actor {
         }
         isFlipped = !isFlipped;
     }
-    
+
 
     public boolean isFlipped() {
         return isFlipped;

@@ -47,7 +47,7 @@ public class Card2 extends Image {
         currentPosition = spawnPos;
         originalPosition = targetPos;
         targetPosition = targetPos;
-        final Card2 crd = this;
+
 
         this.frontImage = front;
         this.debug();
@@ -55,7 +55,7 @@ public class Card2 extends Image {
         this.addListener(new DragListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                targetPosition = new Vector2(crd.getX() + x  , crd.getY() + y);
+                targetPosition = new Vector2(getX() + x  , getY() + y);
                 following = true;
                 goingBack = false;
                 return true;
@@ -63,7 +63,7 @@ public class Card2 extends Image {
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
                 if (following ==  true){
-                    targetPosition = new Vector2(crd.getX() + x,crd.getY() + y);
+                    targetPosition = new Vector2(getX() + x,getY() + y);
                 }
                 if(following == true && targetPosition.y > Gdx.graphics.getHeight()/2){
 //                    if(newGameScreen.canChooseCard && !thisCard.getSymbol().equals("b")){
@@ -112,6 +112,22 @@ public class Card2 extends Image {
         //collideWithWalls(viewport.getWorldWidth(),viewport.getWorldHeight());
 
         this.setPosition(currentPosition.x,currentPosition.y);
+    }
+
+    public void setRot(float rot){
+        currentImage.setRotation(rot);
+    }
+
+    public void setPosition(float x, float y){
+        currentImage.setX(x);
+        currentImage.setY(y);
+    }
+
+    public void rePosition(float x, float y){
+        this.originalPosition.x = x;
+        this.originalPosition.y = y;
+        this.currentPosition.x = x;
+        this.currentPosition.y = y;
     }
 
     public boolean isFlipped() {
