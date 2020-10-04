@@ -71,7 +71,7 @@ public class NewGameScreen implements Screen {
     public Stage stage;
     Skin skin;
 
-    Card2 crd;
+
 
     public NewGameScreen(Client client,CardsTextureRepository cardsTextureRepository){
         this.client =  client;
@@ -95,15 +95,16 @@ public class NewGameScreen implements Screen {
         str.add("h-4");
         str.add("h-6");
 
-         crd = new Card2("h-12",playerHUD.cardsTexture.getCardTexture("back"),playerHUD.cardsTexture.getCardTexture("h-12"),new Vector2(200,200),new Vector2(100,100));
+         //crd = new Card2("h-12",playerHUD.cardsTexture.getCardTexture("back"),playerHUD.cardsTexture.getCardTexture("h-12"),new Vector2(200,200),new Vector2(100,100));
 
         playerHUD.initCards(str,screenWidth);
+        stage.addActor(playerHUD);
 
         flipBtn = new TextButton("Flip",skin);
         flipBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                crd.setFlipped(!crd.isFlipped());
+                //crd.setFlipped(!crd.isFlipped());
                 System.out.println(stage.getActors());
             }
         });
@@ -119,12 +120,12 @@ public class NewGameScreen implements Screen {
 
 
 
-        group = playerHUD.getUpdatedHUD();
+        //group = playerHUD.getUpdatedHUD();
         //stage.addActor(playerHUD.getUpdatedHUD());
         stage.addActor(flipBtn);
-        stage.addActor(flipBtn);
-        crd.setTouchable(Touchable.enabled);
-        stage.addActor(crd);
+        //stage.addActor(flipBtn);
+        //crd.setTouchable(Touchable.enabled);
+        //stage.addActor(crd);
 
         System.out.println(stage.getActors());
 

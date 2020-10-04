@@ -35,12 +35,13 @@ public class Card2 extends Image {
     Vector2 targetPosition = new Vector2(0f,0f);// finger position
     Vector2 velocity = new Vector2(0,0);;// vector viteza al cartii
 
-    private String cardID;
 
-    private Image currentImage;
+
+
 
     public Card2(String id,TextureRegion back, TextureRegion front, Vector2 targetPos, Vector2 spawnPos) {
         super(back);
+        setName(id);
         this.setPosition(100,100);
         backImage = back;
 
