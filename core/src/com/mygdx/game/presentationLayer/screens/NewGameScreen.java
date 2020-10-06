@@ -23,7 +23,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.mygdx.game.dataLayer.generics.Card2;
 import com.mygdx.game.dataLayer.generics.CardTest;
 import com.mygdx.game.dataLayer.repositories.CardsTextureRepository;
+import com.mygdx.game.presentationLayer.renderObjects.OpponentHud;
 import com.mygdx.game.presentationLayer.renderObjects.PlayerHud;
+import com.mygdx.game.presentationLayer.renderObjects.TableHud;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,41 +37,28 @@ import static java.lang.Math.sqrt;
 public class NewGameScreen implements Screen {
 
 
-    float screenWidth;
-    float screenHeight;
     Client client;
+    public float screenWidth;
+    public float screenHeight;
 
-    //opponets
-            // position
-            //cards
-            //score
-            //nickname
-    //Plyer
     public List<Card> hand = new ArrayList<>();
     public Texture cardSprite = new Texture("cardSprite.gif");
     public TextureRegion[][] regions;
-           // cardHUD
-           // bidHUD
-    //Cards
-        //image
-        //value
-        //symbol
-
-    //tableStatus
-    //score
 
 
-//adauga in scene un grup de carti si in stage
-    TextButton flipBtn;//p
-    Group group;
-
+    //adauga in scene un grup de carti si in stage
+//-------HUDs------------
     PlayerHud playerHUD;
-
+    TableHud tableHUD;
+    List<OpponentHud> opponentHuds =  new ArrayList<>();
+    OpponentHud opponentHud;
+    //-------FLAGURI---------------
     public boolean canChooseCard;
-
+    //-------STAGE|STUFF----------
     ScreenViewport viewport;
+    TextButton flipBtn;//p
     public Stage stage;
-    Skin skin;
+    public Skin skin;
 
 
 
@@ -90,44 +79,49 @@ public class NewGameScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-        List<String> str = new ArrayList<>();
-        str.add("h-12");
-        str.add("h-4");
-        str.add("h-6");
-
-         //crd = new Card2("h-12",playerHUD.cardsTexture.getCardTexture("back"),playerHUD.cardsTexture.getCardTexture("h-12"),new Vector2(200,200),new Vector2(100,100));
-
-        playerHUD.initCards(str,screenWidth);
-        stage.addActor(playerHUD);
 
         flipBtn = new TextButton("Flip",skin);
         flipBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //crd.setFlipped(!crd.isFlipped());
+                playerHUD.setFlipped();
+                playerHUD.bidHUDVisibility();
+//                opponentHud.nrOfCards--;
+//                opponentHud.resizeOpponents(screenWidth,screenHeight);
                 System.out.println(stage.getActors());
             }
         });
 
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
+        List<String> str = new ArrayList<>();
+        str.add("h-12");
+        str.add("h-4");
+        str.add("h-6");
+        str.add("h-12");
+        str.add("h-4");
+        str.add("h-6");
+        str.add("h-4");
+        str.add("h-6");
+
+        //opponentHud.initCards();
+        Vector2 plPos = new Vector2(screenWidth/2,screenHeight/2);
+        Vector2 centerPos =  new Vector2(screenWidth/2, screenHeight *14.4f/10);
+        // opponentHud.positionCardsHor((int)screenWidth, (int)screenHeight, plPos,centerPos,screenHeight/2,180,true);
+        playerHUD.initCards(str,screenWidth);
+        playerHUD.createBidHUD();
+//        tableHUD.initTable();
 
 
-        System.out.println("[NewGameScreen] Show()");
-        System.out.println("screeWidth=" + screenWidth + "|" + "screenHeight=" + screenHeight);
-        Vector2 spPos = new Vector2(screenWidth/2,-100);
-        Vector2 tgPos = new Vector2(screenWidth/2,screenHeight/2);
+
+
+        //stage.addActor(tableHUD);
+        stage.addActor(playerHUD);
+       // stage.addActor(opponentHud);
 
 
 
-        //group = playerHUD.getUpdatedHUD();
-        //stage.addActor(playerHUD.getUpdatedHUD());
         stage.addActor(flipBtn);
-        //stage.addActor(flipBtn);
-        //crd.setTouchable(Touchable.enabled);
-        //stage.addActor(crd);
-
-        System.out.println(stage.getActors());
 
     }
 
@@ -149,11 +143,16 @@ public class NewGameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        System.out.println("[NeGameScreen] : resize()");
         this.screenWidth = width;
         this.screenHeight = height;
-        resizeHUD(playerHUD.getPlayerCard());
-        viewport.update(width, height, true);
 
+//        tableHUD.resizeTable();
+        playerHUD.resizeHUD();
+        // todo pentu un oarecare motiv exista un delay cand merge prima data si le pune putin intr-o parte ...
+//        opponentHud.resizeOpponents(width,height);
+   //     opponentHud.resizeOpponents(width,height);
+        viewport.update(width, height, true);
     }
 
     //asta pune cartile pe cerc la fiecare resize

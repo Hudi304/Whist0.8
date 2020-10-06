@@ -14,8 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 public class Card2 extends Image {
-    private static final float DRAG = 2.0f;
-    private static final float MAX_SPEED = 2000.0f;
+    private static final float DRAG = 4.0f;
+    private static final float MAX_SPEED = 1000.0f;
     private static final float FOLLOW_MULTIPLIER = 5.0f;
 
 
@@ -36,9 +36,6 @@ public class Card2 extends Image {
     Vector2 velocity = new Vector2(0,0);;// vector viteza al cartii
 
 
-
-
-
     public Card2(String id,TextureRegion back, TextureRegion front, Vector2 targetPos, Vector2 spawnPos) {
         super(back);
         setName(id);
@@ -51,7 +48,7 @@ public class Card2 extends Image {
 
 
         this.frontImage = front;
-        this.debug();
+        //this.debug();
         this.setTouchable(Touchable.enabled);
         this.addListener(new DragListener() {
             @Override
@@ -87,7 +84,6 @@ public class Card2 extends Image {
     @Override
     public void act(float delta) {
         super.act(delta);
-
         if(isFlipped)
             this.setDrawable(new SpriteDrawable(new Sprite(backImage)));
         else
@@ -116,12 +112,12 @@ public class Card2 extends Image {
     }
 
     public void setRot(float rot){
-        currentImage.setRotation(rot);
+        this.setRotation(rot);
     }
 
     public void setPosition(float x, float y){
-        currentImage.setX(x);
-        currentImage.setY(y);
+        this.setX(x);
+        this.setY(y);
     }
 
     public void rePosition(float x, float y){

@@ -69,7 +69,7 @@ public class Client extends Game implements NetworkController {
 
 		this.gameController = new GameController(this, newGameScreen);
 
-		setSCreen(screenState);
+		setSCreen(ScreenState.NEWGAME);
 
 		try {
 			this.connect();
@@ -100,7 +100,7 @@ public class Client extends Game implements NetworkController {
 				setScreen(credentialsScreen);
 				break;
 			case NEWGAME:
-				setScreen(this.gameController.getNewGameScreen());
+				setScreen(newGameScreen);
 				break;
 			default:
 				//setScreen(testing);
