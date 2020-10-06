@@ -22,6 +22,8 @@ public class GameScreenTest implements Screen {
     Skin skin;
     CardsTextureRepository cardsTextureRepository;
 
+    String[] cards = {"h-14","h-13","d-14","d-12"};
+    int i = 0;
 
     public GameScreenTest(CardsTextureRepository cardsTextureRepository) {
         this.cardsTextureRepository = cardsTextureRepository;
@@ -36,7 +38,7 @@ public class GameScreenTest implements Screen {
 
 
 
-        CardTest1 c = new CardTest1(cardsTextureRepository.getCardTexture("back"),cardsTextureRepository.getCardTexture("h-14"));
+        CardTest1 c = new CardTest1(cardsTextureRepository.getCardTexture("back"));
         c.addListener(new ClickListener());
 
         stage.addActor(c);
@@ -52,7 +54,10 @@ public class GameScreenTest implements Screen {
                 for (Actor a: stage.getActors()){
                     if(a instanceof CardTest1){
                         CardTest1 localCard = (CardTest1) a;
-                        localCard.setFlipped(!localCard.isFlipped());
+                        localCard.setBackImage(cardsTextureRepository.getCardTexture(cards[i]));
+                        i++;
+                        if(i == cards.length)
+                            i = 0;
                     }
                 }
             }

@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
+import com.mygdx.game.businessLayer.controllers.GameController;
 import com.mygdx.game.businessLayer.others.Constants;
 import com.mygdx.game.dataLayer.generics.Card;
 import com.mygdx.game.dataLayer.generics.Player;
@@ -12,9 +13,11 @@ import com.mygdx.game.dataLayer.repositories.CardsTextureRepository;
 import com.mygdx.game.presentationLayer.screens.MainMenu;
 import com.mygdx.game.presentationLayer.screens.NewGameScreen;
 import com.mygdx.game.presentationLayer.screens.ScreenState;
+import com.mygdx.game.testing.GameScreenTest;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Client extends Game implements NetworkController {
@@ -26,6 +29,7 @@ public class Client extends Game implements NetworkController {
 	public float screenHeight;
 
 	public NetworkService networkService;
+	public GameController gameController;
 
 	com.mygdx.game.presentationLayer.screens.MainMenu mainMenuScreen;
 	com.mygdx.game.presentationLayer.screens.Credentials credentialsScreen;
@@ -34,6 +38,7 @@ public class Client extends Game implements NetworkController {
 	com.mygdx.game.presentationLayer.screens.Lobby lobbyScreen;
 	com.mygdx.game.presentationLayer.screens.GameScreen gameScreen;
 	com.mygdx.game.presentationLayer.screens.NewGameScreen newGameScreen;
+
 	//FLAGS
 	private com.mygdx.game.presentationLayer.screens.ScreenState screenState = com.mygdx.game.presentationLayer.screens.ScreenState.MAIN_MENU;
 	private com.mygdx.game.presentationLayer.screens.ScreenState previousScreenState = com.mygdx.game.presentationLayer.screens.ScreenState.MAIN_MENU;
@@ -62,9 +67,9 @@ public class Client extends Game implements NetworkController {
 		gameScreen =  new com.mygdx.game.presentationLayer.screens.GameScreen(this);
 		newGameScreen = new com.mygdx.game.presentationLayer.screens.NewGameScreen(this,cardsTextureRepository);
 
+		this.gameController = new GameController(this, newGameScreen);
 
-
-		setSCreen(ScreenState.NEWGAME);
+		setSCreen(screenState);
 
 		try {
 			this.connect();
@@ -95,10 +100,10 @@ public class Client extends Game implements NetworkController {
 				setScreen(credentialsScreen);
 				break;
 			case NEWGAME:
-				setScreen(newGameScreen);
+				setScreen(this.gameController.getNewGameScreen());
 				break;
 			default:
-				System.out.println("Error on setSCreen!!!!");
+				//setScreen(testing);
 				break;
 		}
 
@@ -175,6 +180,7 @@ public class Client extends Game implements NetworkController {
 		System.out.println(token);
 		nickName = token.getNickname();
 		roomId = token.getRoomID();
+		this.gameController.setToken(token);
 	}
 
 	/**
@@ -242,10 +248,12 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void updatePlayerList(List<NetworkDTO.Player> players) {
-		for (NetworkDTO.Player pl : players) {
-			gameScreen.players.add(new Player(pl.getName(),0));
+		List<String> playersStr = new LinkedList<>();
+		for(NetworkDTO.Player p: players){
+			playersStr.add(p.getName());
 		}
-		goToScreen(com.mygdx.game.presentationLayer.screens.ScreenState.GAME);
+		this.gameController.initOpponentsOrder(playersStr);
+		screenState = ScreenState.NEWGAME;
 	}
 
 	/**
@@ -255,7 +263,8 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void updateCards(NetworkDTO.Cards cards) {
-			gameScreen.cardsStrList = cards.getCards();
+			
+		this.gameController.setCards(cards.getCards());
 	}
 
 	/**
@@ -266,9 +275,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void showHudForBids(NetworkDTO.Bids.Bid bid) {
-		gameScreen.enableBidHud = true;
-		gameScreen.enableBidHUD();
-		gameScreen.forbidenBet = bid.getForbidden();
+		gameController.enableBidHud(bid);
 
 	}
 
@@ -277,8 +284,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void hideBidHUD() {
-		gameScreen.enableBidHud =  false;
-		gameScreen.disableBidHUD();
+		gameController.disableBidHud();
 	}
 
 	/**
@@ -289,7 +295,8 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void showHudForCards(NetworkDTO.Table.PlayerStatus ps) {
-		gameScreen.canChooseCard =  true;
+		
+		gameController.enableCardHud();
 	}
 
 	/**
@@ -297,7 +304,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void hideCardHud() {
-		gameScreen.canChooseCard =  false;
+		gameController.disableCardHud();
 
 	}
 
@@ -308,7 +315,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void updateBids(NetworkDTO.Bids bids) {
-
+		gameController.updateBidStatus(bids);
 	}
 
 	/**
@@ -318,21 +325,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void updateTable(NetworkDTO.Table table) {
-		System.out.println("[Client] updateTable() ");
-		// todo afiseaza cartile celorlalti pe ecran
-
-		List<Card> cards =  new ArrayList<>();
-
-		System.out.println(table.getPlayersStatus().toString());
-
-		for (NetworkDTO.Table.PlayerStatus plst:table.getPlayersStatus()) {
-			if (plst.getCard().equals(null)){
-				System.out.println("[Client updateTable() card]" + plst.getCard());
-				Card crd = new Card(plst.getCard(), gameScreen.regions,0,0,gameScreen);
-				gameScreen.putDownCard(crd);
-				gameScreen.stage.addActor(crd.getCardActor());
-			}
-		}
+		gameController.updateTableStatus(table);
 	}
 
 	/**
