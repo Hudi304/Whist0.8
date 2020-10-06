@@ -69,7 +69,7 @@ public class Client extends Game implements NetworkController {
 
 		this.gameController = new GameController(this, newGameScreen);
 
-		setSCreen(ScreenState.NEWGAME);
+		setSCreen(screenState);
 
 		try {
 			this.connect();
