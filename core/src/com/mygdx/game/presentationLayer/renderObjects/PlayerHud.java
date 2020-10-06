@@ -29,24 +29,19 @@ public class PlayerHud extends Group{
 
     public  void initCards (List<String> strLst,float screenWidth){
 
-      
 
-//        Card crd = new Card("h-12",cardsTexture.getCardTexture("h-12"),cardsTexture.getCardTexture("back"),new Vector2(0,0),new Vector2(0,0));
-//        playerCard.add(crd);
-//        int i = strLst.size()*40/2;
-//        List<Card> ret = new ArrayList<>();
-//        Card crd;
-//        Collections.sort(strLst);
-//        for (String str:strLst) {
-//            crd = new Card(str,cardsTexture.getCardTexture(str),cardsTexture.getCardTexture("back"),new Vector2(0,0),new Vector2(screenWidth - i,Constants.CARD_HAND_Y),newGameScreen );
-//            playerCard.add(crd);
-//            i -= 40;
-//        }
         this.clear();
-        Card2 c1 = new Card2("h-12",cardsTexture.getCardTexture("back"),cardsTexture.getCardTexture("h-12"),new Vector2(20,0),new Vector2(screenWidth,Constants.CARD_HAND_Y)) ;
-        Card2 c2 = new Card2("h-13",cardsTexture.getCardTexture("back"),cardsTexture.getCardTexture("h-13"),new Vector2(30,0),new Vector2(screenWidth,Constants.CARD_HAND_Y));
-        this.addActor(c1);
-        this.addActor(c2);
+        int i = strLst.size() * 40/2;
+        int j = 0;
+        Card2 crd = null;
+        for(String str: strLst){
+            crd = new Card2(str,cardsTexture.getCardTexture("back"),cardsTexture.getCardTexture(str),new Vector2(20 + j*20,0),new Vector2(screenWidth -i ,Constants.CARD_HAND_Y)) ;
+            this.addActor(crd);
+            i-=40;
+            j++;
+        }
+
+
     }
 
 

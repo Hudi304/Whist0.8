@@ -15,13 +15,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 public class CardTest1 extends Image {
 
-    boolean isFlipped = false;
+
     TextureRegion backImage;
-    TextureRegion frontImage;
+
     Vector2 spawnPosition;
     Vector2 targetPosition;
     Vector2 velocity;
-    public CardTest1(TextureRegion back,TextureRegion front) {
+    public CardTest1(TextureRegion back) {
         super(back);
         spawnPosition = new Vector2(100,100);
         targetPosition = spawnPosition;
@@ -29,7 +29,7 @@ public class CardTest1 extends Image {
         this.setPosition(spawnPosition.x,spawnPosition.y);
 
         backImage = back;
-        this.frontImage = front;
+
         this.debug();
         this.setTouchable(Touchable.enabled);
         this.addListener(new DragListener() {
@@ -57,11 +57,7 @@ public class CardTest1 extends Image {
     @Override
     public void act(float delta) {
 
-
-        if(isFlipped)
-            this.setDrawable(new SpriteDrawable(new Sprite(backImage)));
-        else
-            this.setDrawable(new SpriteDrawable(new Sprite(frontImage)));
+        this.setDrawable(new SpriteDrawable(new Sprite(backImage)));
 
         updateVelocity();
         spawnPosition.x += velocity.x * delta;
@@ -90,11 +86,11 @@ public class CardTest1 extends Image {
             velocity.y = -1;
     }
 
-    public boolean isFlipped() {
-        return isFlipped;
+    public TextureRegion getBackImage() {
+        return backImage;
     }
 
-    public void setFlipped(boolean flipped) {
-        isFlipped = flipped;
+    public void setBackImage(TextureRegion backImage) {
+        this.backImage = backImage;
     }
 }
