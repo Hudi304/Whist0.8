@@ -29,6 +29,7 @@ public class PlayerHud extends Group{
 
     public  void initCards (List<String> strLst,float screenWidth){
 
+
         this.clear();
         int i = strLst.size() * 40/2;
         int j = 0;

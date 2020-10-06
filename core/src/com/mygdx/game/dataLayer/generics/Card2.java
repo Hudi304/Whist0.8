@@ -115,6 +115,22 @@ public class Card2 extends Image {
         this.setPosition(currentPosition.x,currentPosition.y);
     }
 
+    public void setRot(float rot){
+        currentImage.setRotation(rot);
+    }
+
+    public void setPosition(float x, float y){
+        currentImage.setX(x);
+        currentImage.setY(y);
+    }
+
+    public void rePosition(float x, float y){
+        this.originalPosition.x = x;
+        this.originalPosition.y = y;
+        this.currentPosition.x = x;
+        this.currentPosition.y = y;
+    }
+
     public boolean isFlipped() {
         return isFlipped;
     }
