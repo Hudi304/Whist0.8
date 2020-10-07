@@ -49,6 +49,7 @@ public class PlayerHud extends Group{
             i-=40;
             nrOfCards++;
         }
+        this.resizeCards();
     }
 
     public void createBidHUD(){

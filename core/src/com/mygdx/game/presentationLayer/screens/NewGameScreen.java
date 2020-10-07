@@ -92,6 +92,7 @@ public class NewGameScreen implements Screen {
             }
         });
 
+
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
         List<String> str = new ArrayList<>();
@@ -108,7 +109,7 @@ public class NewGameScreen implements Screen {
         Vector2 plPos = new Vector2(screenWidth/2,screenHeight/2);
         Vector2 centerPos =  new Vector2(screenWidth/2, screenHeight *14.4f/10);
         // opponentHud.positionCardsHor((int)screenWidth, (int)screenHeight, plPos,centerPos,screenHeight/2,180,true);
-        playerHUD.initCards(str,screenWidth);
+        //playerHUD.initCards(str,screenWidth);
         playerHUD.createBidHUD();
 //        tableHUD.initTable();
 
@@ -194,6 +195,15 @@ public class NewGameScreen implements Screen {
 
 
 
+    /*
+    * Functions for gameScreen
+     */
+
+
+    public void updateCardsForPlayer(List<String> cards){
+        this.playerHUD.initCards(cards,screenWidth);
+
+    }
 
     @Override
     public void pause() {
