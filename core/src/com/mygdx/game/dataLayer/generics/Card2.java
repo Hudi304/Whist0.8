@@ -26,11 +26,18 @@ public class Card2 extends Image {
     public Vector2 currentPosition ;// pozitia cartii
     public Vector2 originalPosition;
     public Vector2 spownPosition;
-    public float originalRot;
 
-    boolean flipping = false;
-    boolean following = true;
+    //todo de facut rotatia smooth
+    public float currentRot;
+    float targetRot;
+    float rotVelocity;
+
+
+
+   public  boolean following = true;
     boolean goingBack = false;
+
+
 
     Vector2 targetPosition = new Vector2(0f,0f);// finger position
     Vector2 velocity = new Vector2(0,0);;// vector viteza al cartii
@@ -85,33 +92,42 @@ public class Card2 extends Image {
     public void act(float delta) {
         super.act(delta);
         if(isFlipped)
-            this.setDrawable(new SpriteDrawable(new Sprite(backImage)));
-        else
             this.setDrawable(new SpriteDrawable(new Sprite(frontImage)));
+        else
+            this.setDrawable(new SpriteDrawable(new Sprite(backImage)));
 
         if (following) {
             Vector2 followVector = new Vector2(targetPosition.x - currentPosition.x, targetPosition.y - currentPosition.y);
+            float followRot = targetRot - currentRot;
             velocity.x = FOLLOW_MULTIPLIER * followVector.x;
             velocity.y = FOLLOW_MULTIPLIER * followVector.y;
+            rotVelocity = FOLLOW_MULTIPLIER * followRot;
         }
         //TODO vezi ce faci cu asta
         if (goingBack) {
             Vector2 followVector = new Vector2(targetPosition.x - currentPosition.x, targetPosition.y - currentPosition.y);
+            float followRot = targetRot - currentRot;
             velocity.x = FOLLOW_MULTIPLIER * followVector.x;
             velocity.y = FOLLOW_MULTIPLIER * followVector.y;
+            rotVelocity = FOLLOW_MULTIPLIER * followRot;
         }
         velocity.clamp(0, MAX_SPEED);
         velocity.x = velocity.x - delta *DRAG *velocity.x;
         velocity.y = velocity.y - delta *DRAG *velocity.y;
 
+        rotVelocity = rotVelocity - delta *DRAG*rotVelocity;
+
         currentPosition.x = currentPosition.x + delta * velocity.x;
         currentPosition.y = currentPosition.y + delta * velocity.y;
+        currentRot = currentRot + delta * rotVelocity;
         //collideWithWalls(viewport.getWorldWidth(),viewport.getWorldHeight());
 
         this.setPosition(currentPosition.x,currentPosition.y);
+       // this.setRot(currentRot);
     }
 
     public void setRot(float rot){
+        currentRot = rot;
         this.setRotation(rot);
     }
 
@@ -123,8 +139,32 @@ public class Card2 extends Image {
     public void rePosition(float x, float y){
         this.originalPosition.x = x;
         this.originalPosition.y = y;
-        this.currentPosition.x = x;
-        this.currentPosition.y = y;
+//        this.currentPosition.x = x;
+//        this.currentPosition.y = y;
+    }
+
+    public TextureRegion getFrontImage() {
+        return frontImage;
+    }
+
+    public void setFrontImage(TextureRegion frontImage) {
+        this.frontImage = frontImage;
+    }
+
+    public Vector2 getOriginalPosition() {
+        return originalPosition;
+    }
+
+    public void setOriginalPosition(Vector2 originalPosition) {
+        this.originalPosition = originalPosition;
+    }
+
+    public Vector2 getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public void setCurrentPosition(Vector2 currentPosition) {
+        this.currentPosition = currentPosition;
     }
 
     public boolean isFlipped() {

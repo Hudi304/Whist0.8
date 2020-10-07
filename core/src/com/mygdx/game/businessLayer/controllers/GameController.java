@@ -65,6 +65,7 @@ public class GameController {
      */
     public void setCards(List<String> cards){
         this.playerCards = cards;
+        this.gameScreen.updateCardsForPlayer(cards);
         //call a function in the gameScreen to init Cards in the player hand
         this.gameScreen.updateCardsForPlayer(cards);
         //call a function in the gameScreen to set the number of cards for the opponents

@@ -40,7 +40,7 @@ public class PlayerHud extends Group{
     int nrOfCards = 0;
 
     public  void initCards (List<String> strLst,float screenWidth){
-        this.clear();
+        getChildren().clear();
         int i = strLst.size() * 40/2;
         Card2 crd = null;
         for(String str: strLst){
@@ -49,7 +49,9 @@ public class PlayerHud extends Group{
             i-=40;
             nrOfCards++;
         }
+
         this.resizeCards();
+
     }
 
     public void createBidHUD(){
