@@ -30,10 +30,11 @@ public class GameController {
      */
     public void initOpponentsOrder(List<String> opponents){
         // make the player to be the first in this list;
+        System.out.println("[Game Controller]");
         this.opponents = new LinkedList<>();
         int i=0;
         boolean found = false;
-        while(this.opponents.size() != opponents.size()){
+        while(this.opponents.size() != opponents.size()-1){
             if(!found && opponents.get(i).equals(token.getNickname())){
                 found = true;
                 i++;
@@ -43,7 +44,7 @@ public class GameController {
                 continue;
             }
 
-            if(found)
+            if(found && !opponents.get(i).equals(token.getNickname()))
             {
                 this.opponents.add(opponents.get(i));
             }
@@ -53,7 +54,9 @@ public class GameController {
                 i=0;
         }
 
-        //call a function in NewGameScreen to set opponents position
+        //System.out.println(this.opponents);
+        gameScreen.initOpponentsHUD(this.opponents);
+        gameScreen.opponentsNames =  this.opponents;
 
 
     }
@@ -67,7 +70,7 @@ public class GameController {
         this.playerCards = cards;
         this.gameScreen.updateCardsForPlayer(cards);
         //call a function in the gameScreen to init Cards in the player hand
-        this.gameScreen.updateCardsForPlayer(cards);
+        //this.gameScreen.updateCardsForPlayer(cards);
         //call a function in the gameScreen to set the number of cards for the opponents
     }
 

@@ -145,8 +145,8 @@ public class GameScreen implements Screen {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("JosefinSans-SemiBold.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
-      parameter.size = 34;
-       font12 = generator.generateFont(parameter);
+         parameter.size = 34;
+         font12 = generator.generateFont(parameter);
         font12.setColor(Color.BLACK);
 
         initBidHuUD();

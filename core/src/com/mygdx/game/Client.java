@@ -254,8 +254,10 @@ public class Client extends Game implements NetworkController {
 		for(NetworkDTO.Player p: players){
 			playersStr.add(p.getName());
 		}
+
+		System.out.println("recieving players" );
 		this.gameController.initOpponentsOrder(playersStr);
-		screenState = ScreenState.NEWGAME;
+
 	}
 
 	/**
@@ -265,7 +267,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void updateCards(NetworkDTO.Cards cards) {
-			
+		screenState = ScreenState.NEWGAME;
 		this.gameController.setCards(cards.getCards());
 	}
 

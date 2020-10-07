@@ -1,7 +1,5 @@
 package com.mygdx.game.presentationLayer.renderObjects;
 
-
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -11,20 +9,15 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.mygdx.game.businessLayer.others.Constants;
 import com.mygdx.game.dataLayer.generics.Card2;
 import com.mygdx.game.dataLayer.repositories.CardsTextureRepository;
 import com.mygdx.game.presentationLayer.screens.NewGameScreen;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.min;
 import static java.lang.Math.sqrt;
 
 public class OpponentHud extends Group {
-
 
     private NewGameScreen newGameScreen;
     private CardsTextureRepository cardsTexture;
@@ -34,28 +27,26 @@ public class OpponentHud extends Group {
     BitmapFont font12;//p
     Vector2 castCardPosition;
 
+    public Vector2 deckPos;
 
     float castCardRot;
 
     public int nrOfCards = 8;
 
-    FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("JosefinSans-SemiBold.ttf"));
-    FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
-    public Vector2 castCatrdPosition = new Vector2();
     public Vector2 centerPosition;
-   // public List<Card2> cards =  new ArrayList<>();
+
 
     //ADD HERE MORE DATA
 
-    public OpponentHud(CardsTextureRepository cardsTexture, NewGameScreen newGameScreen,Vector2  castPos, float castRot){
+    public OpponentHud(String name,CardsTextureRepository cardsTexture, NewGameScreen newGameScreen,Vector2  castPos, float castRot){
+        this.setName(name);
         this.newGameScreen =  newGameScreen;
         this.cardsTexture = cardsTexture;
         this.offset = newGameScreen.screenWidth/50;
-        parameter.size = 34;
-        font12 = generator.generateFont(parameter);
-        font12.setColor(Color.BLACK);
-        System.out.println(castPos);
+
+        deckPos = new Vector2( newGameScreen.screenWidth/2,newGameScreen.screenHeight/2 );
+
         castCardPosition = castPos;
         castCardRot = castRot;
         //initCards();
@@ -64,7 +55,7 @@ public class OpponentHud extends Group {
     public void initCards(){
         this.clear();
         for(int i=0 ; i<nrOfCards; i++){
-            Card2 crd = new Card2("h-4",cardsTexture.getCardTexture("back"),cardsTexture.getCardTexture("back"),new Vector2(0,0),new Vector2(100 , 100));
+            Card2 crd = new Card2("h-4",cardsTexture.getCardTexture("back"),cardsTexture.getCardTexture("back"),deckPos,new Vector2(100 , 100));
             crd.setFlipped(false);
             this.addActor(crd);
             System.out.println(i);
@@ -84,8 +75,7 @@ public class OpponentHud extends Group {
                 Card2 castCardLocal = (Card2)act;
                 castCardLocal.setFrontImage(cardsTexture.getCardTexture(str));
                 castCardLocal.debug();
-               // System.out.println(castCardPosition.x + " " +castCatrdPosition.y );
-               castCardLocal.rePosition(castCardPosition.x,castCardPosition.y);
+                castCardLocal.rePosition(castCardPosition.x,castCardPosition.y);
                 castCardLocal.setRot(castCardRot);
                 castCardLocal.setFlipped(true);
             }
@@ -112,8 +102,6 @@ public class OpponentHud extends Group {
         float y ;
         rot =  nrOfCards/2 * rotOffset;
 
-        System.out.println("childer = "  + getChildren().size);
-
         for (Actor act : getChildren()) {
             if(act instanceof Card2) {
                 Card2 crd = (Card2) act;
@@ -135,7 +123,6 @@ public class OpponentHud extends Group {
                     rot -= rotOffset;
                     x += xOffset;
                 }
-
             }
         }
     }
