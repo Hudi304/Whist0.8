@@ -117,6 +117,7 @@ public class NewGameScreen implements Screen {
             }
         });
 
+
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
         List<String> str = new ArrayList<>();
@@ -265,6 +266,15 @@ public class NewGameScreen implements Screen {
 
 
 
+    /*
+    * Functions for gameScreen
+     */
+
+
+    public void updateCardsForPlayer(List<String> cards){
+        this.playerHUD.initCards(cards,screenWidth);
+
+    }
 
     @Override
     public void pause() {

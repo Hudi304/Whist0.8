@@ -67,6 +67,7 @@ public class GameController {
         this.playerCards = cards;
         this.gameScreen.updateCardsForPlayer(cards);
         //call a function in the gameScreen to init Cards in the player hand
+        this.gameScreen.updateCardsForPlayer(cards);
         //call a function in the gameScreen to set the number of cards for the opponents
     }
 
@@ -77,59 +78,53 @@ public class GameController {
      * @param table
      */
     public void updateTableStatus(NetworkDTO.Table table){
-        this.table = table;
-
-        String nickname = null;
-        if(table.getFirstToPutCard() != null){
-            nickname = table.getFirstToPutCard().getNickname();
-        }
+        if(this.table == null)
+            this.table = table;
         for(NetworkDTO.Table.PlayerStatus ps: table.getPlayersStatus()){
-            if(ps.getNickname().equals(token.getNickname())){
-                //TODO: call a function in NewGameScreen to update the card for the player
-                //ex: gameScreen.setCardForPlayer(ps.getCard());
+            if(ps.getNickname().equals(token.getNickname()))
+            {
+                //SHOULD DO SOMETHING HERE!!
                 continue;
             }
-
-            //TODO: call a function in NewGameScreen to update the card placed by an opponent
-            //ex: gameScreen.setCardForOpponent(ps.getNickname(), ps.getCard());
-
-
-
-            if(nickname != null && nickname.equals(ps.getNickname())){
-                //TODO: call a function to make visible that a opponent is next to place a card;
-                //ex. gameScreen.markOpponentAsNextToPlaceCard(ps.getNickname());
+            if(ps.getCard().equals(this.table.getCardForPlayer(ps.getNickname()))){
+                //THE ANIMATION WAS ALREADY DONE
                 continue;
             }
-
-
-
+            else{
+                //TODO: this.gameScreen.updateCardForOpp(ps.getNickname()--String,ps.getCard()--String);
+                // ****!!!!!!!***** ps.getCard() can be a specific card or !!!THE STRING "null";
+                continue;
+            }
         }
+
+        this.table = table;
     }
 
 
     public void updateBidStatus(NetworkDTO.Bids bids){
-        this.bids = bids;
-        String nickname = null;
-        if(bids.getFirstToBid() != null)
-            nickname = bids.getFirstToBid().getNickname();
+        if(this.bids == null)
+            this.bids = bids;
+
         for(NetworkDTO.Bids.Bid bid: bids.getBids()){
             if(bid.getNickname().equals(token.getNickname())){
-                //TODO: call a function to update the HUD for the player
-                //ex. this.gameScreen.setUpdatedBidForPlayer(bid.getBid(), bid.getMade());
+                //SHOULD DO SOMETHING HERE
                 continue;
             }
 
-            //TODO: call a function to update the HUD for a specific opponent
-            //ex. this.gameScreen.setUpdatedBidForOpp(bid.getNickname(), bid.getBid(), bid.getMade());
-
-            if(nickname != null  && nickname.equals(bid.getNickname())){
-                //TODO: call a function to make visible that a opponent is next to make a bid;
-                //ex. this.gameScreen.markOpponentAsNextToBid(bid.getNickname());
+            if(bid.equals(this.bids.getBidByPlayer(bid.getNickname()))){
+                //THE ACTION WAS ALREADY DONE!
                 continue;
             }
 
+            //call a function in gameScreen to update Stats for bid
+            //this.gameScreen.updateBidHudForOpp(bid.getNickname(), bid.getBidValue(),bid.getMade());
         }
+
+        this.bids = bids;
     }
+
+
+    
     public Client getRootController() {
         return rootController;
     }

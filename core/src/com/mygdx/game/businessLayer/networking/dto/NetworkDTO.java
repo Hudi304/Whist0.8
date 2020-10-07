@@ -75,6 +75,15 @@ public class NetworkDTO {
             return null;
         }
 
+        public Bid getBidByPlayer(String player){
+            for(Bid bid: bids){
+                if(bid.getNickname().equals(player))
+                    return bid;
+            }
+
+            return null;
+        }
+
 
     }
     public static class Cards {
@@ -262,6 +271,14 @@ public class NetworkDTO {
                     return ps;
             }
             return null;
+        }
+
+        public String getCardForPlayer(String player){
+            for(PlayerStatus ps: this.table){
+                if(ps.getNickname().equals(player))
+                    return ps.getCard();
+            }
+            return "Player not found!!!";
         }
 
         public List<PlayerStatus> getPlayersStatus() {
