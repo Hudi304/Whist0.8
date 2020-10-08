@@ -44,7 +44,7 @@ public class PlayerHud extends Group{
         int i = strLst.size() * 40/2;
         Card2 crd = null;
         for(String str: strLst){
-            crd = new Card2(str,cardsTexture.getCardTexture("back"),cardsTexture.getCardTexture(str),new Vector2(0,0),new Vector2(screenWidth -i ,Constants.CARD_HAND_Y)) ;
+            crd = new Card2(str,cardsTexture.getCardTexture("back"),cardsTexture.getCardTexture(str),new Vector2(0,0),new Vector2(screenWidth -i ,Constants.CARD_HAND_Y),newGameScreen) ;
             this.addActor(crd);
             i-=40;
             nrOfCards++;
@@ -84,8 +84,8 @@ public class PlayerHud extends Group{
         this.addActor(bidHUD);
     }
 
-    public void bidHUDVisibility(){
-        bidHUD.setVisible(!bidHUD.isVisible());
+    public void bidHUDVisibility(boolean visibility){
+        bidHUD.setVisible(visibility);
     }
 
 
