@@ -15,6 +15,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -44,8 +45,6 @@ public class NewGameScreen implements Screen {
     Client client;
     public float screenWidth;
     public float screenHeight;
-
-
     public Texture cardSprite = new Texture("cardSprite.gif");
     public TextureRegion[][] regions;
 
@@ -76,66 +75,92 @@ public class NewGameScreen implements Screen {
 
 
     public NewGameScreen(Client client,CardsTextureRepository cardsTextureRepository){
+        System.out.println("[NewGameScreen] : Constructor");
+        //--------------GameScreenInit---------------------------
+
         this.cardsTextureRepository = cardsTextureRepository;
         this.client =  client;
-        System.out.println("[NewGameScreen] : Constructor");
-        regions = TextureRegion.split(cardSprite, 81, 117);
-        viewport = new ScreenViewport();
-        stage = new Stage(viewport);
-        skin = new Skin(Gdx.files.internal(Constants.skinJsonString));
-        playerHUD = new PlayerHud(cardsTextureRepository,this);
-        tableHUD = new TableHud(cardsTextureRepository,this);
-        System.out.println(screenWidth + " " + screenHeight );
-        screenHeight = Gdx.graphics.getHeight();
-        screenWidth = Gdx.graphics.getWidth();
-        batch = new SpriteBatch();
+            regions = TextureRegion.split(cardSprite, 81, 117);
+            viewport = new ScreenViewport();
+            stage = new Stage(viewport);
+            skin = new Skin(Gdx.files.internal(Constants.skinJsonString));
+            screenHeight = Gdx.graphics.getHeight();
+            screenWidth = Gdx.graphics.getWidth();
+            batch = new SpriteBatch();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("JosefinSans-SemiBold.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 20;
-        font12 = generator.generateFont(parameter);
-        font12.setColor(Color.BLACK);
-        deckPos = new Vector2(screenWidth/4,screenHeight/4);
-        this.client =  client;
+            parameter.size = 20;
+            font12 = generator.generateFont(parameter);
+            font12.setColor(Color.BLACK);
+            deckPos = new Vector2(screenWidth/4,screenHeight/4);
+
+
+        //--------------GameScreenHUDs---------------------------
+
+        playerHUD = new PlayerHud(cardsTextureRepository,this);
+        tableHUD = new TableHud(cardsTextureRepository,this);
+        System.out.println("[NewGameScreen] : resolution " + screenWidth + "/" + screenHeight );
+
     }
+
+    public void addTableToScene(){
+        stage.addActor(tableHUD);
+    }
+
 
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-        //stage.addActor(tableHUD);
+        stage.addActor(tableHUD);
         flipBtn = new TextButton("Flip",skin);
         flipBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 playerHUD.setFlipped();
-                playerHUD.bidHUDVisibility();
+                //playerHUD.bidHUDVisibility();
+               // distributeCards(8);
             }
         });
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
 
+        //initDeck(8);
         playerHUD.createBidHUD();
         tableHUD.initTable();
         stage.addActor(playerHUD);
+        System.out.println("[GameScreen] deck = " + deck);
         stage.addActor(deck);
         stage.addActor(flipBtn);
     }
     // this need to be called
     public void initDeck(int nrCardsPerPlayer){
-        for (int i = 0 ; i < opponentsNames.size() + 1 ; i++ ){
-            Card2 crd = new Card2("h-4",cardsTextureRepository.getCardTexture("back"),cardsTextureRepository.getCardTexture("back"), new Vector2(screenWidth/2 , 100),deckPos);
+        for (int i = 0 ; i < (opponentsNames.size() ) *nrCardsPerPlayer ; i++ ){
+            Card2 crd = new Card2("h-4",cardsTextureRepository.getCardTexture("back"),cardsTextureRepository.getCardTexture("back"), deckPos,new Vector2(screenWidth/2 , 100),this);
+            //crd.se
+            crd.setTouchable(Touchable.enabled);
             deck.addActor(crd);
         }
     }
 
-    public void distributeCards(int nrCardsPerPlayer){
+    public void sendCard(String card){
+        this.client.networkService.sendCardResponse(card);
+    }
+
+    public void distributeCards(int nrCardsPerPlayer) {
         int i = 0;
-        for (Actor act:deck.getChildren()) {
-            if(act instanceof  Card2){
 
-
-
+        for (Actor crd : deck.getChildren()) {
+            if (crd instanceof Card2) {
+                for (Actor opp : opponentHuds.getChildren()) {
+                    if (opp instanceof OpponentHud) {
+                        ((OpponentHud) opp).addActor(crd);
+                        deck.removeActor(crd);
+                    }
+                }
             }
         }
+
+        resizeOpponents(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
     }
 
     public void initOpponentsHUD(List<String> opponets){
@@ -306,7 +331,6 @@ public class NewGameScreen implements Screen {
         }
         if(opponent5 != null){
             opponent5.setCastCardPosition(new Vector2(screenWidth*0.85f , screenHeight*0.25f));
-
             plPos = new Vector2(width *7 / 8, height / 2.9f);
             centerPos = new Vector2(width * 1.94f , height / 6);
             opponent5.positionCardsVert( width,  height, plPos, centerPos,offset* 0.6f, width, 90, true);

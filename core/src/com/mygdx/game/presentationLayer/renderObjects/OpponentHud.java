@@ -55,7 +55,7 @@ public class OpponentHud extends Group {
     public void initCards(){
         this.clear();
         for(int i=0 ; i<nrOfCards; i++){
-            Card2 crd = new Card2("h-4",cardsTexture.getCardTexture("back"),cardsTexture.getCardTexture("back"),deckPos,new Vector2(100 , 100));
+            Card2 crd = new Card2("h-4",cardsTexture.getCardTexture("back"),cardsTexture.getCardTexture("back"),deckPos,new Vector2(100 , 100),newGameScreen);
             crd.setFlipped(false);
             this.addActor(crd);
             System.out.println(i);

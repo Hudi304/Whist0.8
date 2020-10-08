@@ -70,6 +70,7 @@ public class Client extends Game implements NetworkController {
 		this.gameController = new GameController(this, newGameScreen);
 
 
+		//setScreen(newGameScreen);
 		setSCreen(screenState);
 
 
@@ -120,22 +121,6 @@ public class Client extends Game implements NetworkController {
 		super.render();
 	}
 
-
-	public float getScreenWidth() {
-		return screenWidth;
-	}
-
-	public void setScreenWidth(float screenWidth) {
-		this.screenWidth = screenWidth;
-	}
-
-	public float getScreenHeight() {
-		return screenHeight;
-	}
-
-	public void setScreenHeight(float screenHeight) {
-		this.screenHeight = screenHeight;
-	}
 
 	/**
 	 * Get a copy of the instance of Network interface
@@ -250,12 +235,13 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void updatePlayerList(List<NetworkDTO.Player> players) {
+		System.out.println("[Client] updatePlayerList" );
 		List<String> playersStr = new LinkedList<>();
 		for(NetworkDTO.Player p: players){
 			playersStr.add(p.getName());
 		}
 
-		System.out.println("recieving players" );
+
 		this.gameController.initOpponentsOrder(playersStr);
 
 	}
@@ -267,6 +253,8 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void updateCards(NetworkDTO.Cards cards) {
+		System.out.println("[Client] updateCards" );
+
 		screenState = ScreenState.NEWGAME;
 		this.gameController.setCards(cards.getCards());
 	}
@@ -279,6 +267,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void showHudForBids(NetworkDTO.Bids.Bid bid) {
+		System.out.println("[Client] showHudForBids" );
 		gameController.enableBidHud(bid);
 
 	}
@@ -288,6 +277,8 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void hideBidHUD() {
+		System.out.println("[Client] hideBidHUD" );
+
 		gameController.disableBidHud();
 	}
 
@@ -299,7 +290,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void showHudForCards(NetworkDTO.Table.PlayerStatus ps) {
-		
+		System.out.println("[Client] showHudForCards" );
 		gameController.enableCardHud();
 	}
 
@@ -308,6 +299,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void hideCardHud() {
+		System.out.println("[Client] hideCardHud" );
 		gameController.disableCardHud();
 
 	}
@@ -319,6 +311,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void updateBids(NetworkDTO.Bids bids) {
+		System.out.println("[Client] updateBids" );
 		gameController.updateBidStatus(bids);
 	}
 
@@ -329,17 +322,18 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void updateTable(NetworkDTO.Table table) {
+		System.out.println("[Client] updateTable" );
 		gameController.updateTableStatus(table);
 	}
 
 	/**
 	 * Call this function when you picked a card and want to send it to server
 	 * !! Make sure the card is valid before calling this function!!
-	 *
 	 * @param card
 	 */
 	@Override
 	public void sendCard(String card) {
+		System.out.println("[Client] sendCard" );
 		//todo valideaza asta
 		this.networkService.sendCardResponse(card);
 	}
@@ -347,7 +341,6 @@ public class Client extends Game implements NetworkController {
 	/**
 	 * Call this function when you choosed the bid and want to send it to server
 	 * !!Make sure the bid is valid before calling this function!!
-	 *
 	 * @param bid
 	 */
 	@Override
@@ -420,6 +413,24 @@ public class Client extends Game implements NetworkController {
 	public void sendWinner(String winner) {
 
 	}
+
+
+	public float getScreenWidth() {
+		return screenWidth;
+	}
+
+	public void setScreenWidth(float screenWidth) {
+		this.screenWidth = screenWidth;
+	}
+
+	public float getScreenHeight() {
+		return screenHeight;
+	}
+
+	public void setScreenHeight(float screenHeight) {
+		this.screenHeight = screenHeight;
+	}
+
 
 
 	public void goToScreen(com.mygdx.game.presentationLayer.screens.ScreenState state){

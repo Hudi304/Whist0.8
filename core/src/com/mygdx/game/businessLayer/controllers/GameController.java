@@ -30,7 +30,7 @@ public class GameController {
      */
     public void initOpponentsOrder(List<String> opponents){
         // make the player to be the first in this list;
-        System.out.println("[Game Controller]");
+        System.out.println("[Game Controller] : initOpponentsOrder ");
         this.opponents = new LinkedList<>();
         int i=0;
         boolean found = false;
@@ -53,8 +53,6 @@ public class GameController {
             if(i==opponents.size())
                 i=0;
         }
-
-        //System.out.println(this.opponents);
         gameScreen.initOpponentsHUD(this.opponents);
         gameScreen.opponentsNames =  this.opponents;
 
@@ -67,10 +65,10 @@ public class GameController {
      * @param cards
      */
     public void setCards(List<String> cards){
+        System.out.println("[Game Controller] : setCards ");
         this.playerCards = cards;
         this.gameScreen.updateCardsForPlayer(cards);
         //call a function in the gameScreen to init Cards in the player hand
-        //this.gameScreen.updateCardsForPlayer(cards);
         //call a function in the gameScreen to set the number of cards for the opponents
     }
 
@@ -81,6 +79,8 @@ public class GameController {
      * @param table
      */
     public void updateTableStatus(NetworkDTO.Table table){
+        System.out.println("[Game Controller] : updateTableStatus ");
+
         if(this.table == null)
             this.table = table;
         for(NetworkDTO.Table.PlayerStatus ps: table.getPlayersStatus()){
@@ -99,12 +99,12 @@ public class GameController {
                 continue;
             }
         }
-
         this.table = table;
     }
 
 
     public void updateBidStatus(NetworkDTO.Bids bids){
+        System.out.println("[Game Controller] : updateBidStatus ");
         if(this.bids == null)
             this.bids = bids;
 
@@ -118,7 +118,6 @@ public class GameController {
                 //THE ACTION WAS ALREADY DONE!
                 continue;
             }
-
             //call a function in gameScreen to update Stats for bid
             //this.gameScreen.updateBidHudForOpp(bid.getNickname(), bid.getBidValue(),bid.getMade());
         }
