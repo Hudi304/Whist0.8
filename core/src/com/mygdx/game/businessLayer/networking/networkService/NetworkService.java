@@ -2,6 +2,7 @@ package com.mygdx.game.businessLayer.networking.networkService;
 
 
 
+import com.mygdx.game.Client;
 import com.mygdx.game.businessLayer.networking.networkController.NetworkController;
 import com.mygdx.game.businessLayer.networking.actions.ClientActions;
 import com.mygdx.game.businessLayer.networking.actions.ServerActions;
@@ -241,6 +242,7 @@ public class NetworkService {
                 }
                 System.out.println("[networking]: Received PlayerList at: " + System.currentTimeMillis() );
                 rootController.updatePlayerList(players);
+                socket.emit(ClientActions.GOT_PLAYERS,token.getToken());
 
             }
         }));

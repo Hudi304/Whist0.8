@@ -33,6 +33,8 @@ public class OpponentHUD extends Group {
     private float r;
     BitmapFont font12;//p
 
+    String nickname;
+
     Vector2 castCardPosition;
     public Vector2 deckPos;
     float castCardRot;
@@ -43,7 +45,8 @@ public class OpponentHUD extends Group {
     public Vector2 centerPosition;
 
 
-    public OpponentHUD(int nrOfCards, CardsTextureRepository cardsTextureRepository, Viewport viewport){
+    public OpponentHUD(String nickname,int nrOfCards, CardsTextureRepository cardsTextureRepository, Viewport viewport){
+        this.nickname = nickname;
         this.viewport = viewport;
         this.nrOfCards = nrOfCards;
         this.cardsTextureRepository = cardsTextureRepository;
@@ -163,6 +166,20 @@ public class OpponentHUD extends Group {
         nrOfCards--;
     }
 
+    public void refreshOppCards(int nrOfCards){
+        this.viewport = viewport;
+        this.nrOfCards = nrOfCards;
+        this.cardsTextureRepository = cardsTextureRepository;
+        for (Actor act:getChildren()) {
+            if(act instanceof OpponentCard){
+                this.removeActor(act);
+            }
+        }
+        for(int i = 0; i < nrOfCards ; i++){
+            OpponentCard card = new OpponentCard(cardsTextureRepository.getCardTexture("back"));
+            this.addActor(card);
+        }
+    }
 
     public Vector2 getCastCardPosition() {
         return castCardPosition;
@@ -172,5 +189,7 @@ public class OpponentHUD extends Group {
         this.castCardPosition = castCardPosition;
     }
 
-
+    public String getNickname() {
+        return nickname;
+    }
 }

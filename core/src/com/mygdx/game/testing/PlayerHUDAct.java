@@ -3,12 +3,12 @@ package com.mygdx.game.testing;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.dataLayer.generics.Card2;
+import com.mygdx.game.businessLayer.controllers.GameController;
+
 import com.mygdx.game.dataLayer.repositories.CardsTextureRepository;
+
 
 import java.util.List;
 
@@ -23,11 +23,12 @@ public class PlayerHUDAct extends Group {
     private Viewport viewport;
     public boolean bidHudVisibility  = false;
     CardsTextureRepository cardsTextureRepository;
+    GameController gameController;
 
 
-    public PlayerHUDAct(CardsTextureRepository cardsTextureRepository, Viewport viewport,GameScreenTest gameScreenTest) {
+    public PlayerHUDAct(CardsTextureRepository cardsTextureRepository, Viewport viewport,GameScreenTest gameScreenTest,GameController controller) {
         this.viewport = viewport;
-
+        gameController = controller;
         this.cardsTextureRepository = cardsTextureRepository;
 //        for (String str:crd) {
 //            PlayerCard card = new PlayerCard(cardsTextureRepository.getCardTexture(str));
@@ -35,7 +36,7 @@ public class PlayerHUDAct extends Group {
 //        }
         BidHUD bidHUD =  new BidHUD(gameScreenTest, viewport);
         this.addActor(bidHUD);
-        setBidHUDVisibility(true);
+        setBidHUDVisibility(false);
     }
 
     public void refreshCards(List<String> crd){
@@ -49,6 +50,15 @@ public class PlayerHUDAct extends Group {
             PlayerCard card = new PlayerCard(cardsTextureRepository.getCardTexture(str));
             this.addActor(card);
         }
+
+        for(Actor act: getChildren()){
+            if (act instanceof BidHUD) {
+                BidHUD bd = (BidHUD) act;
+                bd.setNumberOfCards(crd.size());
+                return;
+            }
+        }
+
     }
 
     public void resize () {
@@ -100,6 +110,21 @@ public class PlayerHUDAct extends Group {
                 }
             }
         }
+    }
+
+    public void setForbiddenValue (int forb){
+        for (Actor act : getChildren()) {
+            if (act instanceof BidHUD) {
+                BidHUD bdHUD = (BidHUD) act;
+                bdHUD.setForbiddenValue(forb);
+                return;
+            }
+
+        }
+    }
+
+    public void sendBidValue(int bid ){
+        gameController.sendBid(bid);
     }
 
 

@@ -4,6 +4,7 @@ package com.mygdx.game.businessLayer.controllers;
 import com.mygdx.game.Client;
 import com.mygdx.game.businessLayer.networking.dto.NetworkDTO;
 import com.mygdx.game.presentationLayer.screens.NewGameScreen;
+import com.mygdx.game.testing.GameScreenTest;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -11,16 +12,16 @@ import java.util.List;
 public class GameController {
 
     private Client rootController;
-    private NewGameScreen gameScreen;
+    private GameScreenTest gameScreen;
     private List<String> playerCards;
     private List<String> opponents;
     private NetworkDTO.Token token;
     private NetworkDTO.Table table;
     private NetworkDTO.Bids bids;
 
-    public GameController(Client rootController, NewGameScreen gameScreen) {
+    public GameController(Client rootController) {
         this.rootController = rootController;
-        this.gameScreen = gameScreen;
+        this.gameScreen = null;
     }
 
     /**
@@ -54,7 +55,7 @@ public class GameController {
                 i=0;
         }
         //gameScreen.initOpponentsHUD(this.opponents);
-        gameScreen.opponentsNames =  this.opponents;
+        gameScreen.initOpponents(this.opponents);
 
 
     }
@@ -67,7 +68,8 @@ public class GameController {
     public void setCards(List<String> cards){
         System.out.println("[Game Controller] : setCards ");
         this.playerCards = cards;
-        this.gameScreen.updateCardsForPlayer(cards);
+        this.gameScreen.updateOpponentsCards(cards.size());
+        this.gameScreen.updatePlayerCards(cards);
         //call a function in the gameScreen to init Cards in the player hand
         //call a function in the gameScreen to set the number of cards for the opponents
     }
@@ -135,18 +137,16 @@ public class GameController {
         this.rootController = rootController;
     }
 
-    public NewGameScreen getNewGameScreen() {
-        return gameScreen;
-    }
+
 
     public void enableBidHud(NetworkDTO.Bids.Bid bid) {
         System.out.println("Should enable bid Hud");
         gameScreen.setForbiddenValue(bid.getForbidden());
-        gameScreen.setBidVisibility(true);
+        gameScreen.seteBidHudVisibile(true);
     }
 
     public void disableBidHud() {
-        gameScreen.setBidVisibility(false);
+        gameScreen.seteBidHudVisibile(false);
     }
 
     public void enableCardHud() {
@@ -158,7 +158,7 @@ public class GameController {
         //gameScreen.disableCardHud();
     }
 
-    public void setNewGameScreen(NewGameScreen gameScreen) {
+    public void setGameScreen(GameScreenTest gameScreen) {
         this.gameScreen = gameScreen;
     }
 
@@ -187,5 +187,10 @@ public class GameController {
     }
 
 
+    public void sendBid(int bid) {
+        System.out.println("Bid send: " + bid);
+        //TODO: VALIDATE BID HERE
+        rootController.sendBid(bid);
 
+    }
 }
