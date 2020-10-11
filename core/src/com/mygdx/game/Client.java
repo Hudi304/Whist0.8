@@ -38,6 +38,7 @@ public class Client extends Game implements NetworkController {
 	com.mygdx.game.presentationLayer.screens.Lobby lobbyScreen;
 	com.mygdx.game.presentationLayer.screens.GameScreen gameScreen;
 	com.mygdx.game.presentationLayer.screens.NewGameScreen newGameScreen;
+
 	GameScreenTest testing;
 
 	//FLAGS
@@ -67,12 +68,18 @@ public class Client extends Game implements NetworkController {
 		lobbyScreen = new com.mygdx.game.presentationLayer.screens.Lobby(this);
 		gameScreen =  new com.mygdx.game.presentationLayer.screens.GameScreen(this);
 		newGameScreen = new com.mygdx.game.presentationLayer.screens.NewGameScreen(this,cardsTextureRepository);
+		
 
 		this.gameController = new GameController(this, newGameScreen);
 		testing = new GameScreenTest(cardsTextureRepository);
 
-		setSCreen(screenState);
-		//setSCreen(ScreenState.TEST);
+
+
+		//setScreen(newGameScreen);
+		setSCreen(ScreenState.TEST);
+
+	
+
 
 
 		try {
@@ -105,6 +112,9 @@ public class Client extends Game implements NetworkController {
 				break;
 			case NEWGAME:
 				setScreen(newGameScreen);
+				break;
+			case TEST:
+				setScreen(gameScreenTest);
 				break;
 			default:
 				setScreen(testing);
