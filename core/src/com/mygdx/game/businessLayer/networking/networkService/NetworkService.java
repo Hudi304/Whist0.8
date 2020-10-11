@@ -6,6 +6,7 @@ import com.mygdx.game.businessLayer.networking.actions.ClientActions;
 import com.mygdx.game.businessLayer.networking.actions.ServerActions;
 import com.mygdx.game.businessLayer.networking.dto.NetworkDTO;
 
+import com.mygdx.game.businessLayer.others.Constants;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -81,7 +82,7 @@ public class NetworkService {
                         else{
                             socket.emit(ClientActions.LOGIN);
 
-                            rootController.joinGame("test1","odrin");
+                            rootController.joinGame("test1", Constants.generateNickname());
 
                         }
 
@@ -222,8 +223,9 @@ public class NetworkService {
                         e.printStackTrace();
                     }
                 }
-                NetworkService.this.rootController.updatePlayerList(players);
-                socket.emit(ClientActions.GOT_PLAYERS, token.getToken());
+                System.out.println("[networking]: Received PlayerList at: " + System.currentTimeMillis() );
+                rootController.updatePlayerList(players);
+
             }
         }));
 
@@ -392,5 +394,9 @@ public class NetworkService {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public void canRunGame() {
+        socket.emit(ClientActions.GOT_PLAYERS, token.getToken());
     }
 }
