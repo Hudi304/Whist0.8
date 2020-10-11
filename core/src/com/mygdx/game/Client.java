@@ -38,7 +38,8 @@ public class Client extends Game implements NetworkController {
 	com.mygdx.game.presentationLayer.screens.Lobby lobbyScreen;
 	com.mygdx.game.presentationLayer.screens.GameScreen gameScreen;
 	com.mygdx.game.presentationLayer.screens.NewGameScreen newGameScreen;
-	GameScreenTest gameScreenTest;
+
+	GameScreenTest testing;
 
 	//FLAGS
 	private com.mygdx.game.presentationLayer.screens.ScreenState screenState = com.mygdx.game.presentationLayer.screens.ScreenState.MAIN_MENU;
@@ -67,13 +68,18 @@ public class Client extends Game implements NetworkController {
 		lobbyScreen = new com.mygdx.game.presentationLayer.screens.Lobby(this);
 		gameScreen =  new com.mygdx.game.presentationLayer.screens.GameScreen(this);
 		newGameScreen = new com.mygdx.game.presentationLayer.screens.NewGameScreen(this,cardsTextureRepository);
-		gameScreenTest = new GameScreenTest(cardsTextureRepository);
+		
 
 		this.gameController = new GameController(this, newGameScreen);
+		testing = new GameScreenTest(cardsTextureRepository);
+
 
 
 		//setScreen(newGameScreen);
 		setSCreen(ScreenState.TEST);
+
+	
+
 
 
 		try {
@@ -111,7 +117,7 @@ public class Client extends Game implements NetworkController {
 				setScreen(gameScreenTest);
 				break;
 			default:
-				//setScreen(testing);
+				setScreen(testing);
 				break;
 		}
 
@@ -248,6 +254,8 @@ public class Client extends Game implements NetworkController {
 
 
 		this.gameController.initOpponentsOrder(playersStr);
+		System.out.println("[client]: Started to change the screen at: " + System.currentTimeMillis());
+		screenState = ScreenState.NEWGAME;
 
 	}
 
@@ -260,7 +268,7 @@ public class Client extends Game implements NetworkController {
 	public void updateCards(NetworkDTO.Cards cards) {
 		System.out.println("[Client] updateCards" );
 
-		screenState = ScreenState.NEWGAME;
+
 		this.gameController.setCards(cards.getCards());
 	}
 
@@ -440,6 +448,11 @@ public class Client extends Game implements NetworkController {
 
 	public void goToScreen(com.mygdx.game.presentationLayer.screens.ScreenState state){
 		this.screenState = state;
+	}
+
+	public void canRunGame(){
+		System.out.println("[client]: CanRunGame method run at: " + System.currentTimeMillis());
+		this.networkService.canRunGame();
 	}
 }
 

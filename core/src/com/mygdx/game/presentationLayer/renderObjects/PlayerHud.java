@@ -80,12 +80,21 @@ public class PlayerHud extends Group{
         bidHUD.addActor(bidVal);
         bidHUD.addActor(bidButton);
         bidHUD.setName("bidHUD");
-        bidHUD.setVisible(true);
+        bidHUD.setVisible(false);
         this.addActor(bidHUD);
     }
 
     public void bidHUDVisibility(boolean visibility){
-        bidHUD.setVisible(visibility);
+        bidHUD.setVisible(visibility); //NOT WORKING
+//        for(Actor child: this.getChildren()){
+//            if(child.getName().equals("bidHUD"))
+//            {
+//                System.out.println("Making BID HUD visible: " + visibility);
+//                child.setVisible(visibility);
+//                return;
+//            }
+//        }
+//        System.out.println("BID HUD NOT FOUND!");
     }
 
 

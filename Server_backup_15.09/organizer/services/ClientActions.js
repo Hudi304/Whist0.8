@@ -9,6 +9,7 @@ module.exports = {
     START_GAME: "START_GAME",
     CARD_RESPONSE: "CARD_RESPONSE",
     DISCONNECT: "disconnect",
+    PING: "PING",
 
     GOT_PLAYERS: "GOT_PLAYERS",
     GOT_BID_STATUS: "GOT_BID_STATUS",

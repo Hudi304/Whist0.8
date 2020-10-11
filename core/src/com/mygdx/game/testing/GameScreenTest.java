@@ -53,6 +53,7 @@ public class GameScreenTest implements Screen {
     @Override
     public void show() {
         skin = new Skin(Gdx.files.internal(Constants.skinJsonString));
+
         Gdx.input.setInputProcessor(stage);
         List<String> str = new ArrayList<>();
         str.add("h-12");
@@ -106,9 +107,12 @@ public class GameScreenTest implements Screen {
                 oppHUD5.putCastCard("h-12");
                 resizeOpponents(viewport.getScreenWidth(),viewport.getScreenHeight());
                 plHUD.setBidHUDVisibility(!plHUD.bidHudVisibility);
+
+        
             }
         });
         stage.addActor(flipButton);
+
     }
 
 
@@ -119,6 +123,7 @@ public class GameScreenTest implements Screen {
 
 
         stage.act(delta);
+
         stage.draw();
     }
 

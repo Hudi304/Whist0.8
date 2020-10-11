@@ -110,14 +110,17 @@ public class NewGameScreen implements Screen {
 
     @Override
     public void show() {
+        System.out.println("Started show on GameScreen: " + System.currentTimeMillis());
         Gdx.input.setInputProcessor(stage);
-        stage.addActor(tableHUD);
+        //stage.addActor(tableHUD);
         flipBtn = new TextButton("Flip",skin);
         flipBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 playerHUD.setFlipped();
                 //playerHUD.bidHUDVisibility();
+                //playerHUD.bidHUDVisibility(boolTest);
+
                // distributeCards(8);
             }
         });
@@ -125,12 +128,19 @@ public class NewGameScreen implements Screen {
         screenHeight = Gdx.graphics.getHeight();
 
         //initDeck(8);
+
+
         playerHUD.createBidHUD();
-        tableHUD.initTable();
+        System.out.println("Created bidHud " + System.currentTimeMillis());
+        System.out.println("CREATED BID HUD");
+        //playerHUD.bidHUDVisibility(false);
+        initOpponentsHUD(opponentsNames);
+        //tableHUD.initTable();
         stage.addActor(playerHUD);
         System.out.println("[GameScreen] deck = " + deck);
         stage.addActor(deck);
         stage.addActor(flipBtn);
+        client.canRunGame();
     }
     // this need to be called
     public void initDeck(int nrCardsPerPlayer){
@@ -250,8 +260,8 @@ public class NewGameScreen implements Screen {
             renderNicknamesBatch();
         batch.end();
 
-        opponentHuds.act(delta);
-        playerHUD.act(delta);
+//        opponentHuds.act(delta);
+//        playerHUD.act(delta);
 
         stage.act(delta);
         stage.draw();
@@ -291,7 +301,7 @@ public class NewGameScreen implements Screen {
         this.screenWidth = width;
         this.screenHeight = height;
 
-        tableHUD.resizeTable();
+        //tableHUD.resizeTable();
         playerHUD.resizeHUD();
 
         resizeOpponents(width,height);
@@ -344,6 +354,19 @@ public class NewGameScreen implements Screen {
         this.playerHUD.initCards(cards,screenWidth);
 
     }
+
+    public void setForbiddenValue(int forbiddenValue){
+        if(forbiddenValue == -1)
+            return;
+        else
+            System.out.println("Forbidden value: " + forbiddenValue);
+    }
+
+    public void setBidVisibility(boolean visibility){
+        System.out.println("Setting bidHUD visibility at: " + System.currentTimeMillis());
+        this.playerHUD.bidHUDVisibility(visibility);
+    }
+
 
     @Override
     public void pause() {

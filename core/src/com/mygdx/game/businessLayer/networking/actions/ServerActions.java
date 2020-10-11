@@ -21,5 +21,7 @@ public enum ServerActions {
     public static final String WINNER = "WINNER";
     public static final String SCORE_STATUS = "SCORE_STATUS";
 
+    public static final String PING = "PING";
+
 
 }
