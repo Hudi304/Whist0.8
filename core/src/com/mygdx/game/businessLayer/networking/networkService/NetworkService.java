@@ -1,10 +1,13 @@
 package com.mygdx.game.businessLayer.networking.networkService;
 
 
+
 import com.mygdx.game.businessLayer.networking.networkController.NetworkController;
 import com.mygdx.game.businessLayer.networking.actions.ClientActions;
 import com.mygdx.game.businessLayer.networking.actions.ServerActions;
 import com.mygdx.game.businessLayer.networking.dto.NetworkDTO;
+
+import com.mygdx.game.businessLayer.others.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +30,7 @@ public class NetworkService {
 
     private NetworkDTO.Table table = null;
     private NetworkDTO.Bids bids = null;
+    private long startPing = -1;
 
     private static NetworkService instance = new NetworkService();
 
@@ -80,8 +84,8 @@ public class NetworkService {
                         }
                         else{
                             socket.emit(ClientActions.LOGIN);
-
-                            rootController.joinGame("test1","odrin");
+                            socket.emit(ClientActions.PING);
+                            rootController.joinGame("test1", Constants.generateNickname());
 
                         }
 
@@ -116,6 +120,19 @@ public class NetworkService {
                 }
             }
         }));
+
+        socket.on(ServerActions.PING, new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                long endTime = System.currentTimeMillis();
+                if(startPing != -1){
+                    System.out.println("PING: " + (endTime - startPing));
+                }
+
+                startPing = endTime;
+                socket.emit(ClientActions.PING);
+            }
+        });
 
 
         socket.on(ServerActions.TOKEN,(new Emitter.Listener() {
@@ -222,8 +239,9 @@ public class NetworkService {
                         e.printStackTrace();
                     }
                 }
-                NetworkService.this.rootController.updatePlayerList(players);
-                socket.emit(ClientActions.GOT_PLAYERS, token.getToken());
+                System.out.println("[networking]: Received PlayerList at: " + System.currentTimeMillis() );
+                rootController.updatePlayerList(players);
+
             }
         }));
 
@@ -392,5 +410,9 @@ public class NetworkService {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public void canRunGame() {
+        socket.emit(ClientActions.GOT_PLAYERS, token.getToken());
     }
 }

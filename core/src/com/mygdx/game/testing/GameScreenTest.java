@@ -6,7 +6,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
+import com.badlogic.gdx.scenes.scene2d.actions.RotateByAction;
+import com.badlogic.gdx.scenes.scene2d.actions.ScaleByAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -33,39 +37,52 @@ public class GameScreenTest implements Screen {
     public void show() {
         skin = new Skin(Gdx.files.internal(Constants.skinJsonString));
         stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+        MyActor actor = new MyActor(cardsTextureRepository.getCardTexture("h-14"),0);
+        MyActor actor1 = new MyActor(cardsTextureRepository.getCardTexture("h-14"),20);
+        Group group = new Group();
+        group.setWidth(200);
+        group.setHeight(200);
+        group.setX(200);
+        group.setY(200);
 
 
+        group.setTransform(true);
+        group.addActor(actor);
+        group.addActor(actor1);
 
+        stage.addActor(group);
 
-
-        CardTest1 c = new CardTest1(cardsTextureRepository.getCardTexture("back"));
-        c.addListener(new ClickListener());
-
-        stage.addActor(c);
-
-
-        TextButton flipButton = new TextButton("Flip",skin);
-
+        TextButton flipButton = new TextButton("StartAction",skin);
 
         flipButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                System.out.println("Pressed");
+                RotateByAction action1 = new RotateByAction();
+                if(i > 180)
+                    i = 0;
+                System.out.println("Radius: " + i);
+                action1.setAmount(i++);
 
-                for (Actor a: stage.getActors()){
-                    if(a instanceof CardTest1){
-                        CardTest1 localCard = (CardTest1) a;
-                        localCard.setBackImage(cardsTextureRepository.getCardTexture(cards[i]));
-                        i++;
-                        if(i == cards.length)
-                            i = 0;
-                    }
-                }
+                action1.setDuration(1f);
+//                MoveByAction action2 = new MoveByAction();
+//                action2.setAmount(200,200);
+//                action2.setDuration(1f);
+
+                ScaleByAction action3 = new ScaleByAction();
+                action3.setAmount(0.1f);
+                stage.getActors().first().addAction(action1);
+                //stage.getActors().first().addAction(action2);
+                stage.getActors().first().addAction(action3);
+
+
             }
         });
 
 
         stage.addActor(flipButton);
-        Gdx.input.setInputProcessor(stage);
+
     }
 
 
@@ -76,6 +93,7 @@ public class GameScreenTest implements Screen {
 
 
         stage.act(delta);
+
         stage.draw();
     }
 

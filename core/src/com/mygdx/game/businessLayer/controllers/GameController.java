@@ -53,7 +53,7 @@ public class GameController {
             if(i==opponents.size())
                 i=0;
         }
-        gameScreen.initOpponentsHUD(this.opponents);
+        //gameScreen.initOpponentsHUD(this.opponents);
         gameScreen.opponentsNames =  this.opponents;
 
 
@@ -140,12 +140,13 @@ public class GameController {
     }
 
     public void enableBidHud(NetworkDTO.Bids.Bid bid) {
-//        gameScreen.setBidForbidden(bid.getForbidden());
-//        gameScreen.enableBidHud();
+        System.out.println("Should enable bid Hud");
+        gameScreen.setForbiddenValue(bid.getForbidden());
+        gameScreen.setBidVisibility(true);
     }
 
     public void disableBidHud() {
-//        gameScreen.disableBidHud();
+        gameScreen.setBidVisibility(false);
     }
 
     public void enableCardHud() {

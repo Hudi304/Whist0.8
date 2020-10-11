@@ -44,6 +44,8 @@ module.exports = class ServerActionManager{
                 return this.__gotPlayersStatus(payload);
             case client.GOT_SCORE:
                 return this.__gotScoreStatus(payload);
+            case client.PING:
+                return this.__sendPingStatus(payload);
         }
 
     }
@@ -439,6 +441,18 @@ module.exports = class ServerActionManager{
         return command;
     }
 
+    __sendPingStatus(payload){
+        let command = new Command();
+        command.addCombinedAction(this.__createPingResponseAction(payload.id));
+        return command;
+    }
+
+    __createPingResponseAction(to){
+        let type = emmiter.ONE;
+        let data = {};
+        let pingAction = {type: server.PING,payload: data}
+        return createCombinedAction(type,to,pingAction);
+    }
 
     __createErrorCombinedAction(to,errorType,message){
         let type = emmiter.ONE;
