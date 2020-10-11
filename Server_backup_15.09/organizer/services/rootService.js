@@ -24,7 +24,7 @@ module.exports = class RootService{
      * 
      * @param {string} playerID -> token of the connected client 
      */
-    connect(playerID){
+    connect(playerID){ // used
 
         let localToken = Token(playerID,null,null);
 
@@ -51,7 +51,7 @@ module.exports = class RootService{
      * @param {*} roomID 
      */
 
-    createRoom(playerID,playerName,roomID){
+    createRoom(playerID,playerName,roomID){ // used
         let localRoom = null;
         try{
             localRoom = this.roomRepo.addRoom(roomID);
@@ -86,7 +86,7 @@ module.exports = class RootService{
     * return the json object with: roomID, ownerName, players, size; 
     * @param {*} roomID 
     */
-    lobbyData(roomID){
+    lobbyData(roomID){ //used
         let localRoom = this.roomRepo.getRoom(roomID);
 
         if(!localRoom)
@@ -107,7 +107,7 @@ module.exports = class RootService{
      * @param {*} playerName 
      * @param {*} roomID 
      */
-    joinRoom(playerID,playerName,roomID){
+    joinRoom(playerID,playerName,roomID){ // used
         
         let foundRoom = this.roomRepo.getRoom(roomID);
         if(!foundRoom)
@@ -144,7 +144,7 @@ module.exports = class RootService{
      * if the state is canceled, return KICK_OUT;
      * @param {*} playerID 
      */
-    leaveRoom(playerID,roomID){
+    leaveRoom(playerID,roomID){ // USED
         
         let foundRoom = this.roomRepo.getRoom(roomID);
         if(!foundRoom)
@@ -170,7 +170,7 @@ module.exports = class RootService{
         
     }
 
-    kickAll(roomID){
+    kickAll(roomID){ // used
         let foundRoom = this.roomRepo.getRoom(roomID);
 
         if(!foundRoom)
@@ -198,56 +198,56 @@ module.exports = class RootService{
 
     };
 
-    manageStates({type,payload}){
-        try{
-            switch(type){
+    // manageStates({type,payload}){ --DEPRECATED
+    //     try{
+    //         switch(type){
 
-                case CONNECTED:
-                    return payload.token;
+    //             case CONNECTED:
+    //                 return payload.token;
 
-                case LOBBY:
-                    return this.lobbyData(payload.roomID);
+    //             case LOBBY:
+    //                 return this.lobbyData(payload.roomID);
 
-                case ROOMS_RESPONSE:
-                    return {
-                        num_of_rooms: payload.rooms.length,
-                        rooms: payload.rooms.map(r => r.json()),
-                    }
+    //             case ROOMS_RESPONSE:
+    //                 return {
+    //                     num_of_rooms: payload.rooms.length,
+    //                     rooms: payload.rooms.map(r => r.json()),
+    //                 }
                     
-                case KICK_ALL:
-                    return this.kickAll(payload.roomID);
+    //             case KICK_ALL:
+    //                 return this.kickAll(payload.roomID);
 
-                case BID_REQUEST:
-                    return this.sendBidStatus(payload.roomID);
+    //             case BID_REQUEST:
+    //                 return this.sendBidStatus(payload.roomID);
                 
-                case CARD_REQUEST:
-                    return this.sendCardStatus(payload.roomID);
+    //             case CARD_REQUEST:
+    //                 return this.sendCardStatus(payload.roomID);
 
-                case PLAYERS_REQUEST:
-                    return this.createPlayerResponse(payload.playersData);
-                case GET_CARDS:
-                    return payload.cards;
+    //             case PLAYERS_REQUEST:
+    //                 return this.createPlayerResponse(payload.playersData);
+    //             case GET_CARDS:
+    //                 return payload.cards;
 
-                case ERROR:
-                    return payload.message;
+    //             case ERROR:
+    //                 return payload.message;
                     
-            };
-        }catch(err){
-            console.log(err);
-            throw err;
-        }
-    }
+    //         };
+    //     }catch(err){
+    //         console.log(err);
+    //         throw err;
+    //     }
+    // }
     
-    createPlayerResponse(playersData){
-        let data = playersData.map(pd => pd.name);
-        return {players: data.map(p => {return {name: p}})};
-    }
+    // createPlayerResponse(playersData){ --DEPRECATED
+    //     let data = playersData.map(pd => pd.name);
+    //     return {players: data.map(p => {return {name: p}})};
+    // }
 
     /**
     * 
     * @param {string} playerID -> token of the connected client
     */
-    disconnect(playerID){
+    disconnect(playerID){ // used
     
         this.tokenRepo.removeToken({playerID});
         return true;
@@ -255,7 +255,7 @@ module.exports = class RootService{
     };
 
 
-    getRooms(){
+    getRooms(){ // used
         let rooms = this.roomRepo.getAll();
         let roomsData =  {
             num_of_rooms: rooms.length,
@@ -266,7 +266,7 @@ module.exports = class RootService{
     }
 
 
-    getToken(playerID){
+    getToken(playerID){ // used
         return this.tokenRepo.getToken(playerID);
     }
 
@@ -275,7 +275,7 @@ module.exports = class RootService{
 
     //actions for engine
 
-    startGame(roomID){
+    startGame(roomID){ // used
         //console.log(token.roomID);
         let room = this.roomRepo.getRoom(roomID);
         
@@ -288,7 +288,7 @@ module.exports = class RootService{
         
     }
 
-    drawCardsForRoom(roomID){
+    drawCardsForRoom(roomID){ // used
         let engine = this.roomRepo.getRoom(roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
@@ -297,7 +297,7 @@ module.exports = class RootService{
     }
 
 
-    updateBid(token,bid){
+    updateBid(token,bid){ // used
         let engine = this.roomRepo.getRoom(token.roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
@@ -307,7 +307,7 @@ module.exports = class RootService{
 
     }
 
-    updateTable(token,card){
+    updateTable(token,card){ // used
         let engine = this.roomRepo.getRoom(token.roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
@@ -316,7 +316,7 @@ module.exports = class RootService{
         return engine.updateTable(token.nickname,card);
     }
 
-    resetTableForHand(roomID){
+    resetTableForHand(roomID){ //used
         let engine = this.roomRepo.getRoom(roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
@@ -324,7 +324,7 @@ module.exports = class RootService{
         engine.resetTableForHand();
     }
     
-    calculateScore(roomID){
+    calculateScore(roomID){ // used
         let engine = this.roomRepo.getRoom(roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
@@ -332,7 +332,7 @@ module.exports = class RootService{
         engine.calculateScore();
     }
 
-    moveToNextRound(roomID){
+    moveToNextRound(roomID){ //used
         let engine = this.roomRepo.getRoom(roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
@@ -342,7 +342,7 @@ module.exports = class RootService{
 
     //init for engine
 
-    initBidsForRoom(roomID){
+    initBidsForRoom(roomID){ // used
         let engine = this.roomRepo.getRoom(roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
@@ -350,7 +350,7 @@ module.exports = class RootService{
         engine.initBidStatus();
     }
 
-    initTableForRoom(roomID){
+    initTableForRoom(roomID){ // used
         let engine = this.roomRepo.getRoom(roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
@@ -360,7 +360,7 @@ module.exports = class RootService{
 
     //get status of 
 
-    getCards(roomID){
+    getCards(roomID){ // used
         let engine = this.roomRepo.getRoom(roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
@@ -371,7 +371,7 @@ module.exports = class RootService{
 
     }
 
-    getBids(roomID){
+    getBids(roomID){ //used
         let engine = this.roomRepo.getRoom(roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
@@ -380,14 +380,14 @@ module.exports = class RootService{
 
     }
 
-    getTable(roomID){
+    getTable(roomID){ //used
         let engine = this.roomRepo.getRoom(roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
 
         return engine.getTableStatus();
     }
-    getPlayersForGame(roomID){
+    getPlayersForGame(roomID){ //used
         let engine = this.roomRepo.getRoom(roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
@@ -397,7 +397,7 @@ module.exports = class RootService{
         return playersData;
     }
 
-    getWinnerForRound(roomID){
+    getWinnerForRound(roomID){ //used
         let engine = this.roomRepo.getRoom(roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
@@ -405,7 +405,7 @@ module.exports = class RootService{
         return engine.getWinnerStatus();
     }
 
-    getScoreForRoom(roomID){
+    getScoreForRoom(roomID){ //used
         let engine = this.roomRepo.getRoom(roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
@@ -413,7 +413,7 @@ module.exports = class RootService{
         return engine.getTotalScore();
     }
 
-    getFinalTable(roomID){
+    getFinalTable(roomID){ //used
         let engine = this.roomRepo.getRoom(roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
@@ -421,7 +421,7 @@ module.exports = class RootService{
         return engine.getFinalTable();
     }
     //received status of
-    receivedGotBids(token){
+    receivedGotBids(token){ // used
         let engine = this.roomRepo.getRoom(token.roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
@@ -429,7 +429,7 @@ module.exports = class RootService{
         return engine.gotBidsData(token.nickname);
     }
 
-    receivedGotCards(token){
+    receivedGotCards(token){ // used
         let engine = this.roomRepo.getRoom(token.roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
@@ -437,7 +437,7 @@ module.exports = class RootService{
         return engine.gotCardData(token.nickname);
     }
 
-    receivedGotPlayers(token){
+    receivedGotPlayers(token){ // used
         let engine = this.roomRepo.getRoom(token.roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
@@ -447,7 +447,7 @@ module.exports = class RootService{
         return result;
     }
 
-    receivedGotTable(token){
+    receivedGotTable(token){ // used
         let engine = this.roomRepo.getRoom(token.roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
@@ -457,7 +457,7 @@ module.exports = class RootService{
         return result;
     }
 
-    receivedGotWinner(token){
+    receivedGotWinner(token){ // used
         let engine = this.roomRepo.getRoom(token.roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
@@ -467,7 +467,7 @@ module.exports = class RootService{
         return result;
     }
 
-    receivedGotScore(token){
+    receivedGotScore(token){ //used
         let engine = this.roomRepo.getRoom(token.roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
@@ -478,7 +478,7 @@ module.exports = class RootService{
     }
 
     //engine verifications
-    isBiddingFinished(roomID){
+    isBiddingFinished(roomID){ // used
         let engine = this.roomRepo.getRoom(roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
@@ -486,7 +486,7 @@ module.exports = class RootService{
         return engine.isBiddingFinished();
     }
 
-    isHandFinished(roomID){
+    isHandFinished(roomID){ // used
         let engine = this.roomRepo.getRoom(roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
@@ -494,7 +494,7 @@ module.exports = class RootService{
         return engine.isHandFinished();
     }
 
-    isRoundFinished(roomID){
+    isRoundFinished(roomID){ // used
         let engine = this.roomRepo.getRoom(roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
@@ -502,7 +502,7 @@ module.exports = class RootService{
         return engine.isRoundFinished();
     }
 
-    isGameFinished(roomID){
+    isGameFinished(roomID){ // used
         let engine = this.roomRepo.getRoom(roomID).getEngine();
         if(!engine)
             throw "Engine not initialized! -- server error";
@@ -515,5 +515,5 @@ module.exports = class RootService{
 }
 
 
-const createAction = (type,payload) => ({type,payload});
+//const createAction = (type,payload) => ({type,payload}); --DEPRECATED
 

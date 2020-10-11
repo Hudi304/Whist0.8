@@ -24,4 +24,5 @@ public enum ClientActions {
     public static final String GOT_TABLE_STATUS = "GOT_TABLE_STATUS";
     public static final String GOT_WINNER = "GOT_WINNER";
     public static final String GOT_SCORE = "GOT_SCORE";
+    public static final String PING = "PING";
 }

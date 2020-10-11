@@ -56,30 +56,30 @@ public class Client extends Game implements NetworkController {
 	public void create() {
 		// System.out.println("Version: " + version);
 
-		//this.initializeNetworkService(Constants.serverHTTP);
+		this.initializeNetworkService(Constants.serverHTTP);
 
 		cardsTextureRepository = new CardsTextureRepository(new Texture("cardSprite.gif"));
 
-		//mainMenuScreen =  new MainMenu(this);
-		//credentialsScreen =  new com.mygdx.game.presentationLayer.screens.Credentials(this);
-		//joinRoomScreen =  new com.mygdx.game.presentationLayer.screens.JoinRoom(this);
-		//createRoomScreen = new com.mygdx.game.presentationLayer.screens.CreateRoom(this);
-		//lobbyScreen = new com.mygdx.game.presentationLayer.screens.Lobby(this);
-		//gameScreen =  new com.mygdx.game.presentationLayer.screens.GameScreen(this);
-		//newGameScreen = new com.mygdx.game.presentationLayer.screens.NewGameScreen(this,cardsTextureRepository);
+		mainMenuScreen =  new MainMenu(this);
+		credentialsScreen =  new com.mygdx.game.presentationLayer.screens.Credentials(this);
+		joinRoomScreen =  new com.mygdx.game.presentationLayer.screens.JoinRoom(this);
+		createRoomScreen = new com.mygdx.game.presentationLayer.screens.CreateRoom(this);
+		lobbyScreen = new com.mygdx.game.presentationLayer.screens.Lobby(this);
+		gameScreen =  new com.mygdx.game.presentationLayer.screens.GameScreen(this);
+		newGameScreen = new com.mygdx.game.presentationLayer.screens.NewGameScreen(this,cardsTextureRepository);
 
 		this.gameController = new GameController(this, newGameScreen);
 		testing = new GameScreenTest(cardsTextureRepository);
 
-		//setScreen(newGameScreen);
-		setSCreen(ScreenState.TEST);
+		setSCreen(screenState);
+		//setSCreen(ScreenState.TEST);
 
 
-//		try {
-//			this.connect();
-//		} catch (URISyntaxException e) {
-//			e.printStackTrace();
-//		}
+		try {
+			this.connect();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
 
 	}
 

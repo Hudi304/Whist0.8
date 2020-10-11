@@ -26,7 +26,7 @@ module.exports = class MyQueue{
 
 
     setFirstElement(item){
-        console.log("MyQueue");
+        //console.log("MyQueue");
         let foundItem = this.list.find(i => {return this.equals(item,i)});
         
         

@@ -12,5 +12,5 @@ public class PlayerHud1 extends Group {
     }
 
 
-    
+
 }
