@@ -5,10 +5,10 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 
 public class PlayerHud1 extends Group {
     public PlayerHud1() {
-        BidHud bidHud = new BidHud();
+        //BidHud bidHud = new BidHud();
         //bidHud.setPosition();
         //bidHud.setVisible(false);
-        addActor(bidHud);
+        //addActor(bidHud);
     }
 
 

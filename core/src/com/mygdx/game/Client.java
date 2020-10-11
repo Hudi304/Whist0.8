@@ -70,13 +70,13 @@ public class Client extends Game implements NetworkController {
 		newGameScreen = new com.mygdx.game.presentationLayer.screens.NewGameScreen(this,cardsTextureRepository);
 		
 
-		this.gameController = new GameController(this, newGameScreen);
-		testing = new GameScreenTest(cardsTextureRepository);
-
+		this.gameController = new GameController(this);
+		testing = new GameScreenTest(cardsTextureRepository,gameController);
+		this.gameController.setGameScreen(testing);
 
 
 		//setScreen(newGameScreen);
-		setSCreen(ScreenState.TEST);
+		setSCreen(screenState);
 
 	
 
@@ -105,16 +105,16 @@ public class Client extends Game implements NetworkController {
 				setScreen(createRoomScreen);
 				break;
 			case GAME:
-				setScreen(newGameScreen);
+				setScreen(testing);
 				break;
 			case CREDENTIALS:
 				setScreen(credentialsScreen);
 				break;
 			case NEWGAME:
-				setScreen(newGameScreen);
+				setScreen(testing);
 				break;
 			case TEST:
-				setScreen(gameScreenTest);
+				setScreen(testing);
 				break;
 			default:
 				setScreen(testing);

@@ -12,13 +12,16 @@ public class BidHUD extends Group {
 
     GameScreenTest gameScreenTest;
     Viewport viewport;
+    int numberOfCards = 0;
+
+    int forbidden = -1;
 
     public BidHUD(GameScreenTest gameScreenTest, Viewport viewport){
         this.gameScreenTest = gameScreenTest;
         this.viewport = viewport;
 
-        Slider bidSlider = new Slider(0f,8f,1, false, gameScreenTest.skin);
-        Label bidVal = new Label( "[" + (int)bidSlider.getValue() + "/" + gameScreenTest.nrOfCards + "]",gameScreenTest.skin);
+        Slider bidSlider = new Slider(0f,numberOfCards,1, false, gameScreenTest.skin);
+        Label bidVal = new Label( "[" + (int)bidSlider.getValue() + "/" + numberOfCards + "]",gameScreenTest.skin);
         TextButton bidButton =  new TextButton("Bid",gameScreenTest.skin);
 
         bidVal.setPosition(viewport.getScreenWidth()/2 + bidSlider.getWidth()/2 ,viewport.getScreenHeight()/2);
@@ -28,6 +31,12 @@ public class BidHUD extends Group {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("[Game] Bid btn pressed");
+                PlayerHUDAct plHUD  =  (PlayerHUDAct) getParent();
+                int value = getSliderValue();
+                if(value == forbidden)
+                    System.out.println("MUIEEE");
+                else
+                    plHUD.sendBidValue(getSliderValue());
 //                    mainController.sendBid((int)bidSlider.getValue());
 //                }
             }
@@ -70,6 +79,35 @@ public class BidHUD extends Group {
         for (Actor act : getChildren()) {
             act.setVisible(visibility);
         }
+    }
+
+    public void setForbiddenValue(int value){
+        this.forbidden = value;
+    }
+
+    public void setNumberOfCards(int numberOfCards){
+        this.numberOfCards = numberOfCards;
+        for(Actor act: getChildren()){
+            if(act instanceof Slider || act instanceof Label)
+            {
+                removeActor(act);
+            }
+
+        }
+        Slider bidSlider = new Slider(0f,numberOfCards,1, false, gameScreenTest.skin);
+        Label bidVal = new Label( "[" + (int)bidSlider.getValue() + "/" + numberOfCards + "]",gameScreenTest.skin);
+        addActor(bidSlider);
+        addActor(bidVal);
+
+    }
+
+    public int getSliderValue(){
+        for (Actor act:getChildren()) {
+            if (act instanceof Slider){
+                return (int) ((Slider)act).getValue();
+            }
+        }
+        return 0;
     }
 
 }

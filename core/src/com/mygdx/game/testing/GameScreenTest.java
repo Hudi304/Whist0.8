@@ -1,6 +1,7 @@
 package com.mygdx.game.testing;
 
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.game.businessLayer.controllers.GameController;
 import com.mygdx.game.businessLayer.others.Constants;
 import com.mygdx.game.dataLayer.generics.Card;
 import com.mygdx.game.dataLayer.repositories.CardsTextureRepository;
@@ -31,58 +33,64 @@ public class GameScreenTest implements Screen {
     Skin skin;
     CardsTextureRepository cardsTextureRepository;
     Viewport viewport;
+    GameController controller;
 
     String[] cards = {"h-14","h-13","d-14","d-12"};
     int i = 0;
     int nrOfCards = 8;
 
     PlayerHUDAct plHUD;
-    OpponentHUD oppHUD1;
-    OpponentHUD oppHUD2;
-    OpponentHUD oppHUD3;
-    OpponentHUD oppHUD4;
-    OpponentHUD oppHUD5;
+    OpponentHUD oppHUD1 = null;
+    OpponentHUD oppHUD2 = null;
+    OpponentHUD oppHUD3 = null;
+    OpponentHUD oppHUD4 = null ;
+    OpponentHUD oppHUD5 = null;
 
-    public GameScreenTest(CardsTextureRepository cardsTextureRepository) {
+
+    public GameScreenTest(CardsTextureRepository cardsTextureRepository, GameController controller) {
         viewport = new ScreenViewport();
+        skin = new Skin(Gdx.files.internal(Constants.skinJsonString));
         stage = new Stage(viewport);
+        this.controller = controller;
 
         this.cardsTextureRepository = cardsTextureRepository;
+        plHUD = new PlayerHUDAct(cardsTextureRepository,viewport,this,controller);
+        stage.addActor(plHUD);
     }
 
     @Override
     public void show() {
-        skin = new Skin(Gdx.files.internal(Constants.skinJsonString));
+
 
         Gdx.input.setInputProcessor(stage);
-        List<String> str = new ArrayList<>();
-        str.add("h-12");
-        str.add("h-11");
-        str.add("h-10");
-        str.add("h-9");
-        str.add("h-8");
-        str.add("h-7");
-        str.add("h-6");
-        str.add("h-5");
+//        List<String> str = new ArrayList<>();
+//        str.add("h-12");
+//        str.add("h-11");
+//        str.add("h-10");
+//        str.add("h-9");
+//        str.add("h-8");
+//        str.add("h-7");
+//        str.add("h-6");
+//        str.add("h-5");
 
-         plHUD = new PlayerHUDAct(cardsTextureRepository,viewport,this);
-         plHUD.refreshCards(str);
-        oppHUD1 = new OpponentHUD(8,cardsTextureRepository,viewport);
-        oppHUD2 = new OpponentHUD(8,cardsTextureRepository,viewport);
-        oppHUD3 = new OpponentHUD(8,cardsTextureRepository,viewport);
-        oppHUD4 = new OpponentHUD(8,cardsTextureRepository,viewport);
-        oppHUD5 = new OpponentHUD(8,cardsTextureRepository,viewport);
-        oppHUD1.setCastCardPosition(new Vector2(viewport.getScreenWidth()*0.2f , viewport.getScreenHeight()*0.25f));
-        oppHUD2.setCastCardPosition(new Vector2(viewport.getScreenWidth()*0.25f , viewport.getScreenHeight()*0.55f));
-        oppHUD3.setCastCardPosition(new Vector2(viewport.getScreenWidth()*0.5f  , viewport.getScreenHeight()*0.6f ));
-        oppHUD4.setCastCardPosition(new Vector2(viewport.getScreenWidth()*0.75f , viewport.getScreenHeight()*0.55f));
-        oppHUD5.setCastCardPosition(new Vector2(viewport.getScreenWidth()*0.75f , viewport.getScreenHeight()*0.25f));
-        stage.addActor(oppHUD1);
-        stage.addActor(oppHUD2);
-        stage.addActor(oppHUD3);
-        stage.addActor(oppHUD4);
-        stage.addActor(oppHUD5);
-        stage.addActor(plHUD);
+
+         //plHUD.refreshCards(str);
+//        oppHUD1 = new OpponentHUD(8,cardsTextureRepository,viewport);
+//        oppHUD2 = new OpponentHUD(8,cardsTextureRepository,viewport);
+//        oppHUD3 = new OpponentHUD(8,cardsTextureRepository,viewport);
+//        oppHUD4 = new OpponentHUD(8,cardsTextureRepository,viewport);
+//        oppHUD5 = new OpponentHUD(8,cardsTextureRepository,viewport);
+//        oppHUD1.setCastCardPosition(new Vector2(viewport.getScreenWidth()*0.2f , viewport.getScreenHeight()*0.25f));
+//        oppHUD2.setCastCardPosition(new Vector2(viewport.getScreenWidth()*0.25f , viewport.getScreenHeight()*0.55f));
+//        oppHUD3.setCastCardPosition(new Vector2(viewport.getScreenWidth()*0.5f  , viewport.getScreenHeight()*0.6f ));
+//        oppHUD4.setCastCardPosition(new Vector2(viewport.getScreenWidth()*0.75f , viewport.getScreenHeight()*0.55f));
+//        oppHUD5.setCastCardPosition(new Vector2(viewport.getScreenWidth()*0.75f , viewport.getScreenHeight()*0.25f));
+//        stage.addActor(oppHUD1);
+//        stage.addActor(oppHUD2);
+//        stage.addActor(oppHUD3);
+//        stage.addActor(oppHUD4);
+//        stage.addActor(oppHUD5);
+
 
 
         TextButton flipButton = new TextButton("StartAction",skin);
@@ -144,22 +152,27 @@ public class GameScreenTest implements Screen {
 
             plPos = new Vector2(width / 4, height / 2.9f);
             centerPos = new Vector2(-width*0.9f , height / 6);
+            if(oppHUD1 != null)
             oppHUD1.positionCardsVert( width,  height, plPos, centerPos,offset* 0.6f, width, -90, false);
 
             plPos = new Vector2(width *0.2f ,height / 1.35f);
             centerPos =  new Vector2(width* 0.05f, height * 1.65f );
+            if (oppHUD2!=null)
             oppHUD2.positionCardsHor(width, height, plPos, centerPos, offset* 0.6f, height,-155,true);
 
             plPos = new Vector2(width / 2 ,height / 2);
             centerPos =  new Vector2(width / 2, height * 1.75f );
+            if (oppHUD3!=null)
             oppHUD3.positionCardsHor(width, height, plPos, centerPos, offset*0.4f, height,180,true);
 
             plPos = new Vector2(width * 0.8f, height / 1.35f);
             centerPos = new Vector2(width *0.95f , height * 1.65f);
+            if (oppHUD4 != null)
             oppHUD4.positionCardsHor(width, height, plPos, centerPos, offset*0.6f, height,155,true);
 
             plPos = new Vector2(width *7 / 8, height / 2.9f);
             centerPos = new Vector2(width * 1.94f *0.95f , height / 6);
+            if (oppHUD5 !=null)
             oppHUD5.positionCardsVert( width,  height, plPos, centerPos,offset* 0.6f, width, 90, true);
 
 
@@ -187,4 +200,77 @@ public class GameScreenTest implements Screen {
     public void dispose() {
 
     }
+
+    public void initOpponents(List<String> opponents){
+        int i = 1;
+        System.out.println("Opponents: " + opponents.size());
+        for(String opp: opponents){
+            switch (i){
+                case 1:
+                    oppHUD1 = new OpponentHUD(opp,0,cardsTextureRepository,viewport);
+                    stage.addActor(oppHUD1);
+                    break;
+                case 2:
+                    oppHUD2 = new OpponentHUD(opp,0,cardsTextureRepository,viewport);
+                    stage.addActor(oppHUD2);
+                    break;
+                case 3:
+                    oppHUD3 = new OpponentHUD(opp,0,cardsTextureRepository,viewport);
+                    stage.addActor(oppHUD3);
+                    break;
+                case 4:
+                    oppHUD4 = new OpponentHUD(opp,0,cardsTextureRepository,viewport);
+                    stage.addActor(oppHUD4);
+                    break;
+                case 5:
+                    oppHUD5 = new OpponentHUD(opp,0,cardsTextureRepository,viewport);
+                    stage.addActor(oppHUD5);
+                    break;
+            }
+            i++;
+        }
+//        oppHUD1 = new OpponentHUD(8,cardsTextureRepository,viewport);
+//
+//
+//
+//
+    }
+
+    public void updateOpponentsCards(int numberOfCards){
+        if (oppHUD1 != null)
+            oppHUD1.refreshOppCards(numberOfCards);
+
+        if (oppHUD2 != null)
+            oppHUD2.refreshOppCards(numberOfCards);
+
+        if (oppHUD3 != null)
+            oppHUD3.refreshOppCards(numberOfCards);
+
+        if (oppHUD4 != null)
+            oppHUD4.refreshOppCards(numberOfCards);
+
+        if (oppHUD5 != null)
+            oppHUD5.refreshOppCards(numberOfCards);
+
+        resizeOpponents(viewport.getScreenWidth(),viewport.getScreenHeight());
+
+    }
+
+    public void updatePlayerCards(List<String> cards){
+        plHUD.refreshCards(cards);
+        plHUD.resize();
+
+    }
+
+
+    public void setForbiddenValue(int value){
+        if(value!=-1)
+           plHUD.setForbiddenValue(value);
+    }
+
+    public void seteBidHudVisibile(boolean visibile){
+        plHUD.setBidHUDVisibility(visibile);
+    }
+
+
 }
