@@ -107,6 +107,7 @@ public class OpponentHUD extends Group {
         float x ;
         float y = plPos.y - nrOfCards*xOffset/2;
         rot =  nrOfCards/2 * rotOffset;
+        //todo if != null
         for (Actor act : getChildren()) {
             if(act instanceof OpponentCard) {
                 OpponentCard crd = (OpponentCard) act;
