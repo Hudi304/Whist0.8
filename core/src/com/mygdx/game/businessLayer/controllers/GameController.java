@@ -58,8 +58,6 @@ public class GameController {
         }
         //gameScreen.initOpponentsHUD(this.opponents);
         gameScreen.initOpponents(this.opponents);
-
-
     }
 
     /**
@@ -100,6 +98,9 @@ public class GameController {
             else{
                 //TODO: this.gameScreen.updateCardForOpp(ps.getNickname()--String,ps.getCard()--String);
                 // ****!!!!!!!***** ps.getCard() can be a specific card or !!!THE STRING "null";
+                if(!ps.getCard().equals("null")){
+                    gameScreen.updateCardForOpp(ps.getNickname(),ps.getCard());
+                }
                 continue;
             }
         }
