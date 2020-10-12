@@ -19,6 +19,8 @@ public class GameController {
     private NetworkDTO.Table table;
     private NetworkDTO.Bids bids;
 
+    private boolean canChooseCard = false;
+
     public GameController(Client rootController) {
         this.rootController = rootController;
         this.gameScreen = null;
@@ -150,12 +152,11 @@ public class GameController {
     }
 
     public void enableCardHud() {
-        //gameScreen.enableCardHud();
-
+        canChooseCard = true;
     }
 
     public void disableCardHud() {
-        //gameScreen.disableCardHud();
+        canChooseCard = false;
     }
 
     public void setGameScreen(GameScreenTest gameScreen) {
@@ -192,5 +193,21 @@ public class GameController {
         //TODO: VALIDATE BID HERE
         rootController.sendBid(bid);
 
+    }
+
+    public void sendCard(String card) {
+        System.out.println("Card send: " + card);
+        //TODO: VALIDATE Card HERE
+        rootController.sendCard(card);
+
+    }
+
+
+    public boolean getCanChooseCard() {
+        return canChooseCard;
+    }
+
+    public void setCanChooseCard(boolean canChooseCard) {
+        this.canChooseCard = canChooseCard;
     }
 }
