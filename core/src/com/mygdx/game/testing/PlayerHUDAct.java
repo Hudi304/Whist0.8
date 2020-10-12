@@ -22,6 +22,7 @@ public class PlayerHUDAct extends Group {
     public int nrOfCards;
     private Viewport viewport;
     public boolean bidHudVisibility  = false;
+
     CardsTextureRepository cardsTextureRepository;
     GameController gameController;
 
@@ -47,7 +48,8 @@ public class PlayerHUDAct extends Group {
            }
         }
         for (String str:crd) {
-            PlayerCard card = new PlayerCard(cardsTextureRepository.getCardTexture(str));
+            PlayerCard card = new PlayerCard(cardsTextureRepository.getCardTexture(str),viewport);
+            card.setID(str);
             this.addActor(card);
         }
 
@@ -58,10 +60,10 @@ public class PlayerHUDAct extends Group {
                 return;
             }
         }
-
     }
 
     public void resize () {
+        //todo de bumarat cartile care nu au falgul true si facut resize pe ele
         float width = min(viewport.getScreenHeight(), viewport.getScreenWidth()) / 4 * 0.6f * 0.7f;
         float height = min(viewport.getScreenHeight(), viewport.getScreenWidth()) / 4 * 0.7f;
         float xOffset = viewport.getScreenWidth()/20;
@@ -81,7 +83,11 @@ public class PlayerHUDAct extends Group {
 
         for (Actor act : getChildren()) {
             if (act instanceof PlayerCard) {
+
                 PlayerCard localCard = (PlayerCard) act;
+                if(localCard.isPutDown()){
+
+                }else{
                 y = (float) (sqrt(abs(R * R - (x - Cx) * (x - Cx))) + Cy);
                 localCard.setWidth(width);
                 localCard.setHeight(height);
@@ -90,6 +96,7 @@ public class PlayerHUDAct extends Group {
                 localCard.setRotation(rot);
                 x += xOffset;
                 rot -= rotOffset;
+                }
             }
             if(act instanceof BidHUD){
                 BidHUD bdHUD = (BidHUD)act;
@@ -123,8 +130,18 @@ public class PlayerHUDAct extends Group {
         }
     }
 
+
+    public void sendCard(String crd){
+        gameController.sendCard(crd);
+    }
+
     public void sendBidValue(int bid ){
         gameController.sendBid(bid);
+    }
+
+
+    public boolean getCanChooseCard() {
+        return gameController.getCanChooseCard();
     }
 
 
