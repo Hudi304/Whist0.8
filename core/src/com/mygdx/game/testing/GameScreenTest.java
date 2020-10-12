@@ -248,4 +248,9 @@ public class GameScreenTest implements Screen {
     }
 
 
+    public void playerWonHand() {
+    }
+
+    public void opponentWonHand(String winner) {
+    }
 }

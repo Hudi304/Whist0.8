@@ -424,7 +424,7 @@ public class Client extends Game implements NetworkController {
 
 	@Override
 	public void sendWinner(String winner) {
-
+		this.gameController.setWinner(winner);
 	}
 
 

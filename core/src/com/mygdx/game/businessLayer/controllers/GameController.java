@@ -211,4 +211,16 @@ public class GameController {
     public void setCanChooseCard(boolean canChooseCard) {
         this.canChooseCard = canChooseCard;
     }
+
+    public void setWinner(String winner) {
+
+        if(token.getNickname().equals(winner))
+        {
+            //TODO:: THE PLAYER WON THE HAND
+            gameScreen.playerWonHand();
+            return;
+        }
+        gameScreen.opponentWonHand(winner);
+        //TODO: THE OPPONENT WON THE HAND
+    }
 }
