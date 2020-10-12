@@ -148,17 +148,15 @@ public class OpponentHUD extends Group {
         for (Actor act:getChildren()) {
             if(act instanceof  OpponentCard && i == cardNr){
                 OpponentCard castCardLocal = (OpponentCard)act;
+                System.out.println("[OpponetHUD] putCastCard str = " + str);
                 castCardLocal.setDrawable( new SpriteDrawable(new Sprite(cardsTextureRepository.getCardTexture(str))));
                 castCardLocal.debug();
                 MoveToAction mvb = new MoveToAction();
-                //mvb.setAmount( castCardPosition.x, castCardPosition.y);
                 mvb.setPosition(castCardPosition.x,castCardPosition.y);
                 mvb.setDuration(0.2f);
                 mvb.setInterpolation(Interpolation.circleOut);
                 castCardLocal.addAction(mvb);
                 castCardLocal.setFlipped(true);
-                //this.removeActor(castCardLocal);
-
             }
             i++;
         }

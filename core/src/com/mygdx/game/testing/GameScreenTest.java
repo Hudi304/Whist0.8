@@ -63,51 +63,13 @@ public class GameScreenTest implements Screen {
 
 
         Gdx.input.setInputProcessor(stage);
-//        List<String> str = new ArrayList<>();
-//        str.add("h-12");
-//        str.add("h-11");
-//        str.add("h-10");
-//        str.add("h-9");
-//        str.add("h-8");
-//        str.add("h-7");
-//        str.add("h-6");
-//        str.add("h-5");
-
-
-         //plHUD.refreshCards(str);
-//        oppHUD1 = new OpponentHUD(8,cardsTextureRepository,viewport);
-//        oppHUD2 = new OpponentHUD(8,cardsTextureRepository,viewport);
-//        oppHUD3 = new OpponentHUD(8,cardsTextureRepository,viewport);
-//        oppHUD4 = new OpponentHUD(8,cardsTextureRepository,viewport);
-//        oppHUD5 = new OpponentHUD(8,cardsTextureRepository,viewport);
-//        oppHUD1.setCastCardPosition(new Vector2(viewport.getScreenWidth()*0.2f , viewport.getScreenHeight()*0.25f));
-//        oppHUD2.setCastCardPosition(new Vector2(viewport.getScreenWidth()*0.25f , viewport.getScreenHeight()*0.55f));
-//        oppHUD3.setCastCardPosition(new Vector2(viewport.getScreenWidth()*0.5f  , viewport.getScreenHeight()*0.6f ));
-//        oppHUD4.setCastCardPosition(new Vector2(viewport.getScreenWidth()*0.75f , viewport.getScreenHeight()*0.55f));
-//        oppHUD5.setCastCardPosition(new Vector2(viewport.getScreenWidth()*0.75f , viewport.getScreenHeight()*0.25f));
-//        stage.addActor(oppHUD1);
-//        stage.addActor(oppHUD2);
-//        stage.addActor(oppHUD3);
-//        stage.addActor(oppHUD4);
-//        stage.addActor(oppHUD5);
-
 
 
         TextButton flipButton = new TextButton("StartAction",skin);
         flipButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-//                System.out.println("Pressed");
-//                RotateByAction action1 = new RotateByAction();
-//                if(i > 180)
-//                    i = 0;
-//                System.out.println("Radius: " + i);
-//                action1.setAmount(i++);
-//                action1.setDuration(1f);
-//                ScaleByAction action3 = new ScaleByAction();
-//                action3.setAmount(0.1f);
-//                stage.getActors().first().addAction(action1);
-//                stage.getActors().first().addAction(action3);
+
                 oppHUD1.putCastCard("h-12");
                 oppHUD2.putCastCard("h-12");
                 oppHUD3.putCastCard("h-12");
@@ -205,35 +167,48 @@ public class GameScreenTest implements Screen {
         int i = 1;
         System.out.println("Opponents: " + opponents.size());
         for(String opp: opponents){
+            //todo vezi fa caluema pozitii alea de put down card p[entru opponenbnti
             switch (i){
                 case 1:
                     oppHUD1 = new OpponentHUD(opp,0,cardsTextureRepository,viewport);
                     stage.addActor(oppHUD1);
+                    oppHUD1.setCastCardPosition(new Vector2( viewport.getScreenWidth()/2,viewport.getScreenHeight()/2));
                     break;
                 case 2:
                     oppHUD2 = new OpponentHUD(opp,0,cardsTextureRepository,viewport);
                     stage.addActor(oppHUD2);
+                    oppHUD2.setCastCardPosition(new Vector2( viewport.getScreenWidth()/2,viewport.getScreenHeight()/2));
                     break;
                 case 3:
                     oppHUD3 = new OpponentHUD(opp,0,cardsTextureRepository,viewport);
                     stage.addActor(oppHUD3);
+                    oppHUD3.setCastCardPosition(new Vector2( viewport.getScreenWidth()/2,viewport.getScreenHeight()/2));
                     break;
                 case 4:
                     oppHUD4 = new OpponentHUD(opp,0,cardsTextureRepository,viewport);
                     stage.addActor(oppHUD4);
+                    oppHUD4.setCastCardPosition(new Vector2( viewport.getScreenWidth()/2,viewport.getScreenHeight()/2));
                     break;
                 case 5:
                     oppHUD5 = new OpponentHUD(opp,0,cardsTextureRepository,viewport);
                     stage.addActor(oppHUD5);
+                    oppHUD5.setCastCardPosition(new Vector2( viewport.getScreenWidth()/2,viewport.getScreenHeight()/2));
                     break;
             }
             i++;
         }
-//        oppHUD1 = new OpponentHUD(8,cardsTextureRepository,viewport);
-//
-//
-//
-//
+    }
+
+    public void updateCardForOpp(String nickName, String card ){
+        for (Actor opp:stage.getActors()) {
+            if(opp instanceof OpponentHUD){
+                OpponentHUD oppHUD = (OpponentHUD)opp;
+                if(oppHUD.nickname.equals(nickName)){
+                    oppHUD.putCastCard(card);
+                    return;
+                }
+            }
+        }
     }
 
     public void updateOpponentsCards(int numberOfCards){
