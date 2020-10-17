@@ -1,0 +1,36 @@
+   public void initOpponents1(List<String> opponents) {
+        int i = 1;
+        System.out.println("Opponents: " + opponents.size());
+        for (String opp : opponents) {
+            //todo vezi fa caluema pozitii alea de put down card p[entru opponenbnti
+            switch (i) {
+                case 1:
+                    oppHUD1 = new OpponentHUD(opp, 0, cardsTextureRepository, viewport);
+                    stage.addActor(oppHUD1);
+                    oppHUD1.setCastCardPosition(new Vector2(viewport.getScreenWidth() / 2, viewport.getScreenHeight() / 2));
+
+                    break;
+                case 2:
+                    oppHUD2 = new OpponentHUD(opp, 0, cardsTextureRepository, viewport);
+                    stage.addActor(oppHUD2);
+                    oppHUD2.setCastCardPosition(new Vector2(viewport.getScreenWidth() / 2, viewport.getScreenHeight() / 2));
+                    break;
+                case 3:
+                    oppHUD3 = new OpponentHUD(opp, 0, cardsTextureRepository, viewport);
+                    stage.addActor(oppHUD3);
+                    oppHUD3.setCastCardPosition(new Vector2(viewport.getScreenWidth() / 2, viewport.getScreenHeight() / 2));
+                    break;
+                case 4:
+                    oppHUD4 = new OpponentHUD(opp, 0, cardsTextureRepository, viewport);
+                    stage.addActor(oppHUD4);
+                    oppHUD4.setCastCardPosition(new Vector2(viewport.getScreenWidth() / 2, viewport.getScreenHeight() / 2));
+                    break;
+                case 5:
+                    oppHUD5 = new OpponentHUD(opp, 0, cardsTextureRepository, viewport);
+                    stage.addActor(oppHUD5);
+                    oppHUD5.setCastCardPosition(new Vector2(viewport.getScreenWidth() / 2, viewport.getScreenHeight() / 2));
+                    break;
+            }
+            i++;
+        }
+    }

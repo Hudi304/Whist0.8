@@ -320,4 +320,32 @@ public class NetworkDTO {
             return playerID;
         }
     }
+
+    public static class Score{
+
+        int total;
+        String nickname;
+
+        public Score(JSONObject scoreJSON) throws JSONException {
+         total = scoreJSON.getInt("total");
+         nickname = scoreJSON.getString("nickname");
+        }
+
+        public int getTotal() {
+            return total;
+        }
+
+        public void setTotal(int total) {
+            this.total = total;
+        }
+
+        public String getNickname() {
+            return nickname;
+        }
+
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
+        }
+
+    }
 }

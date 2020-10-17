@@ -61,6 +61,8 @@ public class NewGameScreen implements Screen {
 
     //-------FLAGURI--------------
     public boolean canChooseCard;
+
+
     //-------STAGE|STUFF----------
     ScreenViewport viewport;
     TextButton flipBtn;//p
@@ -288,9 +290,9 @@ public class NewGameScreen implements Screen {
         }
         if (opponentsNames.size() == 5){
              font12.draw(batch, opponentsNames.get(0) , screenWidth*0.14f,screenHeight/2);
-             font12.draw(batch, opponentsNames.get(1) , screenWidth*0.2f,screenHeight*0.74f);
-             font12.draw(batch, opponentsNames.get(2) , screenWidth/2,screenHeight*0.74f);
-             font12.draw(batch, opponentsNames.get(3) , screenWidth*0.8f,screenHeight*0.74f);
+             font12.draw(batch, opponentsNames.get(1) , screenWidth*0.2f ,screenHeight*0.74f);
+             font12.draw(batch, opponentsNames.get(2) , screenWidth/2    ,screenHeight*0.74f);
+             font12.draw(batch, opponentsNames.get(3) , screenWidth*0.8f ,screenHeight*0.74f);
              font12.draw(batch, opponentsNames.get(4) , screenWidth*0.82f,screenHeight/2);
         }
     }
@@ -345,14 +347,10 @@ public class NewGameScreen implements Screen {
             centerPos = new Vector2(width * 1.94f , height / 6);
             opponent5.positionCardsVert( width,  height, plPos, centerPos,offset* 0.6f, width, 90, true);
         }
-
     }
-
-
 
     public void updateCardsForPlayer(List<String> cards){
         this.playerHUD.initCards(cards,screenWidth);
-
     }
 
     public void setForbiddenValue(int forbiddenValue){

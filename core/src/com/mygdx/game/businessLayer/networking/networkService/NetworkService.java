@@ -3,6 +3,7 @@ package com.mygdx.game.businessLayer.networking.networkService;
 
 
 import com.mygdx.game.Client;
+import com.mygdx.game.businessLayer.controllers.GameController;
 import com.mygdx.game.businessLayer.networking.networkController.NetworkController;
 import com.mygdx.game.businessLayer.networking.actions.ClientActions;
 import com.mygdx.game.businessLayer.networking.actions.ServerActions;
@@ -15,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -101,7 +103,6 @@ public class NetworkService {
         configSocketEvents();
 
     }
-
 
     private void configSocketEvents() {
         socket.on(ServerActions.CONNECTED, (new Emitter.Listener() {
@@ -190,11 +191,33 @@ public class NetworkService {
         socket.on(ServerActions.SCORE_STATUS, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                System.out.println(args[0]);
+                System.out.println("------------[NetworkService] ScotreStatus--------------");
+                JSONObject temp = (JSONObject) args[0];
+                //JSONArray array = (JSONArray) args[0];
+                //System.out.println(array);
+                //todo implement this shit
+                //System.out.println(args[0]);
                 try {
-                    Thread.sleep(3000);
+                    JSONArray scoreData = temp.getJSONArray("score");
+                    System.out.println(scoreData);
+
+                    List<NetworkDTO.Score> scores = new ArrayList<>();
+                    for (int i = 0; i < scoreData.length(); i++) {
+                        JSONObject score = null;
+                        try {
+                            score = scoreData.getJSONObject(i);
+                            scores.add(new NetworkDTO.Score(score));
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    rootController.updateScoreStatus(scores);
+
+                    //Thread.sleep(3000);
                     socket.emit(ClientActions.GOT_SCORE, token.getToken());
-                } catch (InterruptedException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     socket.emit(ClientActions.GOT_SCORE, token.getToken());
                 }

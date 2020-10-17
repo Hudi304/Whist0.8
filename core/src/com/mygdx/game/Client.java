@@ -50,7 +50,7 @@ public class Client extends Game implements NetworkController {
 	@Override
 	public void dispose() {
 		super.dispose();
-		System.out.println("Disposed here!");
+		//System.out.println("Disposed here!");
 	}
 
 	@Override
@@ -254,7 +254,7 @@ public class Client extends Game implements NetworkController {
 
 
 		this.gameController.initOpponentsOrder(playersStr);
-		System.out.println("[client]: Started to change the screen at: " + System.currentTimeMillis());
+		//System.out.println("[client]: Started to change the screen at: " + System.currentTimeMillis());
 		screenState = ScreenState.NEWGAME;
 
 	}
@@ -266,7 +266,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void updateCards(NetworkDTO.Cards cards) {
-		System.out.println("[Client] updateCards" );
+		//System.out.println("[Client] updateCards" );
 
 
 		this.gameController.setCards(cards.getCards());
@@ -280,7 +280,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void showHudForBids(NetworkDTO.Bids.Bid bid) {
-		System.out.println("[Client] showHudForBids" );
+		//System.out.println("[Client] showHudForBids" );
 		gameController.enableBidHud(bid);
 
 	}
@@ -290,20 +290,18 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void hideBidHUD() {
-		System.out.println("[Client] hideBidHUD" );
-
+		//System.out.println("[Client] hideBidHUD" );
 		gameController.disableBidHud();
 	}
 
 	/**
 	 * This function gets called when it's your turn to place a card
 	 * It's up to you to ensure that the card which will be placed is valid;
-	 *
 	 * @param ps
 	 */
 	@Override
 	public void showHudForCards(NetworkDTO.Table.PlayerStatus ps) {
-		System.out.println("[Client] showHudForCards" );
+		//System.out.println("[Client] showHudForCards" );
 		gameController.enableCardHud();
 	}
 
@@ -312,7 +310,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void hideCardHud() {
-		System.out.println("[Client] hideCardHud" );
+		//System.out.println("[Client] hideCardHud" );
 		gameController.disableCardHud();
 
 	}
@@ -324,7 +322,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void updateBids(NetworkDTO.Bids bids) {
-		System.out.println("[Client] updateBids" );
+		//System.out.println("[Client] updateBids" );
 		gameController.updateBidStatus(bids);
 	}
 
@@ -335,7 +333,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void updateTable(NetworkDTO.Table table) {
-		System.out.println("[Client] updateTable" );
+		//System.out.println("[Client] updateTable" );
 		gameController.updateTableStatus(table);
 	}
 
@@ -346,7 +344,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void sendCard(String card) {
-		System.out.println("[Client] sendCard" );
+		//System.out.println("[Client] sendCard" );
 		//todo valideaza asta
 		this.networkService.sendCardResponse(card);
 	}
@@ -396,7 +394,7 @@ public class Client extends Game implements NetworkController {
 	 */
 	@Override
 	public void leaveRoom() {
-		System.out.println("Client left Room");
+		//System.out.println("Client left Room");
 		try{
 			this.networkService.leaveRoomRequest();
 		}
@@ -421,12 +419,15 @@ public class Client extends Game implements NetworkController {
 	public void disconnect() {
 
 	}
+	@Override
+	public  void updateScoreStatus(List<NetworkDTO.Score> scores){
+		gameController.updateScoreStatus(scores);
+	}
 
 	@Override
 	public void sendWinner(String winner) {
 		this.gameController.setWinner(winner);
 	}
-
 
 	public float getScreenWidth() {
 		return screenWidth;
@@ -444,14 +445,12 @@ public class Client extends Game implements NetworkController {
 		this.screenHeight = screenHeight;
 	}
 
-
-
 	public void goToScreen(com.mygdx.game.presentationLayer.screens.ScreenState state){
 		this.screenState = state;
 	}
 
 	public void canRunGame(){
-		System.out.println("[client]: CanRunGame method run at: " + System.currentTimeMillis());
+		//System.out.println("[client]: CanRunGame method run at: " + System.currentTimeMillis());
 		this.networkService.canRunGame();
 	}
 }
