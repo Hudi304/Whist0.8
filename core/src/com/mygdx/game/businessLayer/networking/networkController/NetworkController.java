@@ -21,8 +21,6 @@ public interface NetworkController {
      */
     void initializeNetworkService(String http);
 
-
-
     void connect() throws URISyntaxException;
     /**
      * This function gets call when the connection status has changed
@@ -41,6 +39,8 @@ public interface NetworkController {
      * This function get's called when the player made the ROOM_REQUEST. It moves the screen to ROOM_SCREEN
      */
     void goToRoomsScreen();
+
+    void updateScoreStatus(List<NetworkDTO.Score> scores);
 
     /**
      * This function get's called when the client received the response from ROOM_REQUEST. Look to put all the rooms in the ROOM_SCREEN.

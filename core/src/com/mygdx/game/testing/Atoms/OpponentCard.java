@@ -1,18 +1,14 @@
-package com.mygdx.game.testing;
+package com.mygdx.game.testing.Atoms;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class OpponentCard extends Image {
     private float originPosX = 0;
     private float originPosY = 0;
 
-
-    public boolean flipped;
+    public boolean flipped = false;
+    public boolean putDown = false;
 
 
     public OpponentCard(TextureRegion image) {
@@ -24,11 +20,17 @@ public class OpponentCard extends Image {
         setRotation(0);
     }
 
+
     public void setOrigPos(float x, float y) {
         this.originPosX = x;
         this.originPosY = y;
     }
-
+    public boolean isPutDown() {
+        return putDown;
+    }
+    public void setPutDown(boolean putDown) {
+        this.putDown = putDown;
+    }
     public boolean isFlipped() {
         return flipped;
     }

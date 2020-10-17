@@ -25,7 +25,6 @@ public class GameController {
         this.rootController = rootController;
         this.gameScreen = null;
     }
-
     /**
      * This function calculate and store the order of the opponents on the table
      * @param opponents - a list with all the players on the table(including the player)
@@ -36,6 +35,8 @@ public class GameController {
         System.out.println("[Game Controller] : initOpponentsOrder ");
         this.opponents = new LinkedList<>();
         int i=0;
+        gameScreen.nickname = token.getNickname();
+        gameScreen.opponentsNames = opponents;
         boolean found = false;
         while(this.opponents.size() != opponents.size()-1){
             if(!found && opponents.get(i).equals(token.getNickname())){
@@ -56,17 +57,16 @@ public class GameController {
             if(i==opponents.size())
                 i=0;
         }
-        //gameScreen.initOpponentsHUD(this.opponents);
         gameScreen.initOpponents(this.opponents);
+        gameScreen.initTable();
     }
-
     /**
      * This method gets called when you receive the cards from server
      * This method calls 2 methods in the gameScreen: one for init the playerCards, and one for init the number of the cards for the opponents
      * @param cards
      */
     public void setCards(List<String> cards){
-        System.out.println("[Game Controller] : setCards ");
+       // System.out.println("[Game Controller] : setCards ");
         this.playerCards = cards;
         this.gameScreen.updateOpponentsCards(cards.size());
         this.gameScreen.updatePlayerCards(cards);
@@ -105,11 +105,11 @@ public class GameController {
             }
         }
         this.table = table;
+
     }
 
-
     public void updateBidStatus(NetworkDTO.Bids bids){
-        System.out.println("[Game Controller] : updateBidStatus ");
+       // System.out.println("[Game Controller] : updateBidStatus ");
         if(this.bids == null)
             this.bids = bids;
 
@@ -128,22 +128,13 @@ public class GameController {
         }
 
         this.bids = bids;
+        gameScreen.setBids(bids.getBids());
+        System.out.println("================BIDS===============");
+        System.out.println(bids.getBids().toString());
     }
-
-
-    
-    public Client getRootController() {
-        return rootController;
-    }
-
-    public void setRootController(Client rootController) {
-        this.rootController = rootController;
-    }
-
-
 
     public void enableBidHud(NetworkDTO.Bids.Bid bid) {
-        System.out.println("Should enable bid Hud");
+        //System.out.println("Should enable bid Hud");
         gameScreen.setForbiddenValue(bid.getForbidden());
         gameScreen.seteBidHudVisibile(true);
     }
@@ -154,10 +145,14 @@ public class GameController {
 
     public void enableCardHud() {
         canChooseCard = true;
+        gameScreen.canCastCard = true;
+        gameScreen.plHUD.changeCircle(true);
     }
 
     public void disableCardHud() {
         canChooseCard = false;
+        gameScreen.canCastCard = false;
+        gameScreen.plHUD.changeCircle(false);
     }
 
     public void setGameScreen(GameScreenTest gameScreen) {
@@ -188,32 +183,21 @@ public class GameController {
         this.token = token;
     }
 
-
     public void sendBid(int bid) {
-        System.out.println("Bid send: " + bid);
+       // System.out.println("Bid send: " + bid);
         //TODO: VALIDATE BID HERE
         rootController.sendBid(bid);
 
     }
 
     public void sendCard(String card) {
-        System.out.println("Card send: " + card);
+       // System.out.println("Card send: " + card);
         //TODO: VALIDATE Card HERE
         rootController.sendCard(card);
 
     }
 
-
-    public boolean getCanChooseCard() {
-        return canChooseCard;
-    }
-
-    public void setCanChooseCard(boolean canChooseCard) {
-        this.canChooseCard = canChooseCard;
-    }
-
     public void setWinner(String winner) {
-
         if(token.getNickname().equals(winner))
         {
             //TODO:: THE PLAYER WON THE HAND
@@ -223,4 +207,27 @@ public class GameController {
         gameScreen.opponentWonHand(winner);
         //TODO: THE OPPONENT WON THE HAND
     }
+
+
+    public Client getRootController() {
+        return rootController;
+    }
+
+    public void setRootController(Client rootController) {
+        this.rootController = rootController;
+    }
+
+    public boolean getCanChooseCard() {
+        return canChooseCard;
+    }
+
+    public void setCanChooseCard(boolean canChooseCard) {
+        this.canChooseCard = canChooseCard;
+    }
+
+    public void updateScoreStatus(List<NetworkDTO.Score> scores){
+        gameScreen.addScore(scores);
+
+    }
+
 }
