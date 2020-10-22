@@ -19,6 +19,8 @@ public class PlayerCard extends Image {
     private float originPosY = 0;
     private boolean putDown = false;
     private boolean flipped = true;
+    private boolean choosable = false;
+
     String ID;
     PlayerCard tis;
     TableHUD tableHUD;
@@ -62,7 +64,7 @@ public class PlayerCard extends Image {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 super.touchUp(event, x, y, pointer, button);
 
-            if(getY() > viewport.getScreenHeight()*0.4f && ((PlayerHUD)getParent()).getCanChooseCard()){
+            if(getY() > viewport.getScreenHeight()*0.4f && ((PlayerHUD)getParent()).getCanChooseCard() && choosable){
                 originPosX = viewport.getScreenWidth()/2;
                 originPosY = viewport.getScreenHeight() * 0.3f;
                 setRotation(0);
@@ -132,5 +134,13 @@ public class PlayerCard extends Image {
 
     public void setPutDown(boolean putDown) {
         this.putDown = putDown;
+    }
+
+    public boolean isChoosable() {
+        return choosable;
+    }
+
+    public void setChoosable(boolean choosable) {
+        this.choosable = choosable;
     }
 }

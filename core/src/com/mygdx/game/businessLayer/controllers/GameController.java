@@ -99,7 +99,7 @@ public class GameController {
                 //TODO: this.gameScreen.updateCardForOpp(ps.getNickname()--String,ps.getCard()--String);
                 // ****!!!!!!!***** ps.getCard() can be a specific card or !!!THE STRING "null";
                 if(!ps.getCard().equals("null")){
-                    gameScreen.updateCardForOpp(ps.getNickname(),ps.getCard());
+                    gameScreen.oppCastCard(ps.getNickname(),ps.getCard());
                 }
                 continue;
             }
@@ -147,6 +147,10 @@ public class GameController {
         canChooseCard = true;
         gameScreen.canCastCard = true;
         gameScreen.plHUD.changeCircle(true);
+        if(!gameScreen.isACardDown){
+            gameScreen.plHUD.canChooseAnyCard();
+            System.out.println("player can choose any card");
+        }
     }
 
     public void disableCardHud() {
@@ -198,14 +202,16 @@ public class GameController {
     }
 
     public void setWinner(String winner) {
-        if(token.getNickname().equals(winner))
-        {
-            //TODO:: THE PLAYER WON THE HAND
+        if(token.getNickname().equals(winner)){
+            gameScreen.plHUD.canChooseAnyCard();
             gameScreen.playerWonHand();
+            gameScreen.isACardDown = false;
+            System.out.println("is card down false");
             return;
         }
         gameScreen.opponentWonHand(winner);
-        //TODO: THE OPPONENT WON THE HAND
+        gameScreen.isACardDown = false;
+        System.out.println("is card down false");
     }
 
 

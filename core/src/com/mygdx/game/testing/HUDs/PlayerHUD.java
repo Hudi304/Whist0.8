@@ -111,8 +111,6 @@ public class PlayerHUD extends Group {
     }
 
     public void resize () {
-
-
         //todo de bumarat cartile care nu au falgul true si facut resize pe ele
         System.out.println("[PlayerHUD] resize");
         float width = min(viewport.getScreenHeight(), viewport.getScreenWidth()) / 4 * 0.6f * 0.7f;
@@ -187,8 +185,6 @@ public class PlayerHUD extends Group {
         }
     }
 
-
-
     public void setBidHUDVisibility(boolean visibility) {
         bidHudVisibility = visibility;
         for (Actor act : getChildren()) {
@@ -220,7 +216,6 @@ public class PlayerHUD extends Group {
         }
     }
 
-
     public void sendCard(String crd){
         gameController.sendCard(crd);
     }
@@ -229,11 +224,78 @@ public class PlayerHUD extends Group {
         gameController.sendBid(bid);
     }
 
-
     public boolean getCanChooseCard() {
         return gameController.getCanChooseCard();
     }
 
+    public void updateUsableCards(String firstCard, String atu){
+        System.out.println("updateChoosableCards");
+        //make all atus choosable
+        //if there are no atus then make every card with the same simbol as the first card choosable
+        //if there are none make every card choosable
 
+        canNotChooseCard();
+
+        boolean hasAtu = false;
+        boolean hasFirstCard = false;
+
+        //searching for atus
+        if(atu != null){
+            for (Actor act:getChildren()) {
+                if(act instanceof PlayerCard){
+
+                    PlayerCard plCard = (PlayerCard) act;
+                    if ( plCard.getID().charAt(0) == atu.charAt(0)){
+                        plCard.setChoosable(true);
+                        hasAtu = true;
+                        System.out.println("Atu updated");
+                    }
+                }
+            }
+        }
+        if(!hasAtu){
+            for (Actor act:getChildren()) {
+                if(act instanceof PlayerCard){
+                    PlayerCard plCard = (PlayerCard) act;
+                    if (plCard.getID().charAt(0) == firstCard.charAt(0)){
+                        plCard.setChoosable(true);
+                        hasFirstCard = true;
+                        System.out.println("firstCard updated");
+                    }
+                }
+            }
+        }
+        if (!hasAtu && !hasFirstCard){
+            for (Actor act:getChildren()) {
+                if(act instanceof PlayerCard){
+                    System.out.println("everyCard updated");
+                    PlayerCard plCard = (PlayerCard) act;
+                    plCard.setChoosable(true);
+                }
+            }
+        }
+    }
+
+    public void canChooseAnyCard(){
+        System.out.println("player can Choose any card");
+        for (Actor act:getChildren()) {
+            if(act instanceof PlayerCard){
+                System.out.println("can choose any card");
+                PlayerCard plCard = (PlayerCard) act;
+                plCard.setChoosable(true);
+            }
+        }
+    }
+
+    public void canNotChooseCard(){
+        System.out.println("player can  NOT Choose any card");
+        for (Actor act:getChildren()) {
+            if(act instanceof PlayerCard){
+                System.out.println("can't choose card");
+                PlayerCard plCard = (PlayerCard) act;
+                plCard.setChoosable(false);
+            }
+        }
+    }
 
 }

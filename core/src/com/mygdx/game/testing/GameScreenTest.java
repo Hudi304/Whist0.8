@@ -42,6 +42,8 @@ import com.mygdx.game.testing.HUDs.TableHUD;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SpringLayout;
+
 public class GameScreenTest implements Screen {
 
     //-------------UI-----------------
@@ -85,6 +87,9 @@ public class GameScreenTest implements Screen {
     OpponentHUD oppHUD4 = null;
     OpponentHUD oppHUD5 = null;
 
+    String firstCardDown = null;
+    public boolean isACardDown = false;
+
     public TableHUD tableHUD = null;
 
 
@@ -110,8 +115,6 @@ public class GameScreenTest implements Screen {
         tableDragBar = new DragBar(viewport,table);
         tableDragBar.setDrawable(new SpriteDrawable(new Sprite(dragBarImange)));
 
-        //chatDragBar = new ChatDragBar(viewport,new SpriteDrawable(new Sprite(chatDragBarImange)));
-
         chat = new Chat(skin,viewport,new SpriteDrawable(new Sprite(chatDragBarImange)));
 
         stage.addActor(plHUD);
@@ -124,14 +127,11 @@ public class GameScreenTest implements Screen {
     public void show() {
         Gdx.input.setInputProcessor(stage);
 
-
         tableDragBar.setWidth(viewport.getScreenWidth()/4);
         tableDragBar.setHeight(viewport.getScreenHeight()/40);
         tableDragBar.setOriginX(tableDragBar.getWidth()/2);
 
         tableDragBar.setPosition(viewport.getScreenWidth()/2 - tableDragBar.getWidth()/2,viewport.getScreenHeight());
-
-
         TextButton flipButton = new TextButton("StartAction", skin);
         flipButton.addListener(new ChangeListener() {
             @Override
@@ -144,12 +144,8 @@ public class GameScreenTest implements Screen {
                 //destroyAllCards();
                 chat.addChatMessage("PULA");
                 //returnCardsToDeck();
-
             }
         });
-
-
-
         stage.addActor(flipButton);
         stage.addActor(tableDragBar);
         //stage.addActor(scoreTable);
@@ -157,7 +153,6 @@ public class GameScreenTest implements Screen {
     }
 
     public void initTable(){
-        //table = new Table();
         table.setPosition(viewport.getScreenWidth()/2,viewport.getScreenHeight()/2);
         table.setTouchable(Touchable.disabled);
         table.setPosition(viewport.getScreenWidth()/2,100);
@@ -353,14 +348,20 @@ public class GameScreenTest implements Screen {
 
     }
 
-
-
-    public void updateCardForOpp(String nickName, String card) {
+    public void oppCastCard(String nickName, String card) {
         for (Actor opp : stage.getActors()) {
             if (opp instanceof OpponentHUD) {
                 OpponentHUD oppHUD = (OpponentHUD) opp;
                 if (oppHUD.nickname.equals(nickName)) {
                     oppHUD.putCastCard(card);
+                    if (isACardDown == false){
+                        firstCardDown = card;
+                        System.out.println("updated usable cards");
+                        plHUD.updateUsableCards(card,null);
+                        isACardDown = true;
+                    }
+                    isACardDown = true;
+                    System.out.println("is card down true");
                     return;
                 }
             }
