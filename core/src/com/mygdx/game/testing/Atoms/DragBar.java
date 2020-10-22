@@ -1,14 +1,19 @@
 package com.mygdx.game.testing.Atoms;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -23,13 +28,20 @@ public class DragBar extends Image {
     float targetY;
     float velY;
 
+    float maxY = 0;
+    float minY = 0;
+
+    private int count = 0;
+
     Table table;
     Viewport viewport;
 
-    public DragBar(Viewport viewport, Table table){
+    public DragBar(final Viewport viewport, Table table) {
         super();
         this.viewport = viewport;
         this.table = table;
+        maxY = viewport.getScreenY();
+        minY = viewport.getScreenY() * 2 / 3;
 
         currentY = Gdx.graphics.getHeight();
         addListener(new DragListener() {
@@ -37,16 +49,19 @@ public class DragBar extends Image {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 targetY = getY() + y;
                 following = true;
+
                 return true;
             }
+
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                if (following ==  true){
+                if (following == true) {
                     targetY = getY() + y;
                 }
 
 
             }
+
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 targetY = getY() + y;
@@ -54,7 +69,17 @@ public class DragBar extends Image {
 
             }
         });
+
+        addListener(new ClickListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                System.out.println("tap");
+
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
     }
+
 
     @Override
     public void act(float delta) {
@@ -76,11 +101,6 @@ public class DragBar extends Image {
     }
 
     private void clamp( float viewportHeight) {
-//        if (currentY  <= viewportHeight - 10 - table.getRows() * table.getRowHeight(0)) {
-//            currentY = viewportHeight - table.getRows() * table.getRowHeight(0);
-//            velY = 0;
-//        }
-
         if (currentY  <= 0) {
             currentY = 0;
             velY = 0;
